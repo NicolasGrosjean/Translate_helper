@@ -1,10 +1,10 @@
 package parsing;
 
-public class Entry {
+public class ParsedEntry {
 	private int lineNumber;
 	private String ID;
 
-	public Entry(int lineNumber, String ID) {
+	public ParsedEntry(int lineNumber, String ID) {
 		super();
 		this.lineNumber = lineNumber;
 		this.ID = ID;

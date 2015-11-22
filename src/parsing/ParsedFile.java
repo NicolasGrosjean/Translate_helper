@@ -1,8 +1,9 @@
 package parsing;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class File {
+public class ParsedFile {
 	/**
 	 * Name of the file
 	 */
@@ -16,18 +17,18 @@ public class File {
 	/**
 	 * List of the lines to translate
 	 */
-	private LinkedList<Entry> linesToTranslate;
+	private LinkedList<ParsedEntry> linesToTranslate;
 
 	/**
 	 * List of the line where the "localisation" is missing for the source language
 	 */
-	private LinkedList<Entry> missingSourceLines;
+	private LinkedList<ParsedEntry> missingSourceLines;
 
-	public File(String name) {
+	public ParsedFile(String name) {
 		this.name = name;
 		lineNumber = -1; // default value to ensure
-		linesToTranslate = new LinkedList<Entry>();
-		missingSourceLines = new LinkedList<Entry>();
+		linesToTranslate = new LinkedList<ParsedEntry>();
+		missingSourceLines = new LinkedList<ParsedEntry>();
 	}
 
 	public String getName() {
@@ -53,10 +54,26 @@ public class File {
 	}
 
 	public void addLastLineToTranslate(int lineNumber, String ID) {
-		linesToTranslate.addLast(new Entry(lineNumber, ID));
+		linesToTranslate.addLast(new ParsedEntry(lineNumber, ID));
 	}
 
 	public void addLastMissingSourceLine(int lineNumber, String ID) {
-		missingSourceLines.addLast(new Entry(lineNumber, ID));
+		missingSourceLines.addLast(new ParsedEntry(lineNumber, ID));
+	}
+
+	public Iterator<ParsedEntry> getDescendingIteratorLineToTranslate() {
+		return linesToTranslate.descendingIterator();
+	}
+
+	public Iterator<ParsedEntry> getDescendingIteratorMissingSourceLines() {
+		return missingSourceLines.descendingIterator();
+	}
+
+	public int numberLineToTranslate() {
+		return linesToTranslate.size();
+	}
+
+	public int numberMissingSourceLines() {
+		return missingSourceLines.size();
 	}
 }
