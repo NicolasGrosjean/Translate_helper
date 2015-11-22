@@ -45,7 +45,7 @@ public class ParsedFile {
 	}
 
 	public void setLineNumber(int lineNumber) {
-		if (lineNumber < 0) {
+		if (this.lineNumber < 0) {
 			this.lineNumber = lineNumber;
 		} else {
 			throw new IllegalArgumentException("Number of lines of the file " + 

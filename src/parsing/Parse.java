@@ -1,7 +1,11 @@
 package parsing;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Parse {
 	/**
@@ -88,7 +92,80 @@ public class Parse {
 	}
 
 	private ParsedFile parseAFile(String filePath) {
-		// TODO
+		ParsedFile parsedFile = new ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
+		int lineNumber = 0;
+		int sourceLanguageColumn = defaultSourceLanguageColumn;
+		int destinationLanguageColumn = defaultDestinationLanguageColumn;
+		FileInputStream f = null;
+		try {
+			f = new FileInputStream(filePath);
+			Scanner line = new Scanner(f);
+			Scanner expression = null;
+			line.useDelimiter("\n");
+			// Parse the file line by line
+			while (line.hasNext()) {
+				lineNumber++;
+				expression = new Scanner(line.next());
+				expression.useDelimiter(";");
+				// The ID is the first expression of the line
+				String ID = "";
+				if (expression.hasNext()) {
+					ID = expression.next();
+				}
+				if (ID.charAt(0) == '#') {
+					// The line is commented => nothing to do
+				} else if (ID.equals("CODE")) {
+					//TODO : change the integers
+				} else {					
+					int i = 1;
+					int min = Math.min(sourceLanguageColumn, destinationLanguageColumn);
+					int max = Math.max(sourceLanguageColumn, destinationLanguageColumn);
+					// First expression to analyze
+					while (expression.hasNext() && (i < min)) {
+						expression.next();
+						i++;
+					}
+					if (expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
+						if (sourceLanguageColumn < destinationLanguageColumn) {
+							parsedFile.addLastMissingSourceLine(lineNumber, ID);
+						} else {
+							parsedFile.addLastLineToTranslate(lineNumber, ID);
+						}					
+					}
+					i++;
+					// Second expression to analyze
+					while (expression.hasNext() && (i < max)) {
+						expression.next();
+						i++;
+					}
+					if (expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
+						if (sourceLanguageColumn > destinationLanguageColumn) {
+							parsedFile.addLastMissingSourceLine(lineNumber, ID);
+						} else {
+							parsedFile.addLastLineToTranslate(lineNumber, ID);
+						}					
+					}
+				}			
+				expression.close();				
+			}
+			line.close();
+			parsedFile.setLineNumber(lineNumber);
+			return parsedFile;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (f != null)
+					f.close();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
 		return null;
+	}
+
+	private static boolean isNotTranslatedOrMissing(String expression) {
+		//TODO : use a list of no-translated words
+		return (expression.equals(""));
 	}
 }

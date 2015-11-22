@@ -1,5 +1,6 @@
 package tests;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.junit.Assert;
@@ -21,7 +22,7 @@ public class TestParsing {
 	@BeforeClass
 	public static void SetUp() {
 		parsedFiles = new Parse(Parse.listDirectoryFiles("C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files"),
-				"FRENCH", 2, "ENGLISH", 0);
+				"FRENCH", 2, "ENGLISH", 1);
 	}
 
 	@Test
@@ -41,9 +42,6 @@ public class TestParsing {
 				filePaths.removeFirst().replace("\\", "/"));
 		Assert.assertEquals("Incorrect file found!",
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/nothing_to_translate.csv",
-				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/order_changed.csv",
 				filePaths.removeFirst().replace("\\", "/"));
 		Assert.assertEquals("Incorrect file found!",
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/translate.csv",
@@ -89,8 +87,9 @@ public class TestParsing {
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.numberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorLineToTranslate().hasNext());
-			ParsedEntry e = f.getDescendingIteratorLineToTranslate().next();
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			ParsedEntry e = lineToTranslateIterator.next();
 			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 		} else {
@@ -104,23 +103,9 @@ public class TestParsing {
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.numberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorLineToTranslate().hasNext());
-			ParsedEntry e = f.getDescendingIteratorLineToTranslate().next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
-			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
-		} else {
-			Assert.assertEquals("File not parsed", true, false); // Exception
-		}
-	}
-
-	@Test
-	public void orderChanged() {
-		ParsedFile f = parsedFiles.getFile("order_changed.csv");
-		if (f != null) {
-			Assert.assertEquals("It should have 1 line to translate", 1, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorLineToTranslate().hasNext());
-			ParsedEntry e = f.getDescendingIteratorLineToTranslate().next();
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			ParsedEntry e = lineToTranslateIterator.next();
 			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 		} else {
@@ -130,30 +115,32 @@ public class TestParsing {
 	
 	@Test
 	public void missingSource() {
-		ParsedFile f = parsedFiles.getFile("order_changed.csv");
+		ParsedFile f = parsedFiles.getFile("missing_source.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 2 lines to translate", 2, f.numberLineToTranslate());
 			Assert.assertEquals("It should have 2 missing source texts", 2, f.numberMissingSourceLines());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorLineToTranslate().hasNext());
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			Iterator<ParsedEntry> missingSourceLinesIterator = f.getDescendingIteratorMissingSourceLines();
 			// First line to translate
-			ParsedEntry e = f.getDescendingIteratorLineToTranslate().next();
-			Assert.assertEquals("Invalid line number", 1, e.getLineNumber());
-			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorLineToTranslate().hasNext());
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());		
+			ParsedEntry e = lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
 			// Second line to translate
-			e = f.getDescendingIteratorLineToTranslate().next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
-			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorMissingSourceLines().hasNext());
-			// First missing source text
-			e = f.getDescendingIteratorMissingSourceLines().next();
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			e = lineToTranslateIterator.next();
 			Assert.assertEquals("Invalid line number", 1, e.getLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
-			Assert.assertEquals("Nothing in the iterator", true, f.getDescendingIteratorMissingSourceLines().hasNext());
-			// Second missing source text
-			e = f.getDescendingIteratorMissingSourceLines().next();
+			// First missing source text
+			Assert.assertEquals("Nothing in the iterator", true, missingSourceLinesIterator.hasNext());
+			e = missingSourceLinesIterator.next();
 			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
+			// Second missing source text
+			Assert.assertEquals("Nothing in the iterator", true, missingSourceLinesIterator.hasNext());
+			e = missingSourceLinesIterator.next();
+			Assert.assertEquals("Invalid line number", 1, e.getLineNumber());
+			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 		} else {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
