@@ -51,12 +51,17 @@ public class Parse {
 		}
 	}
 
-	public ParsedFile removeFirstFile() {
-		return files.removeFirst();
-	}
-
-	public ParsedFile getFirstFile() {
-		return files.getFirst();
+	public String getListMissingSourceText() {
+		String res = "";
+		for (ParsedFile f : files) {
+			res += f.getName() + "\n";
+			if (f.numberMissingSourceLines() > 0) {
+				res += f.getMissingSourceText() + "\n";
+			} else {
+				res += "Aucune localisation manquante!\n\n";
+			}
+		}
+		return res;
 	}
 
 	/**

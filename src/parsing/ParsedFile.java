@@ -76,4 +76,12 @@ public class ParsedFile {
 	public int numberMissingSourceLines() {
 		return missingSourceLines.size();
 	}
+
+	public String getMissingSourceText() {
+		String res = "";
+		for (ParsedEntry e : missingSourceLines) {
+			res += e.getLineNumber() + " : " + e.getID() + "\n";
+		}
+		return res;
+	}
 }
