@@ -1,7 +1,12 @@
 package config;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import parsing.Language;
 
@@ -101,9 +106,50 @@ public class WorkingSession {
 		}
 	}
 
-	// TODO : parse the available languages file
-	public static void setAvailableLanguages(LinkedList<Language> availableLanguages) {
-		WorkingSession.availableLanguages = availableLanguages;
+	/**
+	 * Parse a file to set the list of available languages
+	 * @param availableLanguagesFile
+	 */
+	public static void setAvailableLanguages(String availableLanguagesFile) {
+		availableLanguages = new LinkedList<Language>();
+		File file = new File(availableLanguagesFile);
+		if (!file.isFile()) {
+			throw new IllegalArgumentException(availableLanguagesFile +
+					" is not a file!");
+		}
+		FileInputStream f = null;
+		Scanner scanner = null;
+		try {
+			f = new FileInputStream(availableLanguagesFile);
+			scanner = new Scanner(f, "ISO-8859-1");
+			scanner.useDelimiter(Pattern.compile("[;\r\n]"));
+			while (scanner.hasNextInt()) {
+				int defaultColumnNumber = scanner.nextInt();
+				if (!scanner.hasNext()) {
+					throw new IllegalArgumentException("Code for language missing.");
+				}
+				String code = scanner.next();
+				availableLanguages.addLast(new Language(code, defaultColumnNumber));
+				// If the line terminate by a ';', we skip it by read the empty string
+				while (!scanner.hasNextInt() && scanner.hasNext()) {
+					String s = scanner.next();
+					if (!s.equals("")) {
+						throw new IllegalArgumentException("Invalid string found : " + s);
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (scanner != null)
+				scanner.close();
+			try {
+				if (f != null)
+					f.close();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
 	}
 
 	private static boolean isAvailableLanguagesInitialized() {
