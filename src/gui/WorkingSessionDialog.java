@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -78,7 +77,7 @@ public class WorkingSessionDialog extends JDialog {
 		// The available languages for the destination language are NONE and the available source languages
 		Language[] avalaibleDestinationLanguages = new Language[avalaibleSourceLanguages.length + 1];		
 		avalaibleDestinationLanguages[0] = new Language("NONE", -1);
-		for (int i = 0; i < avalaibleDestinationLanguages.length; i++) {
+		for (int i = 0; i < avalaibleSourceLanguages.length; i++) {
 			avalaibleDestinationLanguages[i + 1] = avalaibleSourceLanguages[i];
 		}
 		//TODO : set default values
