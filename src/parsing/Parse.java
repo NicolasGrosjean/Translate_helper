@@ -14,54 +14,35 @@ public class Parse {
 	private LinkedList<ParsedFile> files;
 
 	/**
-	 * Code for the source language in the "localisation" files
+	 * Definition of the source language in the "localisation" files
 	 */
-	private String sourceLanguage;
+	private Language sourceLanguage;
 
 	/**
-	 * Default column for the text of the source language
+	 * Definition of the destination language in the "localisation" files
 	 */
-	private int defaultSourceLanguageColumn;
-
-	/**
-	 * Code for the destination language in the "localisation" files
-	 */
-	private String destinationLanguage;
-
-	/**
-	 * Default column for the text of the destination language
-	 */
-	private int defaultDestinationLanguageColumn;
+	private Language destinationLanguage;
 
 	/**
 	 * Parse the files in order to store the entries which are not translated
 	 * or without source language text
 	 * @param filePaths The list of the names of the files to parse
 	 */
-	public Parse(LinkedList<String> filePaths, String sourceLanguage,
-			int defaultSourceLanguageColumn, String destinationLanguage,
+	public Parse(LinkedList<String> filePaths, String codeSourceLanguage,
+			int defaultSourceLanguageColumn, String codeDestinationLanguage,
 			int defaultDestinationLanguageColumn) {
-		this.sourceLanguage = sourceLanguage;
-		this.defaultSourceLanguageColumn = defaultSourceLanguageColumn;
-		this.destinationLanguage = destinationLanguage;
-		this.defaultDestinationLanguageColumn = defaultDestinationLanguageColumn;
+		sourceLanguage = new Language(codeSourceLanguage, defaultSourceLanguageColumn);
+		destinationLanguage = new Language(codeDestinationLanguage, defaultDestinationLanguageColumn);
 		files = new LinkedList<ParsedFile>();
 		for (String filePath : filePaths) {
 			files.addLast(parseAFile(filePath));
 		}
 	}
 
-	public String getListMissingSourceText() {
-		String res = "";
-		for (ParsedFile f : files) {
-			res += f.getName() + "\n";
-			if (f.numberMissingSourceLines() > 0) {
-				res += f.getMissingSourceText() + "\n";
-			} else {
-				res += "Aucune localisation manquante!\n\n";
-			}
-		}
-		return res;
+	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
+			Language destinationLanguage) {
+		this(filePaths, sourceLanguage.getCode(), sourceLanguage.getDefaultColumn(),
+				destinationLanguage.getCode(), destinationLanguage.getDefaultColumn());
 	}
 
 	/**
@@ -75,6 +56,19 @@ public class Parse {
 			}
 		}
 		return null;
+	}
+
+	public String getListMissingSourceText() {
+		String res = "";
+		for (ParsedFile f : files) {
+			res += f.getName() + "\n";
+			if (f.numberMissingSourceLines() > 0) {
+				res += f.getMissingSourceText() + "\n";
+			} else {
+				res += "Aucune localisation manquante!\n\n";
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -99,8 +93,8 @@ public class Parse {
 	private ParsedFile parseAFile(String filePath) {
 		ParsedFile parsedFile = new ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
 		int lineNumber = 0;
-		int sourceLanguageColumn = defaultSourceLanguageColumn;
-		int destinationLanguageColumn = defaultDestinationLanguageColumn;
+		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();
+		int destinationLanguageColumn = destinationLanguage.getDefaultColumn();
 		FileInputStream f = null;
 		try {
 			f = new FileInputStream(filePath);
