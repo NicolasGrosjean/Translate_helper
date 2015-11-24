@@ -12,7 +12,8 @@ import parsing.Parse;
 import parsing.ParsedFile;
 
 /**
- * To run it with Eclipse, go to the project > Properties > Add Library... > JUnit
+ * Test the parsing package
+ * NOTA : To run it with Eclipse, go to the project > Properties > Add Library... > JUnit
  * @author Nicolas Grosjean
  *
  */

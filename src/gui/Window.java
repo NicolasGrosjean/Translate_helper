@@ -15,6 +15,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import config.WorkingSession;
 
@@ -79,6 +81,17 @@ public class Window extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent arg0) {
+			// TODO : choose where to put it for it is executed only once (or look and feel be restaured)
+			// Use the look and feel of the system for fileChooser
+			// Check a boolean in order to have coherence but not no-beautiful waiting bar
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			catch (InstantiationException e) {}
+			catch (ClassNotFoundException e) {}
+			catch (UnsupportedLookAndFeelException e) {}
+			catch (IllegalAccessException e) {}
+
 			WorkingSessionDialog wSDialog;
 			try {
 				if (newWS) {
