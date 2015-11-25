@@ -2,6 +2,7 @@ package mains;
 
 import javax.swing.JOptionPane;
 
+import parsing.Language;
 import config.WorkingSession;
 import gui.Window;
 
@@ -12,7 +13,10 @@ public class Diagnostic {
 		try {
 			//TODO read the configuration files
 			WorkingSession.setAvailableLanguages("C:/Users/Nicolas/workspace/Translate_helper/config/available_languages.csv");
-			window = new Window("Translate helper", 800, 450);
+			WorkingSession ws = new WorkingSession("TEST",
+					"C:/Users/Nicolas/Documents/GitHub/L3T/L3T/localisation",
+					new Language("FRENCH", 2), new Language("ENGLISH", 1));
+			window = new Window("Translate helper", 800, 450, ws, 30);
 		} catch (Exception e) {
 			try {
 				if (!e.getMessage().equals("")) {

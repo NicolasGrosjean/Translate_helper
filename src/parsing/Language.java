@@ -32,4 +32,23 @@ public class Language {
 	public String toString() {
 		return code;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Language other = (Language) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		if (defaultColumn != other.defaultColumn)
+			return false;
+		return true;
+	}
 }
