@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import config.WorkingSession;
+
 public class Parse {
 	/**
 	 * List of the "localisation" files
@@ -43,6 +45,11 @@ public class Parse {
 			Language destinationLanguage) {
 		this(filePaths, sourceLanguage.getCode(), sourceLanguage.getDefaultColumn(),
 				destinationLanguage.getCode(), destinationLanguage.getDefaultColumn());
+	}
+
+	public Parse(WorkingSession ws) {
+		this(Parse.listDirectoryFiles(ws.getDirectory()),
+				ws.getSourceLanguage(), ws.getDestinationLanguage());
 	}
 
 	/**

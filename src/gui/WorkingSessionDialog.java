@@ -16,6 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import parsing.Language;
 import config.WorkingSession;
@@ -59,7 +63,7 @@ public class WorkingSessionDialog extends JDialog {
 			String directory, Language sourceLanguage, Language destinationLanguage) {
 		// Create the JDialog
 		super(parent, title, modal);
-		setSize(500, 220);
+		setSize(500, 350);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -80,9 +84,10 @@ public class WorkingSessionDialog extends JDialog {
 		for (int i = 0; i < avalaibleSourceLanguages.length; i++) {
 			avalaibleDestinationLanguages[i + 1] = avalaibleSourceLanguages[i];
 		}
-		//TODO : set default values
 		sourceLanguageSourceComboBox = new JComboBox<Language>(avalaibleSourceLanguages);
+		sourceLanguageSourceComboBox.setSelectedItem(sourceLanguage);
 		destinationLanguageComboBox = new JComboBox<Language>(avalaibleDestinationLanguages);
+		destinationLanguageComboBox.setSelectedItem(destinationLanguage);
 
 		// Create all necessary components
 		JButton localisationDirectoryFC = new JButton("...");
