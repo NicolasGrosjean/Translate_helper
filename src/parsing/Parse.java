@@ -58,17 +58,46 @@ public class Parse {
 		return null;
 	}
 
+	/**
+	 * Get a string to display the diagnostic of missing source text
+	 * @return
+	 */
 	public String getListMissingSourceText() {
 		String res = "";
 		for (ParsedFile f : files) {
 			res += f.getName() + "\n";
-			if (f.numberMissingSourceLines() > 0) {
+			if (f.getNumberMissingSourceLines() > 0) {
 				res += f.getMissingSourceText() + "\n";
 			} else {
 				res += "Aucune localisation manquante!\n\n";
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Convert the files data to an array to display
+	 * @return
+	 */
+	public Object[][] toArray() {
+		Object[][] array = new Object[files.size()][];
+		int i =0;
+		for (ParsedFile f : files) {
+			array[i] = new Object[5];
+			array[i][0] = new Boolean(false); // check box
+			array[i][1] = f; // file (only its name will be displayed)		
+			array[i][2] = f.getNumberMissingSourceLines(); // number of lines with missing source text			
+			if (destinationLanguage.isNone()) {
+				// The destination language is unknown				
+				array[i][3] = "unknown";
+			} else {
+				// Percentage of translation done
+				array[i][3] = 100 - (Integer)(f.getNumberLineToTranslate()*100/f.getLineNumber());
+			}
+			array[i][4] = "Details"; // button text
+			i++;
+		}
+		return array;
 	}
 
 	/**

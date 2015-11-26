@@ -53,8 +53,8 @@ public class TestParsing {
 	public void nothingToTranslate() {
 		ParsedFile f = parsedFiles.getFile("nothing_to_translate.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have nothing to translate", 0, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 		} else {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
@@ -64,8 +64,8 @@ public class TestParsing {
 	public void codeLine() {
 		ParsedFile f = parsedFiles.getFile("code_line.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have nothing to translate", 0, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 		} else {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
@@ -75,8 +75,8 @@ public class TestParsing {
 	public void commentLine() {
 		ParsedFile f = parsedFiles.getFile("comment_line.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have nothing to translate", 0, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 		} else {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
@@ -86,8 +86,8 @@ public class TestParsing {
 	public void codeLineToTranslate() {
 		ParsedFile f = parsedFiles.getFile("code_line_to_translate.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have 1 line to translate", 1, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
@@ -102,8 +102,8 @@ public class TestParsing {
 	public void translate() {
 		ParsedFile f = parsedFiles.getFile("translate.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have 1 line to translate", 1, f.numberLineToTranslate());
-			Assert.assertEquals("It should have no missing source text", 0, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
@@ -118,8 +118,8 @@ public class TestParsing {
 	public void missingSource() {
 		ParsedFile f = parsedFiles.getFile("missing_source.csv");
 		if (f != null) {
-			Assert.assertEquals("It should have 2 lines to translate", 2, f.numberLineToTranslate());
-			Assert.assertEquals("It should have 2 missing source texts", 2, f.numberMissingSourceLines());
+			Assert.assertEquals("It should have 2 lines to translate", 2, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have 2 missing source texts", 2, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Iterator<ParsedEntry> missingSourceLinesIterator = f.getDescendingIteratorMissingSourceLines();
 			// First line to translate

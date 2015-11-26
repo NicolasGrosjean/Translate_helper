@@ -69,11 +69,11 @@ public class ParsedFile {
 		return missingSourceLines.descendingIterator();
 	}
 
-	public int numberLineToTranslate() {
+	public int getNumberLineToTranslate() {
 		return linesToTranslate.size();
 	}
 
-	public int numberMissingSourceLines() {
+	public int getNumberMissingSourceLines() {
 		return missingSourceLines.size();
 	}
 

@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.JTableHeader;
 
+import parsing.Parse;
 import parsing.ParsedFile;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
@@ -62,21 +63,9 @@ public class Window extends JFrame {
 
 		// Table of the files
 		String columnTitles[] = {"", "File", "Missing source", "Translated", " "};
-		ParsedFile f = new ParsedFile("a.csv");
-		f.addLastMissingSourceLine(100, "test");
-		Object[][] data = {
-
-				{new Boolean(false), f, 0, 100, "Details"},
-
-				{new Boolean(false), "b.csv", 2, 85, "Details"},
-
-				{new Boolean(false), "c.csv", 10, 65, "Details"},
-
-				{new Boolean(false), "d.csv", 0, 50, "Details"}
-
-		};
-
-		TableModel tableModel = new TableModel(data, columnTitles);
+		Parse p = new Parse(Parse.listDirectoryFiles("C:/Users/Nicolas/Documents/GitHub/L3T/L3T/localisation"),
+				"FRENCH", 2, "ENGLISH", 1);
+		TableModel tableModel = new TableModel(p.toArray(), columnTitles);
 		JTable table = new JTable(tableModel) {
 			// Override createDefaultTableHeader to have column tool tips
 			// Source : http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#headertooltip
@@ -94,6 +83,7 @@ public class Window extends JFrame {
 		// The table can be sorted with the column headers
 		table.setAutoCreateRowSorter(true);
 
+		// Table configuration
 		table.setRowHeight(tableRowHeight);
 		table.getColumn("").setMaxWidth(20);
 		table.getColumn("File").setPreferredWidth(400);
@@ -103,6 +93,8 @@ public class Window extends JFrame {
 		table.getColumn(" ").setCellRenderer(new ButtonRenderer()); // render for the last column
 		table.getColumn(" ").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.getColumn(" ").setPreferredWidth(50);
+
+		// The table is add with a scroll pane (useful if it has many lines)
 		container.add(new JScrollPane(table));	
 		
 		// Container adding

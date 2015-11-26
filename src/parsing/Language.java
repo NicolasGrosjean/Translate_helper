@@ -28,6 +28,14 @@ public class Language {
 		return defaultColumn;
 	}
 
+	/**
+	 * Return if it is the "NONE" language (=no language)
+	 * @return
+	 */
+	public boolean isNone() {
+		return (code.equals("NONE") && defaultColumn == -1);
+	}
+
 	@Override
 	public String toString() {
 		return code;
