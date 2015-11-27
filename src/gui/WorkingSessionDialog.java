@@ -92,8 +92,6 @@ public class WorkingSessionDialog extends JDialog {
 		JButton localisationDirectoryFC = new JButton("...");
 		JButton validate = new JButton("OK");
 		JButton cancel = new JButton("Cancel");
-//		fileChooser = new JFileChooser();
-//		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		// Group them by JPanel
 		wsNamePanel = new JPanel(new BorderLayout());
@@ -189,7 +187,6 @@ public class WorkingSessionDialog extends JDialog {
 				JOptionPane.showMessageDialog(null, "The name of this configuration is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else if (localisationDirectoryTF.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The loclisation directory is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
-				//TODO : other else if to manage languages
 			} else {
 				validated = true;
 				setVisible(false);

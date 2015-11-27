@@ -24,24 +24,24 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 		if (value instanceof Integer) {
 			setValue((Integer)value);
 			setString(value + "%");
-			colorize((Integer)value);
+			color((Integer)value);
 		} else {
 			setString("Unknown");
-			colorize(-1);
+			color(-1);
 		}
 		setStringPainted(true);
 		return this;
 	}
 
-	private void colorize(int value) {
+	private void color(int value) {
 		if (value == 100) {
-			colorize(Color.GREEN);
+			color(Color.GREEN);
 		} else if (value >= 50) {
-			colorize(Color.ORANGE);
+			color(Color.ORANGE);
 		} else if (value >= 0) {
-			colorize(Color.RED);
+			color(Color.RED);
 		} else {
-			colorize(Color.BLUE);
+			color(Color.BLUE);
 		}
 		setOpaque(true);
 		
@@ -51,26 +51,39 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 			setForeground(Color.BLACK);
 		}
 	}
-	
-	private void colorize(Color c) {
+
+	/**
+	 * Color a ProgressBar with the "Nimbus" look and feel
+	 * @param c
+	 */
+	private void color(Color c) {
 		UIDefaults defaults = new UIDefaults();
-		defaults.put("ProgressBar[Enabled].foregroundPainter", new MyPainter(c));
-		defaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new MyPainter(c));
+		defaults.put("ProgressBar[Enabled].foregroundPainter", new MyPainterNimbus(c));
+		defaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new MyPainterNimbus(c));
 		putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
 		putClientProperty("Nimbus.Overrides", defaults);
 	}
 
-	class MyPainter implements Painter<JProgressBar> {
+	/**
+	 * Paint a ProgressBar for "Nimbus" look and feel
+	 * @author NicolasGrosjean
+	 *
+	 */
+	class MyPainterNimbus implements Painter<JProgressBar> {
 
 	    private final Color color;
 
-	    public MyPainter(Color c1) {
+	    public MyPainterNimbus(Color c1) {
 	        this.color = c1;
 	    }
 	    @Override
 	    public void paint(Graphics2D gd, JProgressBar t, int width, int height) {
 	        gd.setColor(color);
-	        gd.fillRect(2, 2, width, height - 4);
+	        // The "Nimbus" look and feel has a border of size 2
+	        // So to respect it, the origin is move to (2,2)
+	        // The width and height are reduced of 4
+	        // (2 border for them)
+	        gd.fillRect(2, 2, width - 4, height - 4);
 	    }
 	}
 }

@@ -11,18 +11,21 @@ import javax.swing.JTable;
 
 import parsing.ParsedFile;
 
-public class ButtonEditor extends DefaultCellEditor {
+public class DetailsButton extends DefaultCellEditor {
 
 	protected JButton button;
 	private ButtonListener bListener = new ButtonListener();
 
-	public ButtonEditor(JCheckBox checkBox) {
+	public DetailsButton(JCheckBox checkBox) {
 		super(checkBox);
 		button = new JButton();
 		button.setOpaque(true);
 		button.addActionListener(bListener);
 	}
 
+	/**
+	 * Method to have button behavior in a Table
+	 */
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
 		bListener.setRow(row);
 		bListener.setColumn(column);
@@ -31,6 +34,11 @@ public class ButtonEditor extends DefaultCellEditor {
 		return button;
 	}
 
+	/**
+	 * Action of the details button
+	 * @author NicolasGrosjean
+	 *
+	 */
 	class ButtonListener implements ActionListener {
 
 		private int column, row;

@@ -141,7 +141,7 @@ public class Window extends JFrame {
 		table.getColumn("Missing source").setPreferredWidth(90);
 		table.getColumn("Translated").setCellRenderer(new Percentage());
 		table.getColumn(" ").setCellRenderer(new ButtonRenderer()); // render for the last column
-		table.getColumn(" ").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getColumn(" ").setCellEditor(new DetailsButton(new JCheckBox()));
 		table.getColumn(" ").setPreferredWidth(50);	
 		
 		// The table is add with a scroll pane (useful if it has many lines)

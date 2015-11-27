@@ -12,10 +12,12 @@ import parsing.ParsedFile;
 public class DetailsDialog extends JDialog {
 	public DetailsDialog(JFrame parent, String title, boolean modal,
 			ParsedFile file) {
+		// Create the JDialog
 		super(parent, title, modal);
 		setSize(500, 600);
 		setLocationRelativeTo(null);
 
+		// Get the text to display
 		String toDisplay = "";
 		if (file.getNumberMissingSourceLines()> 0) {
 			toDisplay += missingSourceTextHeader() + 
@@ -25,6 +27,8 @@ public class DetailsDialog extends JDialog {
 			toDisplay += missingTranslation() +
 					file.getMissingTranslation();
 		}
+
+		// Display it in a JTextArea to have multiple lines
 		JTextArea text = new JTextArea(toDisplay);
 		text.setWrapStyleWord(true);
 	    text.setLineWrap(true);
