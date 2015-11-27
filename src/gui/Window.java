@@ -107,7 +107,7 @@ public class Window extends JFrame {
 		// Display the information about the working session
 		JPanel wsInformation = new JPanel(new BorderLayout());
 		JLabel currentConfiguration = new JLabel("Current configuration: " +
-				"directory=" + ws.getDirectory() + "; " +
+				"directory=" + ws.getDirectory() + "       " +
 				"from " + ws.getSourceLanguage() + " to " + ws.getDestinationLanguage());
 		wsInformation.add(currentConfiguration);
 		container.add(wsInformation, BorderLayout.NORTH);
