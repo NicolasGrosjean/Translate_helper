@@ -85,6 +85,14 @@ public class ParsedFile {
 		return res;
 	}
 
+	public String getMissingTranslation() {
+		String res = "";
+		for (ParsedEntry e : linesToTranslate) {
+			res += e.getLineNumber() + " : " + e.getID() + "\n";
+		}
+		return res;
+	}
+
 	@Override
 	public String toString() {
 		return name;

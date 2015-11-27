@@ -45,8 +45,7 @@ public class ButtonEditor extends DefaultCellEditor {
 		public void actionPerformed(ActionEvent event) {
 			if (table.getValueAt(row, column-3) instanceof ParsedFile) {
 				ParsedFile f = (ParsedFile)table.getValueAt(row, column-3);
-				//TODO : a dialog box or other thing to show the lines 
-				System.out.print(f.getMissingSourceText());
+				new DetailsDialog(null, f.getName(), true, f);
 			}
 		}
 	}
