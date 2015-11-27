@@ -55,23 +55,6 @@ public class Window extends JFrame {
 
 	public Window(String title, int width, int height, WorkingSession ws,
 			int tableRowHeight) {
-		// TODO : choose where to put it for it is executed only once (or look and feel be restaured)
-		// Use the look and feel of the system for fileChooser
-		// Check a boolean in order to have coherence but not no-beautiful waiting bar
-		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		}
-		catch (InstantiationException e) {}
-		catch (ClassNotFoundException e) {}
-		catch (UnsupportedLookAndFeelException e) {}
-		catch (IllegalAccessException e) {}
-		
 		this.ws = ws;
 		this.tableRowHeight = tableRowHeight;
 	
@@ -79,6 +62,7 @@ public class Window extends JFrame {
 		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
+		Window.setLookAndFeel("Nimbus");
 
 		// Object container
 		container.setPreferredSize(new Dimension(width, height));
@@ -203,5 +187,20 @@ public class Window extends JFrame {
 //				JOptionPane.showMessageDialog(null, "File " + e.getMessage() + " not found!", "ERROR: ", JOptionPane.ERROR_MESSAGE);
 //			}
 		}
+	}
+
+	public static void setLookAndFeel(String lf) {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if (lf.equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		}
+		catch (InstantiationException e) {}
+		catch (ClassNotFoundException e) {}
+		catch (UnsupportedLookAndFeelException e) {}
+		catch (IllegalAccessException e) {}
 	}
 }

@@ -32,7 +32,6 @@ public class WorkingSessionDialog extends JDialog {
 	private Language destinationLanguage;
 
 	// Gui components
-	private JFileChooser fileChooser;
 	private JTextField wsName;
 	private JTextField localisationDirectoryTF;
 	private JComboBox<Language> sourceLanguageSourceComboBox;
@@ -93,8 +92,8 @@ public class WorkingSessionDialog extends JDialog {
 		JButton localisationDirectoryFC = new JButton("...");
 		JButton validate = new JButton("OK");
 		JButton cancel = new JButton("Cancel");
-		fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		fileChooser = new JFileChooser();
+//		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		// Group them by JPanel
 		wsNamePanel = new JPanel(new BorderLayout());
@@ -159,6 +158,17 @@ public class WorkingSessionDialog extends JDialog {
 
 	class FileExplorer implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+			// Use the look and feel of the system for fileChooser
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			catch (InstantiationException e) {}
+			catch (ClassNotFoundException e) {}
+			catch (UnsupportedLookAndFeelException e) {}
+			catch (IllegalAccessException e) {}
+			
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			if (fileChooser.showOpenDialog(WorkingSessionDialog.this) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				// We open fileChooser in the last selected directory
@@ -166,6 +176,9 @@ public class WorkingSessionDialog extends JDialog {
 				// Fill the JTextField
 				localisationDirectoryTF.setText(file.toString());
 			}
+
+			// Restore look and feel
+			Window.setLookAndFeel("Nimbus");
 		}
 	}
 
