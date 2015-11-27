@@ -97,7 +97,7 @@ public class WorkingSession {
 	}
 
 	public void setDestinationLanguage(Language destinationLanguage) {
-		if (destinationLanguage.equals("NONE") ||
+		if (destinationLanguage.isNone() ||
 				WorkingSession.availableLanguages.contains(destinationLanguage)) {
 			this.destinationLanguage = destinationLanguage;
 		} else {
