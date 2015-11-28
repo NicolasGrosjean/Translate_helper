@@ -3,12 +3,15 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -27,6 +30,21 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.JTableHeader;
+
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import parsing.Parse;
 import parsing.ParsedFile;
@@ -47,6 +65,7 @@ public class Window extends JFrame {
 	private WorkingSession ws;
 
 	// Table
+	private JTable table;
 	private int tableRowHeight;
 
 	private String[] columnToolTips = {null, null,
@@ -116,7 +135,7 @@ public class Window extends JFrame {
 		String columnTitles[] = {"", "File", "Missing source", "Translated", " "};
 		Parse p = new Parse(ws);
 		TableModel tableModel = new TableModel(p.toArray(), columnTitles);
-		JTable table = new JTable(tableModel) {
+		table = new JTable(tableModel) {
 			// Override createDefaultTableHeader to have column tool tips
 			// Source : http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#headertooltip
 		    protected JTableHeader createDefaultTableHeader() {
@@ -187,6 +206,94 @@ public class Window extends JFrame {
 //				JOptionPane.showMessageDialog(null, "File " + e.getMessage() + " not found!", "ERROR: ", JOptionPane.ERROR_MESSAGE);
 //			}
 		}
+	}
+
+	/**
+	 * Use the itextpdf library to print pdf
+	 * @param outputFileName
+	 */
+	private void printPDF(String outputFileName) {
+		Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
+			document.open();
+
+			// Print the table
+			PdfPTable pdfTable=new PdfPTable(3);
+			for (int j = 1; j < table.getColumnCount() - 1; j++) {
+				pdfTable.addCell(table.getColumnName(j));
+			}
+			for(int i=0; i< table.getRowCount() ;i++){
+				// File name (= anchor, i.e internal link)
+				Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
+				fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
+				PdfPCell cell = new PdfPCell(fileName);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pdfTable.addCell(cell);
+
+				// Number of missing source text lines
+				Object value = table.getModel().getValueAt(i, 2);
+				cell = new PdfPCell(new Phrase(value.toString()));
+				int iValue = (Integer)value;
+				if (iValue == 0) {
+					cell.setBackgroundColor(BaseColor.GREEN);
+				} else{
+					cell.setBackgroundColor(BaseColor.RED);
+				}
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pdfTable.addCell(cell);
+
+				// Translation percentage done
+				value = table.getModel().getValueAt(i, 3);
+				cell = new PdfPCell(new Phrase(value.toString()));
+				iValue = (Integer)value;
+				if (iValue == 100) {
+					cell.setBackgroundColor(BaseColor.GREEN);
+				} else if (iValue >= 50) {
+					cell.setBackgroundColor(BaseColor.ORANGE);
+				} else if (iValue >= 0) {
+					cell.setBackgroundColor(BaseColor.RED);
+				} else {
+					cell.setBackgroundColor(BaseColor.BLUE);
+				}
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pdfTable.addCell(cell);
+
+			}
+			document.add(pdfTable);
+
+			// New page
+			document.newPage();
+
+			// Print the details
+			Font font = FontFactory.getFont("Times-Roman", 12);
+			Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
+			Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
+			for(int i = 0; i < table.getRowCount(); i++) {
+				ParsedFile f = null;
+				if (table.getValueAt(i, 1) instanceof ParsedFile) {
+					f = (ParsedFile)table.getValueAt(i, 1);
+				}
+				if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
+					Anchor fileAnchor = new Anchor(":");
+					fileAnchor.setName(f.getName());
+					Paragraph fileName = new Paragraph(f.getName(), fontboldFile);
+					fileName.add(fileAnchor);
+					document.add(fileName);
+				}
+				if (f.getNumberMissingSourceLines() > 0) {
+					document.add(new Paragraph("Missing source text", fontboldType));
+					document.add(new Paragraph(f.getMissingSourceText(), font));
+				}
+				if (f.getNumberLineToTranslate() > 0) {
+					document.add(new Paragraph("Missing translation", fontboldType));
+					document.add(new Paragraph(f.getMissingTranslation(), font));
+				}
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		document.close();
 	}
 
 	public static void setLookAndFeel(String lf) {
