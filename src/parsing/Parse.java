@@ -99,7 +99,7 @@ public class Parse {
 				array[i][3] = -1;
 			} else {
 				// Percentage of translation done
-				array[i][3] = (f.getLineNumber() - f.getNumberLineToTranslate()) + "/" + f.getLineNumber();
+				array[i][3] = (f.getUsefulLineNumber() - f.getNumberLineToTranslate()) + "/" + f.getUsefulLineNumber();
 			}
 			array[i][4] = "Details"; // button text
 			i++;
@@ -129,6 +129,7 @@ public class Parse {
 	private ParsedFile parseAFile(String filePath) {
 		ParsedFile parsedFile = new ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
 		int lineNumber = 0;
+		int usefulLineNumber = 0;
 		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();
 		int destinationLanguageColumn = destinationLanguage.getDefaultColumn();
 		FileInputStream f = null;
@@ -151,7 +152,8 @@ public class Parse {
 					// The line is commented => nothing to do
 				} else if (ID.equals("CODE")) {
 					//TODO : change the integers
-				} else {					
+				} else {
+					usefulLineNumber++;
 					int i = 1;
 					int min = Math.min(sourceLanguageColumn, destinationLanguageColumn);
 					int max = Math.max(sourceLanguageColumn, destinationLanguageColumn);
@@ -185,6 +187,7 @@ public class Parse {
 			}
 			line.close();
 			parsedFile.setLineNumber(lineNumber);
+			parsedFile.setUsefulLineNumber(usefulLineNumber);
 			return parsedFile;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

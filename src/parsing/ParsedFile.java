@@ -15,6 +15,11 @@ public class ParsedFile {
 	private int lineNumber;
 
 	/**
+	 * The total number of useful lines (translated + no-translated)
+	 */
+	private int usefulLineNumber;
+
+	/**
 	 * List of the lines to translate
 	 */
 	private LinkedList<ParsedEntry> linesToTranslate;
@@ -26,7 +31,8 @@ public class ParsedFile {
 
 	public ParsedFile(String name) {
 		this.name = name;
-		lineNumber = -1; // default value to ensure
+		lineNumber = -1; // default value to ensure unique initialization later
+		usefulLineNumber = -1; // default value to ensure unique initialization later
 		linesToTranslate = new LinkedList<ParsedEntry>();
 		missingSourceLines = new LinkedList<ParsedEntry>();
 	}
@@ -53,6 +59,24 @@ public class ParsedFile {
 		}
 	}
 
+	public int getUsefulLineNumber() {
+		if (usefulLineNumber > 0) {
+			return usefulLineNumber;
+		} else {
+			throw new IllegalArgumentException("Number of lines of the file " + 
+					name + " was not initialized");
+		}
+	}
+
+	public void setUsefulLineNumber(int lineNumber) {
+		if (this.usefulLineNumber < 0) {
+			this.usefulLineNumber = lineNumber;
+		} else {
+			throw new IllegalArgumentException("Number of lines of the file " + 
+					name + " has been already initialized");
+		}
+	}
+	
 	public void addLastLineToTranslate(int lineNumber, String ID) {
 		linesToTranslate.addLast(new ParsedEntry(lineNumber, ID));
 	}
