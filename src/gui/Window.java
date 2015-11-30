@@ -228,6 +228,7 @@ public class Window extends JFrame {
 		//TODO print only selected files
 		//TODO manage the case where the destination language is none
 		//TODO move the anchor in a forth column (details)
+		//TODO add the number of elements in the details
 
 		// Print the table
 		PdfPTable pdfTable=new PdfPTable(3);

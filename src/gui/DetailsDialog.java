@@ -20,11 +20,11 @@ public class DetailsDialog extends JDialog {
 		// Get the text to display
 		String toDisplay = "";
 		if (file.getNumberMissingSourceLines()> 0) {
-			toDisplay += missingSourceTextHeader() + 
+			toDisplay += missingSourceTextHeader(file.getNumberMissingSourceLines()) + 
 					file.getMissingSourceText() + "\n\n";
 		}
 		if (file.getNumberLineToTranslate() > 0) {
-			toDisplay += missingTranslation() +
+			toDisplay += missingTranslation(file.getNumberLineToTranslate()) +
 					file.getMissingTranslation();
 		}
 
@@ -37,13 +37,15 @@ public class DetailsDialog extends JDialog {
 		setVisible(true);
 	}
 
-	private static String missingSourceTextHeader() {
+	private static String missingSourceTextHeader(int elementNumber) {
 		return "######################\n# MISSING SOURCE TEXT #\n"+
-				"######################\n#LINE : CODE\n";
+				"######################\n#LINE : CODE \t (" +
+				elementNumber + " elements)\n";
 	}
 
-	private static String missingTranslation() {
+	private static String missingTranslation(int elementNumber) {
 		return "######################\n# MISSING TRANSLATION #\n"+
-				"######################\n#LINE : CODE\n";
+				"######################\n#LINE : CODE \t (" +
+				elementNumber + " elements)\n";
 	}
 }
