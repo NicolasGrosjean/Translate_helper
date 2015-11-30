@@ -96,10 +96,10 @@ public class Parse {
 			array[i][2] = f.getNumberMissingSourceLines(); // number of lines with missing source text			
 			if (destinationLanguage.isNone()) {
 				// The destination language is unknown				
-				array[i][3] = "unknown";
+				array[i][3] = -1;
 			} else {
 				// Percentage of translation done
-				array[i][3] = 100 - (Integer)(f.getNumberLineToTranslate()*100/f.getLineNumber());
+				array[i][3] = (f.getLineNumber() - f.getNumberLineToTranslate()) + "/" + f.getLineNumber();
 			}
 			array[i][4] = "Details"; // button text
 			i++;

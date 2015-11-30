@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 import javax.swing.table.AbstractTableModel;
 
-public class TableModel extends AbstractTableModel {
+public class DiagnosticTableModel extends AbstractTableModel {
 
 	private Object[][] data;
 	private String[] title;
 
-	public TableModel(Object[][] data, String[] title) {
+	public DiagnosticTableModel(Object[][] data, String[] title) {
 		this.data = data;
 		this.title = title;
 	}

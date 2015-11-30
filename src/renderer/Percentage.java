@@ -3,6 +3,7 @@ package renderer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.util.Comparator;
 
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
@@ -11,7 +12,7 @@ import javax.swing.UIDefaults;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * Render to print a percentage (in fact an integer between 0 and 100)
+ * Render to print a Integer1/Integer2 with a progress bar
  * or "Unknown" otherwise
  * @author NicolasGrosjean
  *
@@ -21,10 +22,14 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean isFocus, int row, int col) {
 		setMinimum(0);
 		setMaximum(100);
-		if (value instanceof Integer) {
-			setValue((Integer)value);
-			setString(value + "%");
-			color((Integer)value);
+		if (value instanceof String) {
+			String s = (String)value;
+			String s1 = s.split("/")[0];
+			String s2 = s.split("/")[1];
+			int i = Integer.valueOf(s1) * 100 / Integer.valueOf(s2);
+			setValue(i);
+			setString(s);
+			color(i);
 		} else {
 			setString("Unknown");
 			color(-1);
@@ -45,7 +50,7 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 		}
 		setOpaque(true);
 		
-		if (value > 60) {
+		if (value > 70) {
 			setForeground(Color.WHITE);
 		} else {
 			setForeground(Color.BLACK);
@@ -63,6 +68,17 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 		putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
 		putClientProperty("Nimbus.Overrides", defaults);
 	}
+
+	/**
+	 * Comparator for Integer1/Integer2
+	 */
+	public static Comparator<String> comparator = new Comparator<String>() {
+		public int compare(String s1, String s2) {
+			int i1 = Integer.valueOf(s1.split("/")[0]) * 100 / Integer.valueOf(s1.split("/")[1]);	    	
+			int i2 = Integer.valueOf(s2.split("/")[0]) * 100 / Integer.valueOf(s2.split("/")[1]);
+			return Integer.compare(i1, i2);
+		}
+	};
 
 	/**
 	 * Paint a ProgressBar for "Nimbus" look and feel

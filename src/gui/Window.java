@@ -23,27 +23,25 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import parsing.Parse;
@@ -132,9 +130,9 @@ public class Window extends JFrame {
 		container.add(wsInformation, BorderLayout.NORTH);
 		
 		// Table of the files
-		String columnTitles[] = {"", "File", "Missing source", "Translated", " "};
+		String columnTitles[] = {"", "File", "Missing source text", "Translated", " "};
 		Parse p = new Parse(ws);
-		TableModel tableModel = new TableModel(p.toArray(), columnTitles);
+		DiagnosticTableModel tableModel = new DiagnosticTableModel(p.toArray(), columnTitles);
 		table = new JTable(tableModel) {
 			// Override createDefaultTableHeader to have column tool tips
 			// Source : http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#headertooltip
@@ -149,20 +147,28 @@ public class Window extends JFrame {
 		        };
 		    }
 		};
-		// The table can be sorted with the column headers
-		table.setAutoCreateRowSorter(true);
-
 		// Table configuration
 		table.setRowHeight(tableRowHeight);
-		table.getColumn("").setMaxWidth(20);
-		table.getColumn("File").setPreferredWidth(400);
-		table.getColumn("Missing source").setCellRenderer(new ColoredInteger());
-		table.getColumn("Missing source").setPreferredWidth(90);
-		table.getColumn("Translated").setCellRenderer(new Percentage());
-		table.getColumn(" ").setCellRenderer(new ButtonRenderer()); // render for the last column
-		table.getColumn(" ").setCellEditor(new DetailsButton(new JCheckBox()));
-		table.getColumn(" ").setPreferredWidth(50);	
-		
+		table.getColumn(columnTitles[0]).setMaxWidth(20);
+		table.getColumn(columnTitles[1]).setPreferredWidth(400);
+		table.getColumn(columnTitles[2]).setCellRenderer(new ColoredInteger());
+		table.getColumn(columnTitles[2]).setPreferredWidth(90);
+		table.getColumn(columnTitles[3]).setCellRenderer(new Percentage());
+		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
+		table.getColumn(columnTitles[4]).setCellEditor(new DetailsButton(new JCheckBox()));
+		table.getColumn(columnTitles[4]).setPreferredWidth(50);
+
+		// The table can be sorted with the column headers
+		if (ws.getDestinationLanguage().isNone()) {
+			table.setAutoCreateRowSorter(true);
+		} else {
+			// Sort the third column according the percentage
+			TableRowSorter<DiagnosticTableModel> sorter =
+					new TableRowSorter<DiagnosticTableModel>(tableModel);
+			sorter.setComparator(3, Percentage.comparator);
+			table.setRowSorter(sorter);
+		}
+
 		// The table is add with a scroll pane (useful if it has many lines)
 		container.add(new JScrollPane(table), BorderLayout.CENTER);	
 	}
@@ -211,87 +217,89 @@ public class Window extends JFrame {
 	/**
 	 * Use the itextpdf library to print pdf
 	 * @param outputFileName
+	 * @throws DocumentException 
+	 * @throws FileNotFoundException 
 	 */
-	private void printPDF(String outputFileName) {
+	private void printPDF(String outputFileName) throws FileNotFoundException, DocumentException {
 		Document document = new Document();
-		try {
-			PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
-			document.open();
+		PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
+		document.open();
+		
+		//TODO print only selected files
+		//TODO manage the case where the destination language is none
+		//TODO move the anchor in a forth column (details)
 
-			// Print the table
-			PdfPTable pdfTable=new PdfPTable(3);
-			for (int j = 1; j < table.getColumnCount() - 1; j++) {
-				pdfTable.addCell(table.getColumnName(j));
+		// Print the table
+		PdfPTable pdfTable=new PdfPTable(3);
+		for (int j = 1; j < table.getColumnCount() - 1; j++) {
+			pdfTable.addCell(table.getColumnName(j));
+		}
+		for(int i=0; i< table.getRowCount() ;i++){
+			// File name (= anchor, i.e internal link)
+			Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
+			fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
+			PdfPCell cell = new PdfPCell(fileName);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pdfTable.addCell(cell);
+
+			// Number of missing source text lines
+			Object value = table.getModel().getValueAt(i, 2);
+			cell = new PdfPCell(new Phrase(value.toString()));
+			int iValue = (Integer)value;
+			if (iValue == 0) {
+				cell.setBackgroundColor(BaseColor.GREEN);
+			} else{
+				cell.setBackgroundColor(BaseColor.RED);
 			}
-			for(int i=0; i< table.getRowCount() ;i++){
-				// File name (= anchor, i.e internal link)
-				Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
-				fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
-				PdfPCell cell = new PdfPCell(fileName);
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				pdfTable.addCell(cell);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pdfTable.addCell(cell);
 
-				// Number of missing source text lines
-				Object value = table.getModel().getValueAt(i, 2);
-				cell = new PdfPCell(new Phrase(value.toString()));
-				int iValue = (Integer)value;
-				if (iValue == 0) {
-					cell.setBackgroundColor(BaseColor.GREEN);
-				} else{
-					cell.setBackgroundColor(BaseColor.RED);
-				}
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				pdfTable.addCell(cell);
-
-				// Translation percentage done
-				value = table.getModel().getValueAt(i, 3);
-				cell = new PdfPCell(new Phrase(value.toString()));
-				iValue = (Integer)value;
-				if (iValue == 100) {
-					cell.setBackgroundColor(BaseColor.GREEN);
-				} else if (iValue >= 50) {
-					cell.setBackgroundColor(BaseColor.ORANGE);
-				} else if (iValue >= 0) {
-					cell.setBackgroundColor(BaseColor.RED);
-				} else {
-					cell.setBackgroundColor(BaseColor.BLUE);
-				}
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				pdfTable.addCell(cell);
-
+			// Translation percentage done
+			value = table.getModel().getValueAt(i, 3);
+			cell = new PdfPCell(new Phrase(value.toString()));
+			iValue = (Integer)value;
+			if (iValue == 100) {
+				cell.setBackgroundColor(BaseColor.GREEN);
+			} else if (iValue >= 50) {
+				cell.setBackgroundColor(BaseColor.ORANGE);
+			} else if (iValue >= 0) {
+				cell.setBackgroundColor(BaseColor.RED);
+			} else {
+				cell.setBackgroundColor(BaseColor.BLUE);
 			}
-			document.add(pdfTable);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pdfTable.addCell(cell);
 
-			// New page
-			document.newPage();
+		}
+		document.add(pdfTable);
 
-			// Print the details
-			Font font = FontFactory.getFont("Times-Roman", 12);
-			Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
-			Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
-			for(int i = 0; i < table.getRowCount(); i++) {
-				ParsedFile f = null;
-				if (table.getValueAt(i, 1) instanceof ParsedFile) {
-					f = (ParsedFile)table.getValueAt(i, 1);
-				}
-				if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
-					Anchor fileAnchor = new Anchor(":");
-					fileAnchor.setName(f.getName());
-					Paragraph fileName = new Paragraph(f.getName(), fontboldFile);
-					fileName.add(fileAnchor);
-					document.add(fileName);
-				}
-				if (f.getNumberMissingSourceLines() > 0) {
-					document.add(new Paragraph("Missing source text", fontboldType));
-					document.add(new Paragraph(f.getMissingSourceText(), font));
-				}
-				if (f.getNumberLineToTranslate() > 0) {
-					document.add(new Paragraph("Missing translation", fontboldType));
-					document.add(new Paragraph(f.getMissingTranslation(), font));
-				}
+		// New page
+		document.newPage();
+
+		// Print the details
+		Font font = FontFactory.getFont("Times-Roman", 12);
+		Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
+		Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
+		for(int i = 0; i < table.getRowCount(); i++) {
+			ParsedFile f = null;
+			if (table.getValueAt(i, 1) instanceof ParsedFile) {
+				f = (ParsedFile)table.getValueAt(i, 1);
 			}
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
+				Anchor fileAnchor = new Anchor(":");
+				fileAnchor.setName(f.getName());
+				Paragraph fileName = new Paragraph(f.getName(), fontboldFile);
+				fileName.add(fileAnchor);
+				document.add(fileName);
+			}
+			if (f.getNumberMissingSourceLines() > 0) {
+				document.add(new Paragraph("Missing source text", fontboldType));
+				document.add(new Paragraph(f.getMissingSourceText(), font));
+			}
+			if (f.getNumberLineToTranslate() > 0) {
+				document.add(new Paragraph("Missing translation", fontboldType));
+				document.add(new Paragraph(f.getMissingTranslation(), font));
+			}
 		}
 		document.close();
 	}
