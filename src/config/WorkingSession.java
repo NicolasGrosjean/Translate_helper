@@ -162,4 +162,19 @@ public class WorkingSession {
 		}
 		return WorkingSession.availableLanguages;
 	}
+
+	public static int getLanguageDefaultColumn(String language) {
+		if (!isAvailableLanguagesInitialized()) {
+			throw new IllegalArgumentException("The list of available languages was not initialized!");
+		}
+		if (language.equals(Language.defaultLanguageCode)) {
+			return Language.defaultLanguageColumn;
+		}
+		for (Language l : WorkingSession.availableLanguages) {
+			if (l.getCode().equals(language)) {
+				return l.getDefaultColumn();
+			}
+		}
+		throw new IllegalArgumentException("Language " + language + " is not available");
+	}
 }

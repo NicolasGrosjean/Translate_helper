@@ -11,13 +11,16 @@ public class Language {
 	 */
 	private int defaultColumn;
 
+	public final static String defaultLanguageCode = "NONE";
+	public final static int defaultLanguageColumn = -1;
+
 	public Language(String code, int defaultColumn) {
 		this.code = code;
 		this.defaultColumn = defaultColumn;
 	}
 
 	public Language() {
-		this("NONE", -1);
+		this(defaultLanguageCode, defaultLanguageColumn);
 	}
 
 	public String getCode() {
@@ -33,7 +36,8 @@ public class Language {
 	 * @return
 	 */
 	public boolean isNone() {
-		return (code.equals("NONE") && defaultColumn == -1);
+		return (code.equals(defaultLanguageCode)
+				&& defaultColumn == defaultLanguageColumn);
 	}
 
 	@Override
