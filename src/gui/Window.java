@@ -7,12 +7,14 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Shape;
 import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -49,6 +51,7 @@ import parsing.ParsedFile;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
 import renderer.Percentage;
+import config.ConfigStorage;
 import config.WorkingSession;
 
 public class Window extends JFrame {
@@ -61,6 +64,7 @@ public class Window extends JFrame {
 
 	// Configuration
 	private WorkingSession ws;
+	private final ConfigStorage configuration;
 
 	// Table
 	private JTable table;
@@ -71,9 +75,10 @@ public class Window extends JFrame {
 		    "Percentage of lines which are translated", null};
 
 	public Window(String title, int width, int height, WorkingSession ws,
-			int tableRowHeight) {
+			int tableRowHeight, ConfigStorage configuration) {
 		this.ws = ws;
 		this.tableRowHeight = tableRowHeight;
+		this.configuration = configuration;
 	
 		// Window
 		this.setTitle(title);
@@ -87,7 +92,9 @@ public class Window extends JFrame {
 		container.setLayout(new BorderLayout());
 
 		// Load the working session
-		loadWorkingSession(ws);
+		if (ws != null) {
+			loadWorkingSession(ws);
+		}
 				
 		// Container adding
 		this.setContentPane(container);
@@ -103,16 +110,32 @@ public class Window extends JFrame {
 		wsNew.addActionListener(new DialogWorkingSession(true));
 		wsMenu.add(wsNew);
 		// Open recent working session
-//		wsOpenRecently = new JMenu(text.workingSessionOpenRecently());
-//		if (!configuration.hasWorkingSession()) {
-//			// No working session so the menu is not accessible
-//			wsOpenRecently.setEnabled(false);
-//		} else {
-//			updateOpenRecentlyMenu();
-//		}
-//		wsMenu.add(wsOpenRecently);
+		wsOpenRecently = new JMenu("Open recent");
+		if (!configuration.hasWorkingSession()) {
+			// No working session so the menu is not accessible
+			wsOpenRecently.setEnabled(false);
+		} else {
+			updateOpenRecentlyMenu();
+		}
+		wsMenu.add(wsOpenRecently);
+		wsMenu.addSeparator();
+		// Modify current working session
+		JMenuItem wsModify = new JMenuItem("Modify");
+		wsModify.addActionListener(new DialogWorkingSession(false));
+		wsMenu.add(wsModify);
 		windowMenuBar.add(wsMenu);
 		setJMenuBar(windowMenuBar);
+
+		// Bottom
+		JPanel bottom = new JPanel(new GridLayout(1, 4, 5, 5));
+		JButton selectAll = new JButton("Select All");
+		selectAll.addActionListener(new SelectAllListener());
+		JButton deselectAll = new JButton("Deselect All");
+		JButton exportPdf = new JButton("Export to PDF");
+		bottom.add(selectAll);
+		bottom.add(deselectAll);
+		bottom.add(exportPdf);
+		container.add(bottom, BorderLayout.SOUTH);
 
 		// Window displaying
 		pack();
@@ -121,6 +144,8 @@ public class Window extends JFrame {
 	}
 
 	private void loadWorkingSession(WorkingSession ws) {
+		// TODO Clean the old components?
+		
 		// Display the information about the working session
 		JPanel wsInformation = new JPanel(new BorderLayout());
 		JLabel currentConfiguration = new JLabel("Current configuration: " +
@@ -170,47 +195,32 @@ public class Window extends JFrame {
 		}
 
 		// The table is add with a scroll pane (useful if it has many lines)
-		container.add(new JScrollPane(table), BorderLayout.CENTER);	
+		container.add(new JScrollPane(table), BorderLayout.CENTER);
+
+		// Refresh the window
+		pack();
+		repaint();
 	}
 
-	class DialogWorkingSession implements ActionListener {
-		private boolean newWS;
-
-		public DialogWorkingSession(boolean newWS) {
-			this.newWS = newWS;
-		}
-
-		public void actionPerformed(ActionEvent arg0) {
-
-
-			WorkingSessionDialog wSDialog;
-			try {
-				if (newWS) {
-					wSDialog = new WorkingSessionDialog(Window.this,
-							"New configuration", true);
-				} else {
-					wSDialog = new WorkingSessionDialog(Window.this,
-							"Modify configuration", true, ws);
-				}
-				WorkingSession newWS = wSDialog.getWorkingSession();
-
-				if (newWS !=null) {
-					// The user defined a working session
-//					loadWorkingSession(newWS);
-
-					// Update the configuration
-//					configuration.addFirstWorkingSession(newWS);
-//					configuration.saveConfigFile();
-//					updateOpenRecentlyMenu();
-
-					// Close the dialog
-					wSDialog.dispose();
-				}
-			} catch (IllegalArgumentException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
-			} //catch (FileNotFoundException e) {
-//				JOptionPane.showMessageDialog(null, "File " + e.getMessage() + " not found!", "ERROR: ", JOptionPane.ERROR_MESSAGE);
-//			}
+	/**
+	 * Update the menu open recently according the configurations
+	 */
+	private void updateOpenRecentlyMenu() {
+		// Cleaning
+		wsOpenRecently.removeAll();
+		// All working session except the first are added
+		wsOpenRecently.setEnabled(configuration.getSize() > 1);
+		boolean first = true;
+		Iterator<WorkingSession> it = configuration.iterator();
+		while (it.hasNext()) {
+			WorkingSession ws = it.next();
+			if (first) {
+				first = false;
+			} else {
+				JMenuItem wsMenuItem = new JMenuItem(ws.getName());
+				wsMenuItem.addActionListener(new OpenRecentWorkingSession(ws));
+				wsOpenRecently.add(wsMenuItem);
+			}
 		}
 	}
 
@@ -318,5 +328,74 @@ public class Window extends JFrame {
 		catch (ClassNotFoundException e) {}
 		catch (UnsupportedLookAndFeelException e) {}
 		catch (IllegalAccessException e) {}
+	}
+
+	class DialogWorkingSession implements ActionListener {
+		private boolean newWS;
+
+		public DialogWorkingSession(boolean newWS) {
+			this.newWS = newWS;
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+
+
+			WorkingSessionDialog wSDialog;
+			try {
+				if (newWS) {
+					wSDialog = new WorkingSessionDialog(Window.this,
+							"New configuration", true);
+				} else {
+					wSDialog = new WorkingSessionDialog(Window.this,
+							"Modify configuration", true, ws);
+				}
+				WorkingSession newWS = wSDialog.getWorkingSession();
+
+				if (newWS !=null) {
+					// The user defined a working session
+					loadWorkingSession(newWS);
+
+					// Update the configuration
+					configuration.addFirstWorkingSession(newWS);
+					configuration.saveConfigFile();
+					updateOpenRecentlyMenu();
+
+					// Close the dialog
+					wSDialog.dispose();
+				}
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	class OpenRecentWorkingSession implements ActionListener {
+		private WorkingSession ws;
+
+		OpenRecentWorkingSession(WorkingSession ws) {
+			this.ws = ws;
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			try {
+				loadWorkingSession(ws);
+
+				// Update the configuration and the menu
+				configuration.becomeFirst(ws);
+				configuration.saveConfigFile();
+				updateOpenRecentlyMenu();
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	class SelectAllListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {	
+			for (int i = 0; i < table.getRowCount(); i++) {
+				// TODO : debug it 
+				table.setValueAt(new Boolean(true), i, 0);
+			}
+		}
 	}
 }
