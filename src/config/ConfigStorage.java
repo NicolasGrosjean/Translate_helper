@@ -97,6 +97,12 @@ public class ConfigStorage {
 		workingSessions.addFirst(ws);
 	}
 
+	public void replaceFirstWorkingSession(WorkingSession ws) {
+		// TODO : Manage the case where the list is empty
+		workingSessions.removeFirst();
+		workingSessions.addFirst(ws);
+	}
+
 	public int getSize() {
 		return workingSessions.size();
 	}

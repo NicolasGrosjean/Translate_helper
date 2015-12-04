@@ -61,6 +61,7 @@ public class Window extends JFrame {
 
 	// Menus
 	private JMenuItem wsOpenRecently;
+	private JMenuItem wsModify;
 
 	// Configuration
 	private WorkingSession ws;
@@ -69,6 +70,7 @@ public class Window extends JFrame {
 	// Table
 	private JTable table;
 	private int tableRowHeight;
+	private JScrollPane tableSP;
 
 	private String[] columnToolTips = {null, null,
 		    "Number of lines which don't have any source text",
@@ -76,7 +78,6 @@ public class Window extends JFrame {
 
 	public Window(String title, int width, int height, WorkingSession ws,
 			int tableRowHeight, ConfigStorage configuration) {
-		this.ws = ws;
 		this.tableRowHeight = tableRowHeight;
 		this.configuration = configuration;
 	
@@ -120,7 +121,8 @@ public class Window extends JFrame {
 		wsMenu.add(wsOpenRecently);
 		wsMenu.addSeparator();
 		// Modify current working session
-		JMenuItem wsModify = new JMenuItem("Modify");
+		wsModify= new JMenuItem("Modify");
+		wsModify.setEnabled(configuration.hasWorkingSession());
 		wsModify.addActionListener(new DialogWorkingSession(false));
 		wsMenu.add(wsModify);
 		windowMenuBar.add(wsMenu);
@@ -143,9 +145,25 @@ public class Window extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Load a working session : parse the directory and create the JTable
+	 * @param ws The Working session to load
+	 */
 	private void loadWorkingSession(WorkingSession ws) {
-		// TODO Clean the old components?
-		
+		// Set the new current working session
+		this.ws = ws;
+
+		// Remove the old components
+		if (table != null) {
+			container.remove(tableSP);
+		}
+
+		// The working session can be modified
+		// (it is null at the window initialization)
+		if (wsModify != null) {
+			wsModify.setEnabled(true);
+		}
+
 		// Display the information about the working session
 		JPanel wsInformation = new JPanel(new BorderLayout());
 		JLabel currentConfiguration = new JLabel("Current configuration: " +
@@ -195,7 +213,8 @@ public class Window extends JFrame {
 		}
 
 		// The table is add with a scroll pane (useful if it has many lines)
-		container.add(new JScrollPane(table), BorderLayout.CENTER);
+		tableSP = new JScrollPane(table);
+		container.add(tableSP, BorderLayout.CENTER);
 
 		// Refresh the window
 		pack();
@@ -349,16 +368,24 @@ public class Window extends JFrame {
 					wSDialog = new WorkingSessionDialog(Window.this,
 							"Modify configuration", true, ws);
 				}
-				WorkingSession newWS = wSDialog.getWorkingSession();
+				WorkingSession workingSession = wSDialog.getWorkingSession();
 
-				if (newWS !=null) {
+				if (workingSession !=null) {
 					// The user defined a working session
-					loadWorkingSession(newWS);
+					loadWorkingSession(workingSession);
 
 					// Update the configuration
-					configuration.addFirstWorkingSession(newWS);
-					configuration.saveConfigFile();
-					updateOpenRecentlyMenu();
+					if (newWS) {
+						// A new working session is added
+						configuration.addFirstWorkingSession(workingSession);
+						configuration.saveConfigFile();
+						// This list of no-displayed working sessions is changed
+						updateOpenRecentlyMenu();
+					} else {
+						// The first working session is changed
+						configuration.replaceFirstWorkingSession(workingSession);
+						configuration.saveConfigFile();
+					}
 
 					// Close the dialog
 					wSDialog.dispose();
