@@ -24,9 +24,7 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 		setMaximum(100);
 		if (value instanceof String) {
 			String s = (String)value;
-			String s1 = s.split("/")[0];
-			String s2 = s.split("/")[1];
-			int i = Integer.valueOf(s1) * 100 / Integer.valueOf(s2);
+			int i = stringToValue(s);
 			setValue(i);
 			setString(s);
 			color(i);
@@ -52,8 +50,10 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 		
 		if (value > 70) {
 			setForeground(Color.WHITE);
-		} else {
+		} else if (value > 0) {
 			setForeground(Color.BLACK);
+		} else {
+			setForeground(Color.RED);
 		}
 	}
 
@@ -70,13 +70,23 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 	}
 
 	/**
+	 * Give the percentage value associated to this string representation
+	 * @param s
+	 * @return
+	 */
+	public static int stringToValue(String s) {
+		String s1 = s.split("/")[0];
+		String s2 = s.split("/")[1];
+		// If there is no elements we put i to 0 to avoid division by zero
+		return (Integer.valueOf(s2) == 0)? 0 : Integer.valueOf(s1) * 100 / Integer.valueOf(s2);
+	}
+
+	/**
 	 * Comparator for Integer1/Integer2
 	 */
 	public static Comparator<String> comparator = new Comparator<String>() {
 		public int compare(String s1, String s2) {
-			int i1 = Integer.valueOf(s1.split("/")[0]) * 100 / Integer.valueOf(s1.split("/")[1]);	    	
-			int i2 = Integer.valueOf(s2.split("/")[0]) * 100 / Integer.valueOf(s2.split("/")[1]);
-			return Integer.compare(i1, i2);
+			return Integer.compare(stringToValue(s1), stringToValue(s2));
 		}
 	};
 

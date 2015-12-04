@@ -42,7 +42,7 @@ public class ParsedFile {
 	}
 
 	public int getLineNumber() {
-		if (lineNumber > 0) {
+		if (lineNumber >= 0) {
 			return lineNumber;
 		} else {
 			throw new IllegalArgumentException("Number of lines of the file " + 
@@ -60,10 +60,10 @@ public class ParsedFile {
 	}
 
 	public int getUsefulLineNumber() {
-		if (usefulLineNumber > 0) {
+		if (usefulLineNumber >= 0) {
 			return usefulLineNumber;
 		} else {
-			throw new IllegalArgumentException("Number of lines of the file " + 
+			throw new IllegalArgumentException("Number of useful lines of the file " +
 					name + " was not initialized");
 		}
 	}
@@ -72,7 +72,7 @@ public class ParsedFile {
 		if (this.usefulLineNumber < 0) {
 			this.usefulLineNumber = lineNumber;
 		} else {
-			throw new IllegalArgumentException("Number of lines of the file " + 
+			throw new IllegalArgumentException("Number of useful lines of the file " +
 					name + " has been already initialized");
 		}
 	}
