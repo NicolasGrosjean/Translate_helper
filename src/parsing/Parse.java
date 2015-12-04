@@ -91,7 +91,7 @@ public class Parse {
 		int i =0;
 		for (ParsedFile f : files) {
 			array[i] = new Object[5];
-			array[i][0] = new Boolean(false); // check box
+			array[i][0] = new Boolean(true); // check box
 			array[i][1] = f; // file (only its name will be displayed)		
 			array[i][2] = f.getNumberMissingSourceLines(); // number of lines with missing source text			
 			if (destinationLanguage.isNone()) {

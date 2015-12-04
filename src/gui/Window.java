@@ -133,6 +133,7 @@ public class Window extends JFrame {
 		JButton selectAll = new JButton("Select All");
 		selectAll.addActionListener(new SelectAllListener());
 		JButton deselectAll = new JButton("Deselect All");
+		deselectAll.addActionListener(new DeselectAllListener());
 		JButton exportPdf = new JButton("Export to PDF");
 		bottom.add(selectAll);
 		bottom.add(deselectAll);
@@ -420,9 +421,18 @@ public class Window extends JFrame {
 	class SelectAllListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {	
 			for (int i = 0; i < table.getRowCount(); i++) {
-				// TODO : debug it 
 				table.setValueAt(new Boolean(true), i, 0);
 			}
+			table.repaint();
+		}
+	}
+
+	class DeselectAllListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			for (int i = 0; i < table.getRowCount(); i++) {
+				table.setValueAt(new Boolean(false), i, 0);
+			}
+			table.repaint();
 		}
 	}
 }
