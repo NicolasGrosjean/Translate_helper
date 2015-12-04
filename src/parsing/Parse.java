@@ -157,25 +157,30 @@ public class Parse {
 					int i = 1;
 					int min = Math.min(sourceLanguageColumn, destinationLanguageColumn);
 					int max = Math.max(sourceLanguageColumn, destinationLanguageColumn);
-					// First expression to analyze
+					// Search the column of the first expression to analyze
 					while (expression.hasNext() && (i < min)) {
 						expression.next();
 						i++;
 					}
-					if (expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
+					// If we are at the good column, we analyze the expression
+					if (i == min && expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
 						if (sourceLanguageColumn < destinationLanguageColumn) {
 							parsedFile.addLastMissingSourceLine(lineNumber, ID);
 						} else {
 							parsedFile.addLastLineToTranslate(lineNumber, ID);
 						}					
 					}
-					i++;
-					// Second expression to analyze
+					// If we were at the good column, the expression has already been analyzed
+					if (i == min) {
+						i++;
+					}
+					// Search the column of the second expression to analyze
 					while (expression.hasNext() && (i < max)) {
 						expression.next();
 						i++;
 					}
-					if (expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
+					// If we are at the good column, we analyze the expression
+					if (i == max && expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
 						if (sourceLanguageColumn > destinationLanguageColumn) {
 							parsedFile.addLastMissingSourceLine(lineNumber, ID);
 						} else {
