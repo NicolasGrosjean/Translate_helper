@@ -27,6 +27,10 @@ public class DetailsDialog extends JDialog {
 			toDisplay += missingTranslation(file.getNumberLineToTranslate()) +
 					file.getMissingTranslation();
 		}
+		if (file.getNumberMissingSourceLines() == 0 &&
+				file.getNumberLineToTranslate() == 0) {
+			toDisplay += "No problems found.";
+		}
 
 		// Display it in a JTextArea to have multiple lines
 		JTextArea text = new JTextArea(toDisplay);
