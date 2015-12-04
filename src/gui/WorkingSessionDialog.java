@@ -167,6 +167,9 @@ public class WorkingSessionDialog extends JDialog {
 			
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if (!localisationDirectoryTF.getText().equals("")) {
+				fileChooser.setSelectedFile(new File(localisationDirectoryTF.getText()));
+			} 
 			if (fileChooser.showOpenDialog(WorkingSessionDialog.this) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				// We open fileChooser in the last selected directory
@@ -186,7 +189,7 @@ public class WorkingSessionDialog extends JDialog {
 			if (wsName.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The name of this configuration is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else if (localisationDirectoryTF.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "The loclisation directory is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "The localisation directory is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else {
 				validated = true;
 				setVisible(false);

@@ -134,7 +134,8 @@ public class Window extends JFrame {
 		selectAll.addActionListener(new SelectAllListener());
 		JButton deselectAll = new JButton("Deselect All");
 		deselectAll.addActionListener(new DeselectAllListener());
-		JButton exportPdf = new JButton("Export to PDF");
+		JButton exportPdf = new JButton("Export to PDF...");
+		exportPdf.addActionListener(new ExportPDFListener());
 		bottom.add(selectAll);
 		bottom.add(deselectAll);
 		bottom.add(exportPdf);
@@ -250,11 +251,12 @@ public class Window extends JFrame {
 	 * @throws DocumentException 
 	 * @throws FileNotFoundException 
 	 */
-	private void printPDF(String outputFileName) throws FileNotFoundException, DocumentException {
+	private void printPDF(String title, String outputFileName) throws FileNotFoundException, DocumentException {
 		Document document = new Document();
 		PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
 		document.open();
 		
+		//TODO display the title
 		//TODO print only selected files
 		//TODO manage the case where the destination language is none
 		//TODO move the anchor in a forth column (details)
@@ -288,7 +290,7 @@ public class Window extends JFrame {
 			// Translation percentage done
 			value = table.getModel().getValueAt(i, 3);
 			cell = new PdfPCell(new Phrase(value.toString()));
-			iValue = (Integer)value;
+			iValue = Percentage.stringToValue((String)value);
 			if (iValue == 100) {
 				cell.setBackgroundColor(BaseColor.GREEN);
 			} else if (iValue >= 50) {
@@ -333,6 +335,9 @@ public class Window extends JFrame {
 			}
 		}
 		document.close();
+
+		JOptionPane.showMessageDialog(this, "The file " + outputFileName +
+				" was successfully generated.", "", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static void setLookAndFeel(String lf) {
@@ -433,6 +438,20 @@ public class Window extends JFrame {
 				table.setValueAt(new Boolean(false), i, 0);
 			}
 			table.repaint();
+		}
+	}
+
+	class ExportPDFListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			PdfDialog dialog = new PdfDialog(Window.this, "Export to PDF", true, ws.getName());
+			String res = dialog.getPdfParameters();
+			if (res != null) {
+				try {
+					printPDF(res.split(";")[0], res.split(";")[1]);
+				} catch (FileNotFoundException | DocumentException e) {
+					JOptionPane.showMessageDialog(Window.this, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 	}
 }
