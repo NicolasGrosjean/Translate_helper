@@ -119,12 +119,26 @@ public class PdfDialog extends JDialog {
 	class ValidateAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO add test for report file already exists (create it or search JFileChooser.SAVE...)
 			if (titleTF.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The title of the report is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else if (fileTF.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The report file is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else {
+				// Manage the case of the already existing file
+				File f = new File(fileTF.getText());
+				if (f.isFile()) {
+					int option = JOptionPane.showConfirmDialog(null,
+							"The file " + fileTF.getText() + " already exists.\n" +
+									"Are you sure to overwrite it?", "Existing file",
+									JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+					if(option == JOptionPane.NO_OPTION ||
+							option == JOptionPane.CANCEL_OPTION ||
+							option == JOptionPane.CLOSED_OPTION){
+						// The user doesn't want overwrite the file
+						return;
+					}
+				}
+
 				validated = true;
 				// Add the file extension if necessary
 				if (!fileTF.getText().contains(".pdf")) {
