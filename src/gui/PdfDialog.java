@@ -98,7 +98,7 @@ public class PdfDialog extends JDialog {
 			catch (IllegalAccessException e) {}
 			
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // TODO : debug this line
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fileChooser.setFileFilter(new FileNameExtensionFilter("Fichiers PDF", "pdf"));
 			if (!fileTF.getText().equals("")) {
 				fileChooser.setSelectedFile(new File(fileTF.getText()));
@@ -124,6 +124,10 @@ public class PdfDialog extends JDialog {
 			} else if (fileTF.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The report file is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else {
+				// Add the file extension if necessary
+				if (!fileTF.getText().contains(".pdf")) {
+					fileTF.setText(fileTF.getText() + ".pdf");
+				}
 				// Manage the case of the already existing file
 				File f = new File(fileTF.getText());
 				if (f.isFile()) {
@@ -140,10 +144,6 @@ public class PdfDialog extends JDialog {
 				}
 
 				validated = true;
-				// Add the file extension if necessary
-				if (!fileTF.getText().contains(".pdf")) {
-					fileTF.setText(fileTF.getText() + ".pdf");
-				}
 				setVisible(false);
 			}
 		}
