@@ -255,23 +255,36 @@ public class Window extends JFrame {
 		Document document = new Document();
 		PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
 		document.open();
-		
-		//TODO display the title
+
 		//TODO print only selected files
 		//TODO manage the case where the destination language is none
-		//TODO move the anchor in a forth column (details)
-		//TODO add the number of elements in the details
+
+		// Put the title
+		Font titleFont = FontFactory.getFont("Times-Roman", 30, Font.BOLD);
+        Paragraph titleParagraph = new Paragraph(title, titleFont);
+        titleParagraph.setSpacingAfter(20);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
 
 		// Print the table
-		PdfPTable pdfTable=new PdfPTable(3);
+		PdfPTable pdfTable = new PdfPTable(3);
 		for (int j = 1; j < table.getColumnCount() - 1; j++) {
 			pdfTable.addCell(table.getColumnName(j));
 		}
 		for(int i=0; i< table.getRowCount() ;i++){
 			// File name (= anchor, i.e internal link)
-			Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
-			fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
-			PdfPCell cell = new PdfPCell(fileName);
+			ParsedFile f = null;
+			if (table.getValueAt(i, 1) instanceof ParsedFile) {
+				f = (ParsedFile)table.getValueAt(i, 1);
+			}
+			PdfPCell cell = null;
+			if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
+				Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
+				fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
+				cell = new PdfPCell(fileName);
+			} else {
+				cell = new PdfPCell(new Phrase(table.getModel().getValueAt(i, 1).toString()));
+			}
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pdfTable.addCell(cell);
 
@@ -304,12 +317,26 @@ public class Window extends JFrame {
 			pdfTable.addCell(cell);
 
 		}
+		float[] relativeWidths = {0.55f, 0.25f, 0.2f};
+		pdfTable.setWidths(relativeWidths);
+		pdfTable.setWidthPercentage(100f);
 		document.add(pdfTable);
+
+		// Add indication concerning the links
+		Font italicFont = FontFactory.getFont("Times-Roman", 12, Font.ITALIC);
+		Paragraph indicationParagraph = new Paragraph(
+				"Click on the filename (in case of missing problems) to see the details", italicFont);
+		indicationParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(indicationParagraph);
 
 		// New page
 		document.newPage();
 
 		// Print the details
+		Paragraph detailTitleParagraph = new Paragraph(title + " - details", titleFont);
+		detailTitleParagraph.setSpacingAfter(20);
+		detailTitleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(detailTitleParagraph);
 		Font font = FontFactory.getFont("Times-Roman", 12);
 		Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
 		Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
@@ -326,11 +353,13 @@ public class Window extends JFrame {
 				document.add(fileName);
 			}
 			if (f.getNumberMissingSourceLines() > 0) {
-				document.add(new Paragraph("Missing source text", fontboldType));
+				document.add(new Paragraph("Missing source text (" +
+						f.getNumberMissingSourceLines() + " elements)", fontboldType));
 				document.add(new Paragraph(f.getMissingSourceText(), font));
 			}
 			if (f.getNumberLineToTranslate() > 0) {
-				document.add(new Paragraph("Missing translation", fontboldType));
+				document.add(new Paragraph("Missing translation (" +
+						f.getNumberLineToTranslate() + " elements)", fontboldType));
 				document.add(new Paragraph(f.getMissingTranslation(), font));
 			}
 		}
