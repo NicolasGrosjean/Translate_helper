@@ -16,10 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import parsing.Language;
 import config.WorkingSession;
@@ -28,8 +26,6 @@ public class WorkingSessionDialog extends JDialog {
 	// Working session fields
 	private String name;
 	private String directory;
-	private Language sourceLanguage;
-	private Language destinationLanguage;
 
 	// Gui components
 	private JTextField wsName;
@@ -69,8 +65,6 @@ public class WorkingSessionDialog extends JDialog {
 		// Copy working session fields
 		this.name = name;
 		this.directory = directory;
-		this.sourceLanguage = sourceLanguage;
-		this.destinationLanguage = destinationLanguage;
 
 		// Create associated components
 		wsName = new JTextField(this.name);
