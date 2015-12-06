@@ -261,8 +261,6 @@ public class Window extends JFrame {
 		PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
 		document.open();
 
-		//TODO manage the case where the destination language is none
-
 		// Put the title
 		Font titleFont = FontFactory.getFont("Times-Roman", 30, Font.BOLD);
         Paragraph titleParagraph = new Paragraph(title, titleFont);
@@ -280,8 +278,14 @@ public class Window extends JFrame {
         document.add(descriptionParagraph);
 
 		// Print the table
-		PdfPTable pdfTable = new PdfPTable(3);
-		for (int j = 1; j < table.getColumnCount() - 1; j++) {
+		PdfPTable pdfTable = null;
+		if (ws.getDestinationLanguage().isNone()) {
+			pdfTable = new PdfPTable(2); // No translation column
+		} else {
+			pdfTable = new PdfPTable(3);
+		}
+		int columnNumber = (ws.getDestinationLanguage().isNone())? table.getColumnCount() - 2 : table.getColumnCount() - 1;
+		for (int j = 1; j < columnNumber; j++) {
 			pdfTable.addCell(table.getColumnName(j));
 		}
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -297,7 +301,8 @@ public class Window extends JFrame {
 				f = (ParsedFile)table.getValueAt(i, 1);
 			}
 			PdfPCell cell = null;
-			if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
+			if (f.getNumberMissingSourceLines() > 0 ||
+					(f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
 				Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
 				fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
 				cell = new PdfPCell(fileName);
@@ -319,24 +324,31 @@ public class Window extends JFrame {
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pdfTable.addCell(cell);
 
-			// Translation percentage done
-			value = table.getModel().getValueAt(i, 3);
-			cell = new PdfPCell(new Phrase(value.toString()));
-			iValue = Percentage.stringToValue((String)value);
-			if (iValue == 100) {
-				cell.setBackgroundColor(BaseColor.GREEN);
-			} else if (iValue >= 50) {
-				cell.setBackgroundColor(BaseColor.ORANGE);
-			} else if (iValue >= 0) {
-				cell.setBackgroundColor(BaseColor.RED);
-			} else {
-				cell.setBackgroundColor(BaseColor.BLUE);
+			// Translation percentage done if the language destination is specified
+			if (!ws.getDestinationLanguage().isNone()) {
+				value = table.getModel().getValueAt(i, 3);
+				cell = new PdfPCell(new Phrase(value.toString()));
+				iValue = Percentage.stringToValue((String)value);
+				if (iValue == 100) {
+					cell.setBackgroundColor(BaseColor.GREEN);
+				} else if (iValue >= 50) {
+					cell.setBackgroundColor(BaseColor.ORANGE);
+				} else if (iValue >= 0) {
+					cell.setBackgroundColor(BaseColor.RED);
+				} else {
+					cell.setBackgroundColor(BaseColor.BLUE);
+				}
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pdfTable.addCell(cell);
 			}
-			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pdfTable.addCell(cell);
 
 		}
-		float[] relativeWidths = {0.55f, 0.25f, 0.2f};
+		float[] relativeWidths;
+		if (ws.getDestinationLanguage().isNone()) {
+			relativeWidths = new float[] {0.75f, 0.25f};
+		} else {
+			relativeWidths = new float[] {0.55f, 0.25f, 0.2f};
+		}
 		pdfTable.setWidths(relativeWidths);
 		pdfTable.setWidthPercentage(100f);
 		document.add(pdfTable);
@@ -370,7 +382,8 @@ public class Window extends JFrame {
 			if (table.getValueAt(i, 1) instanceof ParsedFile) {
 				f = (ParsedFile)table.getValueAt(i, 1);
 			}
-			if (f.getNumberLineToTranslate() > 0 || f.getNumberMissingSourceLines() > 0) {
+			if (f.getNumberMissingSourceLines() > 0 ||
+					(f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
 				Anchor fileAnchor = new Anchor(":");
 				fileAnchor.setName(f.getName());
 				Paragraph fileName = new Paragraph(f.getName(), fontboldFile);
@@ -382,7 +395,7 @@ public class Window extends JFrame {
 						f.getNumberMissingSourceLines() + " elements)", fontboldType));
 				document.add(new Paragraph(f.getMissingSourceText(), font));
 			}
-			if (f.getNumberLineToTranslate() > 0) {
+			if (f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone()) {
 				document.add(new Paragraph("Missing translation (" +
 						f.getNumberLineToTranslate() + " elements)", fontboldType));
 				document.add(new Paragraph(f.getMissingTranslation(), font));
