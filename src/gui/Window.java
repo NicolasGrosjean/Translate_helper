@@ -510,13 +510,32 @@ public class Window extends JFrame {
 
 	class ExportPDFListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+			// Check if there are unselected files
+			boolean unselectedFiles = false;
+			boolean selectedFiles = false;
+			for (int i = 0; i < table.getRowCount(); i++) {
+				if (table.getValueAt(i, 0) instanceof Boolean) {
+					if ((Boolean)table.getValueAt(i, 0)) {
+						selectedFiles = true;
+					} else {
+						unselectedFiles = true;
+					}
+				}
+			}
+			if (!selectedFiles) {
+				JOptionPane.showMessageDialog(null, "At least one file must be selected!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (unselectedFiles) {
+				JOptionPane.showMessageDialog(null, "Only selected files will appear in the PDF!", "WARNING", JOptionPane.WARNING_MESSAGE);
+			}
+
 			PdfDialog dialog = new PdfDialog(Window.this, "Export to PDF", true, ws.getName());
 			String res = dialog.getPdfParameters();
 			if (res != null) {
 				try {
 					printPDF(res.split(";")[0], res.split(";")[1]);
 				} catch (FileNotFoundException | DocumentException e) {
-					JOptionPane.showMessageDialog(Window.this, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Window.this, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
