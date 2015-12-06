@@ -1,8 +1,10 @@
 package parsing;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -26,30 +28,47 @@ public class Parse {
 	private Language destinationLanguage;
 
 	/**
+	 * List of expression which are in fact fake translations
+	 */
+	private LinkedList<String> fakeTranslation;
+
+	/**
+	 * List of accepted words from foreign languages
+	 */
+	private LinkedList<String> acceptedLoanword;
+
+	/**
 	 * Parse the files in order to store the entries which are not translated
 	 * or without source language text
 	 * @param filePaths The list of the names of the files to parse
 	 */
 	public Parse(LinkedList<String> filePaths, String codeSourceLanguage,
 			int defaultSourceLanguageColumn, String codeDestinationLanguage,
-			int defaultDestinationLanguageColumn) {
+			int defaultDestinationLanguageColumn, String fakeTranslationFile,
+			String acceptedLoanwordFile) {
 		sourceLanguage = new Language(codeSourceLanguage, defaultSourceLanguageColumn);
 		destinationLanguage = new Language(codeDestinationLanguage, defaultDestinationLanguageColumn);
 		files = new LinkedList<ParsedFile>();
+		fakeTranslation = readList(fakeTranslationFile);
+		acceptedLoanword = readList(acceptedLoanwordFile);
 		for (String filePath : filePaths) {
 			files.addLast(parseAFile(filePath));
 		}
 	}
 
 	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
-			Language destinationLanguage) {
+			Language destinationLanguage, String fakeTranslationFile,
+			String acceptedLoanwordFile) {
 		this(filePaths, sourceLanguage.getCode(), sourceLanguage.getDefaultColumn(),
-				destinationLanguage.getCode(), destinationLanguage.getDefaultColumn());
+				destinationLanguage.getCode(), destinationLanguage.getDefaultColumn(),
+				fakeTranslationFile, acceptedLoanwordFile);
 	}
 
-	public Parse(WorkingSession ws) {
+	public Parse(WorkingSession ws, String fakeTranslationFile,
+			String acceptedLoanwordFile) {
 		this(Parse.listDirectoryFiles(ws.getDirectory()),
-				ws.getSourceLanguage(), ws.getDestinationLanguage());
+				ws.getSourceLanguage(), ws.getDestinationLanguage(),
+				fakeTranslationFile, acceptedLoanwordFile);
 	}
 
 	/**
@@ -80,6 +99,32 @@ public class Parse {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Read a file and list all its lines
+	 * @param file
+	 * @return
+	 */
+	private static LinkedList<String> readList(String file) {
+		LinkedList<String> readList = new LinkedList<String>();
+		FileInputStream f = null;
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    	readList.addLast(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (f != null)
+					f.close();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+		return readList;
 	}
 
 	/**
@@ -157,35 +202,51 @@ public class Parse {
 					int i = 1;
 					int min = Math.min(sourceLanguageColumn, destinationLanguageColumn);
 					int max = Math.max(sourceLanguageColumn, destinationLanguageColumn);
+					String sourceExpression = "";
+					String destinationExpression = "";
 					// Search the column of the first expression to analyze
 					while (expression.hasNext() && (i < min)) {
 						expression.next();
 						i++;
 					}
-					// If we are at the good column, we analyze the expression
-					if (i == min && expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
-						if (sourceLanguageColumn < destinationLanguageColumn) {
-							parsedFile.addLastMissingSourceLine(lineNumber, ID);
+					// If we are at the good column, we store the expression
+					if (i == min && expression.hasNext()) {
+						if (sourceLanguageColumn == min) {
+							sourceExpression = expression.next();
 						} else {
-							parsedFile.addLastLineToTranslate(lineNumber, ID);
-						}					
-					}
-					// If we were at the good column, the expression has already been analyzed
-					if (i == min) {
-						i++;
+							destinationExpression = expression.next();
+						}
+						i++; // the expression scanner has moved
 					}
 					// Search the column of the second expression to analyze
 					while (expression.hasNext() && (i < max)) {
 						expression.next();
 						i++;
 					}
-					// If we are at the good column, we analyze the expression
-					if (i == max && expression.hasNext() && Parse.isNotTranslatedOrMissing(expression.next())) {
-						if (sourceLanguageColumn > destinationLanguageColumn) {
-							parsedFile.addLastMissingSourceLine(lineNumber, ID);
+					// If we are at the good column, we store the expression
+					if (i == max && expression.hasNext()) {
+						if (sourceLanguageColumn == max) {
+							sourceExpression = expression.next();
 						} else {
-							parsedFile.addLastLineToTranslate(lineNumber, ID);
-						}					
+							destinationExpression = expression.next();
+						}
+						i++; // the expression scanner has moved
+					}
+
+					// We can now analyze the two expression
+					// Firstly individually
+					String sourceAnalysis = analyzeExpression(sourceExpression);
+					if (!sourceAnalysis.equals("")) {
+						parsedFile.addLastMissingSourceLine(lineNumber, ID, sourceAnalysis);
+					}
+					String destinationAnalysis = analyzeExpression(destinationExpression);
+					if (!destinationAnalysis.equals("")) {
+						parsedFile.addLastLineToTranslate(lineNumber, ID, destinationAnalysis);
+					} else {
+						if (sourceExpression.equals(destinationExpression) &&
+								!acceptedLoanword.contains(destinationExpression)) {
+							parsedFile.addLastLineToTranslate(lineNumber, ID, ParsedEntry.copyText);
+						}
 					}
 				}			
 				expression.close();				
@@ -207,8 +268,13 @@ public class Parse {
 		return null;
 	}
 
-	private static boolean isNotTranslatedOrMissing(String expression) {
-		//TODO : use a list of no-translated words
-		return (expression.equals(""));
+	private String analyzeExpression(String expression) {
+		if (expression.equals("")) {
+			return ParsedEntry.missingText;
+		} else if (fakeTranslation.contains(expression)) {
+			return ParsedEntry.fakeText;
+		} else {
+			return "";
+		}
 	}
 }

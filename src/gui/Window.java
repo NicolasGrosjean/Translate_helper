@@ -66,6 +66,8 @@ public class Window extends JFrame {
 	// Configuration
 	private WorkingSession ws;
 	private final ConfigStorage configuration;
+	private String fakeTranslationFile;
+	private String acceptedLoanwordFile;
 
 	// Table
 	private JTable table;
@@ -77,9 +79,12 @@ public class Window extends JFrame {
 		    "Percentage of lines which are translated", null};
 
 	public Window(String title, int width, int height, WorkingSession ws,
-			int tableRowHeight, ConfigStorage configuration) {
+			int tableRowHeight, ConfigStorage configuration,
+			String fakeTranslationFile, String acceptedLoanwordFile) {
 		this.tableRowHeight = tableRowHeight;
 		this.configuration = configuration;
+		this.fakeTranslationFile = fakeTranslationFile;
+		this.acceptedLoanwordFile = acceptedLoanwordFile;
 	
 		// Window
 		this.setTitle(title);
@@ -176,7 +181,7 @@ public class Window extends JFrame {
 		
 		// Table of the files
 		String columnTitles[] = {"", "File", "Missing source text", "Translated", " "};
-		Parse p = new Parse(ws);
+		Parse p = new Parse(ws, fakeTranslationFile, acceptedLoanwordFile);
 		DiagnosticTableModel tableModel = new DiagnosticTableModel(p.toArray(), columnTitles);
 		table = new JTable(tableModel) {
 			// Override createDefaultTableHeader to have column tool tips

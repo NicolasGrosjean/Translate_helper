@@ -15,6 +15,8 @@ public class Diagnostic {
 			//Read the configuration files
 			WorkingSession.setAvailableLanguages("C:/Users/Nicolas/workspace/Translate_helper/config/available_languages.csv");
 			final String configurationFile = "config/config.xml";
+			final String fakeTranslationFile = "config/fake_translations.txt";
+			final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
 			ConfigStorage configuration = new ConfigStorage(configurationFile);
 
 			// Create the window
@@ -22,10 +24,10 @@ public class Diagnostic {
 				// Try to create a window with the first working session
 				WorkingSession ws;
 				ws = configuration.getFirst();
-				window = new Window("Translate helper", 800, 450, ws, 30, configuration);
+				window = new Window("Translate helper", 800, 450, ws, 30, configuration, fakeTranslationFile, acceptedLoanwordFile);
 			} else {
 				// Create an empty window
-				window = new Window("Translate helper", 800, 450, null, 30, configuration);
+				window = new Window("Translate helper", 800, 450, null, 30, configuration, fakeTranslationFile, acceptedLoanwordFile);
 			}
 		} catch (Exception e) {
 			try {
