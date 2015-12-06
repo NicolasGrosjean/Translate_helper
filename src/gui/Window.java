@@ -261,7 +261,6 @@ public class Window extends JFrame {
 		PdfWriter.getInstance(document, new FileOutputStream(outputFileName));
 		document.open();
 
-		//TODO print only selected files
 		//TODO manage the case where the destination language is none
 
 		// Put the title
@@ -285,7 +284,13 @@ public class Window extends JFrame {
 		for (int j = 1; j < table.getColumnCount() - 1; j++) {
 			pdfTable.addCell(table.getColumnName(j));
 		}
-		for(int i=0; i< table.getRowCount() ;i++){
+		for (int i = 0; i < table.getRowCount(); i++) {
+			// Only selected files are printed
+			if (table.getValueAt(i, 0) instanceof Boolean &&
+					!(Boolean)table.getValueAt(i, 0)) {
+				continue;
+			}
+
 			// File name (= anchor, i.e internal link)
 			ParsedFile f = null;
 			if (table.getValueAt(i, 1) instanceof ParsedFile) {
@@ -355,6 +360,12 @@ public class Window extends JFrame {
 		Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
 		Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
 		for(int i = 0; i < table.getRowCount(); i++) {
+			// Only details of selected files are printed
+			if (table.getValueAt(i, 0) instanceof Boolean &&
+					!(Boolean)table.getValueAt(i, 0)) {
+				continue;
+			}
+
 			ParsedFile f = null;
 			if (table.getValueAt(i, 1) instanceof ParsedFile) {
 				f = (ParsedFile)table.getValueAt(i, 1);

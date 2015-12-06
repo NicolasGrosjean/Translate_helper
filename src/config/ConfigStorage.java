@@ -98,7 +98,6 @@ public class ConfigStorage {
 	}
 
 	public void replaceFirstWorkingSession(WorkingSession ws) {
-		// TODO : Manage the case where the list is empty
 		workingSessions.removeFirst();
 		workingSessions.addFirst(ws);
 	}
