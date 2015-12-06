@@ -184,6 +184,10 @@ public class WorkingSessionDialog extends JDialog {
 				JOptionPane.showMessageDialog(null, "The name of this configuration is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else if (localisationDirectoryTF.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "The localisation directory is missing", "ERROR", JOptionPane.ERROR_MESSAGE);
+			} else if (sourceLanguageSourceComboBox.getSelectedItem() == destinationLanguageComboBox.getSelectedItem()) {
+				JOptionPane.showMessageDialog(null, "The source and destination languages must be different.\n"
+						+ "Use " + Language.defaultLanguageCode +
+						" as destination language if you are not interested by the translation", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} else {
 				validated = true;
 				setVisible(false);
