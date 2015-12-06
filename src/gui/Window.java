@@ -266,6 +266,15 @@ public class Window extends JFrame {
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
         document.add(titleParagraph);
 
+        // Put a description
+        Font descriptionFont = FontFactory.getFont("Times-Roman", 14, Font.BOLD);
+        Paragraph descriptionParagraph = new Paragraph("Diagnostic done with " +
+        		ws.getSourceLanguage() + " as source language and " +
+        		ws.getDestinationLanguage() + " as destination language.", descriptionFont);
+        descriptionParagraph.setSpacingAfter(20);
+        descriptionParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(descriptionParagraph);
+
 		// Print the table
 		PdfPTable pdfTable = new PdfPTable(3);
 		for (int j = 1; j < table.getColumnCount() - 1; j++) {
