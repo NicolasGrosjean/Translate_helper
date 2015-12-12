@@ -2,7 +2,6 @@ package mains;
 
 import javax.swing.JOptionPane;
 
-import parsing.Language;
 import config.ConfigStorage;
 import config.WorkingSession;
 import gui.Window;
