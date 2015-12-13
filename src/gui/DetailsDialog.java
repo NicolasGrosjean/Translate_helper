@@ -11,7 +11,7 @@ import parsing.ParsedFile;
 
 public class DetailsDialog extends JDialog {
 	public DetailsDialog(JFrame parent, String title, boolean modal,
-			ParsedFile file) {
+			ParsedFile file, boolean hasDestinationLanguage) {
 		// Create the JDialog
 		super(parent, title, modal);
 		setSize(500, 600);
@@ -23,12 +23,12 @@ public class DetailsDialog extends JDialog {
 			toDisplay += missingSourceTextHeader(file.getNumberMissingSourceLines()) + 
 					file.getMissingSourceText() + "\n\n";
 		}
-		if (file.getNumberLineToTranslate() > 0) {
+		if (hasDestinationLanguage && file.getNumberLineToTranslate() > 0) {
 			toDisplay += missingTranslation(file.getNumberLineToTranslate()) +
 					file.getMissingTranslation();
 		}
 		if (file.getNumberMissingSourceLines() == 0 &&
-				file.getNumberLineToTranslate() == 0) {
+				(!hasDestinationLanguage || file.getNumberLineToTranslate() == 0)) {
 			toDisplay += "No problems found.";
 		}
 

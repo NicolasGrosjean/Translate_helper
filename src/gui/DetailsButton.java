@@ -14,12 +14,13 @@ import parsing.ParsedFile;
 public class DetailsButton extends DefaultCellEditor {
 
 	protected JButton button;
-	private ButtonListener bListener = new ButtonListener();
+	private ButtonListener bListener;
 
-	public DetailsButton(JCheckBox checkBox) {
+	public DetailsButton(JCheckBox checkBox, boolean hasDestinationLanguage) {
 		super(checkBox);
 		button = new JButton();
 		button.setOpaque(true);
+		bListener = new ButtonListener(hasDestinationLanguage);
 		button.addActionListener(bListener);
 	}
 
@@ -44,6 +45,11 @@ public class DetailsButton extends DefaultCellEditor {
 		private int column, row;
 		private JTable table;
 		private JButton button;
+		private boolean hasDestinationLanguage;
+
+		ButtonListener(boolean hasDestinationLanguage) {
+			this.hasDestinationLanguage = hasDestinationLanguage;
+		}
 
 		public void setColumn(int col){this.column = col;}
 		public void setRow(int row){this.row = row;}
@@ -53,7 +59,7 @@ public class DetailsButton extends DefaultCellEditor {
 		public void actionPerformed(ActionEvent event) {
 			if (table.getValueAt(row, column-3) instanceof ParsedFile) {
 				ParsedFile f = (ParsedFile)table.getValueAt(row, column-3);
-				new DetailsDialog(null, f.getName(), true, f);
+				new DetailsDialog(null, f.getName(), true, f, hasDestinationLanguage);
 			}
 		}
 	}
