@@ -12,7 +12,7 @@ public class Diagnostic {
 		Window window = null;
 		try {
 			//Read the configuration files
-			WorkingSession.setAvailableLanguages("C:/Users/Nicolas/workspace/Translate_helper/config/available_languages.csv");
+			WorkingSession.setAvailableLanguages("config/available_languages.csv");
 			final String configurationFile = "config/config.xml";
 			final String fakeTranslationFile = "config/fake_translations.txt";
 			final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
