@@ -103,7 +103,6 @@ class LanguageToolSupport {
   private boolean popupMenuEnabled = true;
   private boolean backgroundCheckEnabled = true;
   private Configuration config;
-  private boolean mustDetectLanguage = false;
   private final UndoRedoSupport undo;
 
   /**
@@ -126,28 +125,6 @@ class LanguageToolSupport {
     documentSpans = new ArrayList<>();    
     this.undo = support;
     init();
-  }
-
-  void addLanguageToolListener(LanguageToolListener ltListener) {
-    listenerList.add(LanguageToolListener.class, ltListener);
-  }
-
-  void removeLanguageToolListener(LanguageToolListener ltListener) {
-    listenerList.remove(LanguageToolListener.class, ltListener);
-  }
-
-  private void fireEvent(LanguageToolEvent.Type type, Object caller) {
-    // Guaranteed to return a non-null array
-    Object[] listeners = listenerList.getListenerList();
-    // Process the listeners last to first, notifying
-    // those that are interested in this event
-    LanguageToolEvent event = new LanguageToolEvent(this, type, caller);
-    for (int i = listeners.length - 2; i >= 0; i -= 2) {
-      if (listeners[i] == LanguageToolListener.class) {
-        // Lazily create the event:
-        ((LanguageToolListener) listeners[i + 1]).languageToolEventOccurred(event);
-      }
-    }
   }
 
   JTextComponent getTextComponent() {
@@ -234,7 +211,6 @@ class LanguageToolSupport {
       //FIXME
       //we could skip a full check if the user disabled but didn't enable rules
       checkImmediately(null);
-      fireEvent(LanguageToolEvent.Type.RULE_ENABLED, null);
     }
   }
 
@@ -314,9 +290,6 @@ class LanguageToolSupport {
     this.textComponent.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
-        if (e.getDocument().getLength() == e.getLength() && config.getAutoDetect()) {
-          mustDetectLanguage = true;
-        }
         recalculateSpans(e.getOffset(), e.getLength(), false);
         if (backgroundCheckEnabled) {
           checkDelayed(null);
@@ -325,9 +298,6 @@ class LanguageToolSupport {
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        if (e.getDocument().getLength() == 0 && config.getAutoDetect()) {
-          mustDetectLanguage = true;
-        }
         recalculateSpans(e.getOffset(), e.getLength(), true);
         if (backgroundCheckEnabled) {
           checkDelayed(null);
@@ -336,9 +306,6 @@ class LanguageToolSupport {
 
       @Override
       public void changedUpdate(DocumentEvent e) {
-        if (e.getDocument().getLength() == e.getLength() && config.getAutoDetect()) {
-          mustDetectLanguage = true;
-        }
         if (backgroundCheckEnabled) {
           checkDelayed(null);
         }
@@ -378,7 +345,6 @@ class LanguageToolSupport {
       }
     };
 
-    mustDetectLanguage = config.getAutoDetect();
     if (!this.textComponent.getText().isEmpty() && backgroundCheckEnabled) {
       checkImmediately(null);
     }
@@ -459,7 +425,6 @@ class LanguageToolSupport {
     }
     languageTool.disableRule(ruleId);
     updateHighlights(ruleId);
-    fireEvent(LanguageToolEvent.Type.RULE_DISABLED, null);
   }
 
   void enableRule(String ruleId) {
@@ -476,7 +441,6 @@ class LanguageToolSupport {
       config.getDisabledRuleIds().remove(ruleId);
     }
     languageTool.enableRule(ruleId);
-    fireEvent(LanguageToolEvent.Type.RULE_ENABLED, null);
     checkImmediately(null);
   }
 
@@ -716,47 +680,6 @@ class LanguageToolSupport {
   }
 
   private synchronized List<RuleMatch> checkText(final Object caller) throws IOException {
-    if (this.mustDetectLanguage) {
-      mustDetectLanguage = false;
-      if (!this.textComponent.getText().isEmpty()) {
-        Language detectedLanguage = new BritishEnglish();
-        if (!detectedLanguage.equals(this.languageTool.getLanguage())) {
-          reloadLanguageTool(detectedLanguage);
-          if (SwingUtilities.isEventDispatchThread()) {
-            fireEvent(LanguageToolEvent.Type.LANGUAGE_CHANGED, caller);
-          } else {
-            try {
-              SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                  fireEvent(LanguageToolEvent.Type.LANGUAGE_CHANGED, caller);
-                }
-              });
-            } catch (InterruptedException ex) {
-              //ignore
-            } catch (InvocationTargetException ex) {
-              throw new RuntimeException(ex);
-            }
-          }
-        }
-      }
-    }
-    if (SwingUtilities.isEventDispatchThread()) {
-      fireEvent(LanguageToolEvent.Type.CHECKING_STARTED, caller);
-    } else {
-      try {
-        SwingUtilities.invokeAndWait(new Runnable() {
-          @Override
-          public void run() {
-            fireEvent(LanguageToolEvent.Type.CHECKING_STARTED, caller);
-          }
-        });
-      } catch (InterruptedException ex) {
-        //ignore
-      } catch (InvocationTargetException ex) {
-        throw new RuntimeException(ex);
-      }
-    }
     final List<RuleMatch> matches = this.languageTool.check(this.textComponent.getText());
     int v = check.get();
     if (v == 0) {
@@ -765,12 +688,10 @@ class LanguageToolSupport {
           @Override
           public void run() {
             updateHighlights(matches);
-            fireEvent(LanguageToolEvent.Type.CHECKING_FINISHED, caller);
           }
         });
       } else {
         updateHighlights(matches);
-        fireEvent(LanguageToolEvent.Type.CHECKING_FINISHED, caller);
       }
     }
     return matches;
