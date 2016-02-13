@@ -1,0 +1,299 @@
+# English confusion sets, mostly homophones
+# Original source: After the Deadline's data/rules/homophonedb.txt
+# URL: http://openatd.wordpress.com/ or https://openatd.svn.wordpress.org/atd-server/data/rules/homophonedb.txt
+# License: GNU GENERAL PUBLIC LICENSE Version 2
+#
+# Line format:
+# <word1>|<description1>; <word2>|<description2>; <factor>   # optional comment
+#   <word1> and <word2> are words that can easily be confused
+#   <description> will be used in the error message to explain the word (optional)
+#   <factor> is the factor of how much more the other word must be more
+#            probable so the text is considered potentially incorrect.
+#            Use a higher value for better precision but lower recall.
+#   Precision (p) and recall (r) values in the comments come from ConfusionRuleEvaluator
+#     and are based on Wikipedia, Tatoeba, and Enron data, usually with 1000 random 
+#     sentences (if that many sentence are available for that pair). The number after recall
+#     is the number of sentences used for evaluation.
+# Order is relevant for ambiguous cases like 'know' ('no' or 'now') where the match
+# is used whose pair comes first in this file.
+
+accept|to agree, to endure; except|with the exception of; 100000                  # p=0.997, r=0.792, 1900, 3grams, 2015-08-12
+access|obtain, retrieve, right to enter;assess|evaluate;10000000                  # p=0.997, r=0.586, 998+215, 3grams, 2015-12-10
+acts|third person singular of 'act';ax|tool to split wood;100000                  # p=1.000, r=0.721, 999+63, 3grams, 2015-12-10
+ad|advertising;add|make an addition;1000000                                       # p=0.999, r=0.542, 1000+1000, 3grams, 2015-12-10
+advice|noun; advise|verb; 100000                                                  # p=0.998, r=0.792, 1647, 3grams, 2015-08-12
+affect|experience of emotion; effect|outcome, result; 10000000                    # p=0.982, r=0.595, 1805, 3grams, 2015-08-12
+affects|experiences of emotion;effects|outcomes, results;10000000                 # p=0.993, r=0.681, 363+1000, 3grams, 2015-12-10
+#aids|helps, gives assistance;aides|plural of 'aide' = assistant;100              # p=0.992, r=0.775, 386+80, 3grams, 2015-12-10 -- would need to be case-sensitive b/c 'AIDS'
+allowed|permitted; aloud|using the voice; 10000                                   # p=0.999, r=0.895, 1056, 3grams, 2015-08-12
+allusion|passing reference; illusion|an erroneous mental representation; 1000     # p=0.994, r=0.796, 211, 3grams, 2015-08-12
+allusions|passing references;illusions|erroneous mental representations;100       # p=1.000, r=0.794, 58+44, 3grams, 2015-12-10
+altar|e.g. table for religious purposes;alter|modify;1000000                      # p=0.998, r=0.791, 201+364, 3grams, 2015-12-10
+and; end; 1000000000000                                                           # p=0.998, r=0.530, 1925, 3grams, 2015-08-12
+at; as; 1000000                                                                   # p=1.000, r=0.317, 2000, 3grams, 2015-10-07
+ate|past of 'to eat'; eight|the number '8'; 100                                   # p=0.996, r=0.938, 1658, 3grams, 2015-08-12
+Australia|the continent; Austria|country in Europe; 10000                         # p=0.995, r=0.279, 1977, 3grams, 2015-08-12
+bard|a lyric poet;barred|prevented from entering;1000                             # p=1.000, r=0.706, 39+124, 3grams, 2015-12-10
+barely|hardly, just;barley|cereal grain;100                                       # p=1.000, r=0.948, 372+147, 3grams, 2015-12-10
+bare|naked;bear|animal;1000000                                                    # p=0.994, r=0.550, 236+999, 3grams, 2015-12-10
+baron|a nobleman;barren|bare, bleak;100                                           # p=0.996, r=0.551, 423+65, 3grams, 2015-12-10
+bean|large plant seed; been; 1000                                                 # p=0.995, r=0.923, 1146, 3grams, 2015-08-12
+beau|dandy;bow|bend one's knee or body;1000000                                    # p=0.996, r=0.584, 47+412, 3grams, 2015-12-10
+be; bee|insects; 1000000                                                          # p=0.998, r=0.835, 1162, 3grams, 2015-08-12
+been; bin|container; 100000                                                       # p=0.998, r=0.916, 1452, 3grams, 2015-08-12
+begin|start; being|living thing; 100000000                                        # p=1.000, r=0.558, 1932, 3grams, 2015-08-12
+bellow|very loud utterance; below|beneath, at a lower place; 1000                 # p=0.998, r=0.920, 932, 3grams, 2015-08-14
+berth;birth|act of bringing forth offsprings;1000000                              # p=1.000, r=0.862, 44+1000, 3grams, 2015-12-10
+be; we; 10000000                                                                  # p=1.000, r=0.869, 1889, 3grams, 2015-08-12
+billed|being charged;build|construct, make;10000000                               # p=0.995, r=0.767, 208+999, 3grams, 2015-12-10
+bit; but; 10000000                                                                # p=0.996, r=0.799, 1950, 3grams, 2015-08-12
+blew|past of 'blow';blue|color;1000                                               # p=1.000, r=0.907, 188+1000, 3grams, 2015-12-10
+bloc|a group of countries;block|city block, a solid piece of something;1000000    # p=0.997, r=0.549, 207+998, 3grams, 2015-12-10
+board|a committee;bored|tired;1000000                                             # p=0.998, r=0.721, 998+215, 3grams, 2015-12-10
+bond|a type of debt security;bound|edge, boundary;1000000                         # p=0.998, r=0.617, 974+973, 3grams, 2015-12-10
+bonds|a type of debt security;bounds|edges, boundaries;100000                     # p=1.000, r=0.570, 998+191, 3grams, 2015-12-10
+brake|mechanical device to stop motion|interruption;break;1000000                 # p=0.999, r=0.702, 111+998, 3grams, 2015-12-10
+brakes|mechanical device to stop motion;breaks|interruptions;1000                 # p=1.000, r=0.784, 97+348, 3grams, 2015-12-10
+bread|food made from dough;bred|past of 'breed';10000                             # p=1.000, r=0.853, 668+173, 3grams, 2015-12-10
+breathe|verb; breath|noun; 100000                                                 # p=1.000, r=0.768, 453, 3grams, 2015-08-12
+but; butt; 100000                                                                 # p=0.993, r=0.836, 1145, 3grams, 2015-08-12
+buy|purchase; bye|goodbye; 1000                                                   # p=1.000, r=0.832, 1041, 3grams, 2015-08-12
+cached|stored for future use;cashed|exchanged for cash;10000                      # p=1.000, r=0.545, 16+17, 3grams, 2015-12-10
+caller|person starting a phone call;collar|part of clothing;100000                # p=1.000, r=0.539, 70+158, 3grams, 2015-12-10
+capital|money or property, seat of government;capitol|building;10000000           # p=0.994, r=0.579, 1000+215, 3grams, 2015-12-10
+cast|cast of characters in a movie;caste|social class;100000                      # p=1.000, r=0.630, 1000+150, 3grams, 2015-12-10
+cease|stop, discontinue;seize|take hold of;1000                                   # p=1.000, r=0.810, 225+186, 3grams, 2015-12-10
+cede|surrender;seed|an embryonic plant;1000                                       # p=1.000, r=0.893, 45+349, 3grams, 2015-12-10
+cellar|basement;seller|someone who sells goods or services;10000                  # p=1.000, r=0.547, 59+239, 3grams, 2015-12-10
+cell|the functional basic unit of life;sell|exchange for money;10000000           # p=0.996, r=0.770, 998+998, 3grams, 2015-12-10
+census|count of the population;senses|perceptions like sight and hearing;100000   # p=0.999, r=0.613, 1000+253, 3grams, 2015-12-10
+cereal|food grain;serial|sequential;10000                                         # p=1.000, r=0.649, 83+447, 3grams, 2015-12-10
+choral|choir, musical ensemble of singers;coral|marine invertebrates;1000         # p=1.000, r=0.592, 89+264, 3grams, 2015-12-10
+citing|mention, refer;sighting|the act of observing;100000                        # p=1.000, r=0.568, 318+66, 3grams, 2015-12-10
+click|mouse click, short metallic sound;clique|ingroup;100000                     # p=1.000, r=0.733, 807+35, 3grams, 2015-12-10
+close|shut;clothes|dresses;1000000                                                # p=0.999, r=0.657, 1000+841, 3grams, 2015-12-10
+coal|fossil fuel;cole|cabbage;1000                                                # p=1.000, r=0.754, 799+191, 3grams, 2015-12-10
+coarse|rough-cut, harsh;course|class, path, track;10000000                        # p=0.998, r=0.787, 99+992, 3grams, 2015-12-10
+coma|state of deep unconsciousness;comma|punctuation character ',';100            # p=1.000, r=0.649, 128+74, 3grams, 2015-12-10
+complains|3rd person of 'complain'; complaints|plural of noun 'complaint'; 1000   # p=1.000, r=0.859, 368, 3grams, 2015-08-29
+complain|verb'; complaint|noun; 100                                               # p=1.000, r=0.930, 473, 3grams, 2015-08-29
+conscious|knowing;conscience|moral sense;1000000                                  # p=0.990, r=0.574, 352+181, 3grams, 2015-12-10
+coo|speak softly;coup|putsch, takeover;1000                                       # p=1.000, r=0.895, 59+709, 3grams, 2015-12-10
+craft|skilled practice;kraft|Kraft paper;10000                                    # p=1.000, r=0.737, 434+57, 3grams, 2015-12-10
+crews|plural of 'crew' = persons who man a vehicle;cruise|an ocean trip;10000     # p=1.000, r=0.642, 194+367, 3grams, 2015-12-10
+dairy|business processing animal milk;diary|a daily written record;100000         # p=0.997, r=0.717, 193+341, 3grams, 2015-12-10
+dam|constructed barrier;damn|expletive;10000                                      # p=1.000, r=0.694, 412+130, 3grams, 2015-12-10
+dear|address at the beginning of a letter;deer|animal;10000                       # p=0.999, r=0.559, 992+277, 3grams, 2015-12-10
+desert|arid land; dessert|last course of a meal; 1000000                          # p=0.996, r=0.491, 1036, 3grams, 2015-08-12
+device|a constructed tool;devise|contrive, invent;10000000                        # p=0.999, r=0.666, 997+55, 3grams, 2015-12-10
+died;dyed;100000                                                                  # p=0.999, r=0.876, 994+70, 3grams, 2015-12-10
+die|decease, pass away;dye|color with dye;1000000                                 # p=0.999, r=0.640, 996+166, 3grams, 2015-12-10
+dies|plural of 'dice', third person of 'die';dyes|third person of 'dye';100000    # p=0.996, r=0.536, 340+138, 3grams, 2015-12-10
+discreet|marked by modesty;discrete|distinct;1000000                              # p=1.000, r=0.588, 46+474, 3grams, 2015-12-10
+discussed|past of 'discuss';disgust|strong feelings of dislike;1000               # p=0.999, r=0.969, 1000+63, 3grams, 2015-12-10
+do; to; 10000000000                                                               # p=0.998, r=0.561, 1977, 3grams, 2015-08-13
+dual|double, two-fold;duel|a prearranged fight;100000                             # p=0.996, r=0.573, 679+101, 3grams, 2015-12-10
+ear; eat; 100000                                                                  # p=1.000, r=0.894, 1366, 3grams, 2015-10-01
+earn|gain, make;urn|a vase;1000                                                   # p=1.000, r=0.909, 330+56, 3grams, 2015-12-10
+ears; eats; 10000                                                                 # p=1.000, r=0.903, 651, 3grams, 2015-10-01
+edition|version, variant;addition|adding one thing to another;100000              # p=0.998, r=0.837, 1000+1000, 3grams, 2015-12-10
+emit|give out;omit|exclude;1000                                                   # p=0.992, r=0.622, 145+64, 3grams, 2015-12-10
+emitting|giving out;omitting|excluding;1000                                       # p=1.000, r=0.744, 83+46, 3grams, 2015-12-10
+exact|accurate;extract|pull out;100000                                            # p=0.999, r=0.807, 971+235, 3grams, 2015-12-10
+except|with the exception of; expect|regard something as likely; 10000000         # p=0.998, r=0.667, 1909, 3grams, 2015-08-12
+expert; export; 10000                                                             # p=0.999, r=0.726, 1249, 3grams, 2015-08-29
+extend|verb; extent|noun; 100                                                     # p=0.998, r=0.975, 1780, 3grams, 2015-08-12
+fair|noun: trade fair, adj: just;fare|money paid for transportation;10000000      # p=0.998, r=0.508, 994+156, 3grams, 2015-12-10
+fairs;fares;10000                                                                 # p=1.000, r=0.509, 67+106, 3grams, 2015-12-10
+fairy|a small being with magical powers) ;ferry|ferryboat;100000                  # p=0.997, r=0.531, 209+371, 3grams, 2015-12-10
+feat|effort;feet|plural of 'foot';1000000                                         # p=0.999, r=0.848, 140+999, 3grams, 2015-12-10
+fee; feel; 10000                                                                  # p=0.998, r=0.817, 1725, 3grams, 2015-08-13
+fill; full; 1000000                                                               # p=0.997, r=0.770, 1798, 3grams, 2015-08-12
+finds|third person of 'find';fines|money penalties;10000000                       # p=1.000, r=0.610, 637+120, 3grams, 2015-12-10
+fir; for; 10000000                                                                # p=0.999, r=0.868, 998, 3grams, 2015-09-08
+fir; fur; 100                                                                     # p=1.000, r=0.804, 398, 3grams, 2015-09-08
+first; fist; 1000000000                                                           # p=0.994, r=0.800, 1076, 3grams, 2015-08-12
+fiscal|related to financial matters;physical|related to physics;10000000          # p=0.993, r=0.523, 367+998, 3grams, 2015-12-10
+flea|insect;flee|run away quickly;100                                             # p=1.000, r=0.932, 50+199, 3grams, 2015-12-10
+flour|powder made by grinding cereal grains;flower|part of a plant;100000         # p=0.997, r=0.504, 168+495, 3grams, 2015-12-10
+foe; for; 10000000                                                                # p=1.000, r=0.880, 977, 3grams, 2015-10-05
+for|a preposition as in 'I have something for you'; four|the number '4'; 100000000# p=0.994, r=0.507, 1890, 3grams, 2015-08-12
+foreword|preface;forward|directed toward the front;100000                         # p=1.000, r=0.864, 100+997, 3grams, 2015-12-10
+forth;fourth|in the fourth place;10000000                                         # p=0.992, r=0.719, 799+1000, 3grams, 2015-12-10
+foul|violation of rule in sports;fowl|a bird;100000                               # p=0.992, r=0.502, 209+30, 3grams, 2015-12-10
+gait|pace;gate|barrier in a fence;1000000                                         # p=0.992, r=0.508, 55+718, 3grams, 2015-12-10
+guessed|past of 'guess';guest|invited person;100000                               # p=1.000, r=0.738, 67+739, 3grams, 2015-12-10
+guise|pretense;guys|informal for 'men';10000                                      # p=0.999, r=0.845, 62+995, 3grams, 2015-12-10
+had|past of 'have'; hat|head covering; 100000000                                  # p=0.998, r=0.647, 1757, 3grams, 2015-08-12
+hair|grows from the skin of mammals;hare|animals similar to rabbits;100000        # p=0.999, r=0.844, 1000+99, 3grams, 2015-12-10
+half|noun/adjective; halve|verb; 1000000                                          # p=0.997, r=0.961, 991, 3grams, 2015-08-12
+heal|cure;heel|bottom of a shoe or boot;10                                        # p=1.000, r=0.874, 113+85, 3grams, 2015-12-10
+heard|past of 'hear';herd|group of e.g. cattle;100000                             # p=0.999, r=0.958, 999+82, 3grams, 2015-12-10
+hear; heart; 1000                                                                 # p=0.996, r=0.954, 1971, 3grams, 2015-08-12
+heroin|drug;heroine|female hero;10000                                             # p=1.000, r=0.606, 211+73, 3grams, 2015-12-10
+he; the; 10000000                                                                 # p=1.000, r=0.703, 2000, 3grams, 2015-08-24
+higher|comparative of 'high'; hire|employ; 1000000                                # p=0.999, r=0.769, 1379, 3grams, 2015-11-13
+him|personal pronoun;hymn|anthem;10000000                                         # p=0.999, r=0.861, 990+229, 3grams, 2015-12-10
+hoping; hopping; 1000                                                             # p=1.000, r=0.951, 611, 3grams, 2015-10-05
+hours|period of time;ours|belonging to us;100000                                  # p=0.998, r=0.819, 996+199, 3grams, 2015-12-10
+imminent|close in time;eminent|standing above others;1000000                      # p=1.000, r=0.702, 134+158, 3grams, 2015-12-10
+improved|made better;improvised|performed without preparation;1000000             # p=0.992, r=0.581, 1000+124, 3grams, 2015-12-10
+in; inn|a hostel; 1000000                                                         # p=0.999, r=0.829, 1145, 3grams, 2015-08-12
+just; juts; 10000                                                                 # p=1.000, r=0.977, 944, 3grams, 2015-11-16
+kind; king; 1000000                                                               # p=0.997, r=0.533, 1963, 3grams, 2015-08-12
+knead|massage;need|require;1000000                                                # p=0.999, r=0.968, 7+998, 3grams, 2015-12-10
+knight|person of noble birth trained to arms;night|opposite of day;1000000        # p=0.992, r=0.510, 670+997, 3grams, 2015-12-10
+known|past participle of 'know'; know|to be aware of; 1000                        # p=0.999, r=0.965, 1946, 3grams, 2015-08-12
+know|to be aware of; no|negation; 100000                                          # p=0.999, r=0.887, 1903, 3grams, 2015-08-12
+know|to be aware of; now|in this moment; 1000                                     # p=0.999, r=0.877, 1918, 3grams, 2015-08-12
+lacks|third person of 'lack';lax|lacking in strictness;1000                       # p=1.000, r=0.809, 249+55, 3grams, 2015-12-10
+lead|take somebody somewhere;led|past of 'lead';100000                            # p=0.991, r=0.549, 1000+1000, 3grams, 2015-12-10
+leased|past of 'lease';least|to the lowest degree;10000000                        # p=0.999, r=0.885, 102+1000, 3grams, 2015-12-10
+lends|past of 'lend';lens|optical device;1000                                     # p=1.000, r=0.920, 73+250, 3grams, 2015-12-10
+lessen|decrease;lesson|unit of instruction;10000                                  # p=1.000, r=0.919, 37+260, 3grams, 2015-12-10
+liable|subject to legal action;libel|malicious publication;10000000               # p=1.000, r=0.771, 116+120, 3grams, 2015-12-10
+liar|person not telling the truth;lyre|instrument;10000                           # p=0.992, r=0.643, 148+34, 3grams, 2015-12-10
+lies; lines; 1000000                                                              # p=0.999, r=0.556, 1953, 3grams, 2015-08-12
+links|connection between things;lynx|wildcat;10000                                # p=0.999, r=0.759, 996+100, 3grams, 2015-12-10
+loan|temporary provision of money;lone|alone;10000                                # p=0.998, r=0.706, 570+212, 3grams, 2015-12-10
+loch|Scottish word for a lake;lock|e.g. door lock;100000                          # p=0.996, r=0.597, 70+391, 3grams, 2015-12-10
+lo;low|less than normal in amount;10000000                                        # p=0.993, r=0.759, 125+1000, 3grams, 2015-12-10
+loose|not tight; lose|opposite of win; 100000                                     # p=0.996, r=0.796, 1421, 3grams, 2015-08-12
+made|past of 'make';maid|housemaid;100000                                         # p=0.999, r=0.906, 1000+137, 3grams, 2015-12-10
+mail|postal service;male|gender;100000                                            # p=0.999, r=0.688, 994+997, 3grams, 2015-12-10
+maize|cereal;maze|labyrinth;1000000                                               # p=1.000, r=0.646, 118+46, 3grams, 2015-12-10
+manner|style, mode;manor|mansion of a wealthy person;10000000                     # p=0.999, r=0.751, 999+118, 3grams, 2015-12-10
+marry|get married;merry|jolly, festive;10000                                      # p=1.000, r=0.913, 642+142, 3grams, 2015-12-10
+medium|a means for storing or communicating;median|median value;10000000          # p=0.999, r=0.504, 1000+386, 3grams, 2015-12-10
+mice|plural of 'mouse'; nice|pleasant; 1000                                       # p=0.997, r=0.862, 1215, 3grams, 2015-08-12
+mind|brain;mined|past of 'mine';1000000                                           # p=1.000, r=0.883, 998+143, 3grams, 2015-12-10
+minding|being bothered by;mining|extracting ores or coal etc from the earth;100   # p=1.000, r=0.956, 6+631, 3grams, 2015-12-10
+minuet|piece of music and dance; minute|60 seconds; 1000000000                    # p=0.995, r=0.568, 995, 3grams, 2015-08-12
+minuets|pieces of music and dance; minutes|60 seconds; 1000000000                 # p=0.993, r=0.881, 1007, 3grams, 2015-08-12
+missed|past of 'miss';mist|fog;100000                                             # p=1.000, r=0.842, 862+60, 3grams, 2015-12-10
+morning|early time of the day;mourning|lamentation;10000000                       # p=0.998, r=0.792, 987+126, 3grams, 2015-12-10
+most; mot; 10000                                                                  # p=1.000, r=0.964, 1014, 3grams, 2015-11-09
+near|close to; neat|clean or organized; 100000                                    # p=1.000, r=0.784, 1074, 3grams, 2015-08-12
+new; news; 1000000                                                                # p=0.997, r=0.542, 1814, 3grams, 2015-08-12
+nit; not; 100000000                                                               # p=0.998, r=0.945, 983, 3grams, 2015-08-12
+none|not at all;nun|religious woman;1000000                                       # p=0.999, r=0.844, 997+86, 3grams, 2015-12-10
+not; note; 100000000                                                              # p=0.997, r=0.525, 1865, 3grams, 2015-08-12
+now|at the present moment; no|negation; 1000000                                   # p=0.996, r=0.559, 1919, 3grams, 2015-08-12
+oh|interjection to express surprise;owe|be obliged to pay;10000                   # p=1.000, r=0.773, 952+398, 3grams, 2015-12-10
+or; ore; 10000000                                                                 # p=0.988, r=0.684, 1228, 3grams, 2015-10-07
+our; out; 10000                                                                   # p=0.996, r=0.896, 1901, 3grams, 2015-08-12
+overhead|operating cost;overheard|listen;100                                      # p=0.996, r=0.913, 240+49, 3grams, 2015-12-10
+own; won; 10000000                                                                # p=0.999, r=0.722, 1962, 3grams, 2015-12-02
+paced|walked;paste|glue;1000                                                      # p=1.000, r=0.953, 40+194, 3grams, 2015-12-10
+packed|full;pact|written agreement;1000                                           # p=1.000, r=0.878, 249+228, 3grams, 2015-12-10
+passed|paste tense of 'to pass'; past|past times; 10000                           # p=0.999, r=0.858, 1938, 3grams, 2015-08-12
+patience|tolerance of delay;patients|person who gets medical care;1000            # p=1.000, r=0.807, 265+965, 3grams, 2015-12-10
+peace|absence of war; piece|a portion of a natural object; 1000000                # p=0.998, r=0.634, 1966, 3grams, 2015-08-12
+peak|extremum, summit, top; peek|a secret look; 100000                            # p=0.999, r=0.797, 999, 3grams, 2015-08-12
+peal|sound;peel|skin;10                                                           # p=1.000, r=0.619, 3+123, 3grams, 2015-12-10
+peers|persons in a group;piers|wharfs, docks;10000                                # p=0.995, r=0.571, 274+66, 3grams, 2015-12-10
+plains|flat areas;planes|airplanes;10000                                          # p=0.990, r=0.554, 420+315, 3grams, 2015-12-10
+plain|simple;plane|airplane;100000                                                # p=0.997, r=0.541, 733+1000, 3grams, 2015-12-10
+pleas|noun: requests;please|adverb used in polite request;10000000                # p=0.998, r=0.809, 61+930, 3grams, 2015-12-10
+populace|the public;populous|densely populated;100000                             # p=1.000, r=0.790, 154+250, 3grams, 2015-12-10
+portable|easily transportable;potable|beverage;1000                               # p=0.996, r=0.690, 306+26, 3grams, 2015-12-10
+portrait|noun;portray|verb;1000                                                   # p=1.000, r=0.938, 421+128, 3grams, 2015-12-10
+portraits|noun;portrays|verb;10000                                                # p=1.000, r=0.717, 239+122, 3grams, 2015-12-10
+pray|say a prayer; prey|animal hunted for food; 10000                             # p=0.994, r=0.794, 664, 3grams, 2015-08-12
+presence|state of being present;presents|gifts;10000000                           # p=1.000, r=0.677, 1000+525, 3grams, 2015-12-10
+prince|son of a sovereign;prints|printed publications;1000                        # p=0.994, r=0.570, 999+219, 3grams, 2015-12-10
+principals|school principals;principles|rules or standards;10000000               # p=0.993, r=0.575, 44+1000, 3grams, 2015-12-10
+proceed|continue;precede|come before;1000000                                      # p=1.000, r=0.767, 572+50, 3grams, 2015-12-10
+proceeded|continued;preceded|came before;100000                                   # p=0.995, r=0.749, 259+235, 3grams, 2015-12-10
+proceeding|continuing;preceding|coming before;10000000                            # p=0.991, r=0.525, 291+361, 3grams, 2015-12-11
+proceeds|continues;precedes|comes before;1000000                                  # p=1.000, r=0.748, 299+54, 3grams, 2015-12-10
+profit|net income;prophet|someone who speaks by divine inspiration;10000000       # p=0.998, r=0.519, 822+418, 3grams, 2015-12-11
+profits|net income;prophets|persons who speak by divine inspiration;100000        # p=0.997, r=0.525, 497+251, 3grams, 2015-12-11
+proof|often noun, also 'proofread'; prove|verb: show, testify, demonstrate; 100000# p=0.997, r=0.850, 1583, 3grams, 2015-08-12
+pros|an argument in favor of a proposal;prose|ordinary writing;10000              # p=1.000, r=0.808, 60+320, 3grams, 2015-12-11
+pulling|gerund of 'pull';pooling;100000                                           # p=1.000, r=0.601, 268+70, 3grams, 2015-12-10
+pull|move something toward;pool|swimming pool;100000                              # p=0.996, r=0.508, 615+926, 3grams, 2015-12-10
+pulls;pools|swimming pools;100000                                                 # p=0.993, r=0.561, 74+165, 3grams, 2015-12-10
+quiet|free of noise; quite|completely, to a degree; 100000                        # p=0.999, r=0.808, 1601, 3grams, 2015-08-12
+quite|completely, to a degree; quit|stop, give up; 100000                         # p=0.998, r=0.837, 1519, 3grams, 2015-08-12
+rap|rap music;wrap|a cover for protection;10000                                   # p=1.000, r=0.572, 233+134, 3grams, 2015-12-11
+ray|beam;re;10000000                                                              # p=0.998, r=0.504, 1000+995, 3grams, 2015-12-11
+reach|arrive at; rich|wealthy; 10000000                                           # p=0.999, r=0.713, 1909, 3grams, 2015-11-09
+read|something that is read;red|a color;10000000                                  # p=0.992, r=0.646, 991+999, 3grams, 2015-12-11
+reads|thing that are read;reeds|tall woody perennial grasses;10000                # p=1.000, r=0.746, 383+77, 3grams, 2015-12-11
+real|occurring in reality;reel|a roll of photographic film;10000000               # p=0.998, r=0.782, 996+57, 3grams, 2015-12-11
+review|critique;revue|a variety show;1000000                                      # p=0.999, r=0.756, 998+59, 3grams, 2015-12-11
+right|opposite of 'left'; rite|established ceremony or practice; 100000000        # p=0.995, r=0.698, 1175, 3grams, 2015-08-12
+role|function, character;roll|rotary motion;1000000                               # p=0.992, r=0.579, 1000+819, 3grams, 2015-12-11
+roles|functions, characters;rolls|rotary motion;100000                            # p=0.997, r=0.541, 961+267, 3grams, 2015-12-11
+root|underground organ of a plant;route|an established line of travel;10000       # p=0.992, r=0.519, 897+1000, 3grams, 2015-12-11
+rose|past of 'rise', a plant;rows|arrangement of thing side by side;100000        # p=0.999, r=0.602, 1000+197, 3grams, 2015-12-11
+sacred|holy;scared|frightened;1000                                                # p=1.000, r=0.830, 568+322, 3grams, 2015-12-11
+sails|used to propel a sailing vessel;sales|the activity of selling;10000         # p=0.996, r=0.741, 60+991, 3grams, 2015-12-11
+sail|used to propel a sailing vessel;sale|an instance of selling;1000000          # p=0.993, r=0.563, 299+993, 3grams, 2015-12-11
+same|identical; sane|mentally healthy; 10000                                      # p=1.000, r=0.962, 1028, 3grams, 2015-08-12
+sate; state; 100000000000                                                         # p=0.991, r=0.683, 1022, 3grams, 2015-08-24
+scene|place where some action occurs; seen|past participle of 'see'; 1000         # p=1.000, r=0.920, 1979, 3grams, 2015-08-12
+sea|ocean; see|to look at; 10000                                                  # p=0.996, r=0.869, 1947, 3grams, 2015-08-12
+sects|religious sects;sex|sexual activity;1000000                                 # p=0.998, r=0.761, 114+994, 3grams, 2015-12-11
+serge|a type of twill fabric;surge|rush, upsurge;10                               # p=0.992, r=0.525, 111+112, 3grams, 2015-12-11
+shall|a verb;shell|hard outer covering of many animals;1                          # p=0.998, r=0.901, 999+676, 3grams, 2015-12-11
+shear|cut with shears;sheer|absolute;100                                          # p=1.000, r=0.881, 81+95, 3grams, 2015-12-11
+sic|used to mark an intentionally so written word;sick|ill;10                     # p=0.999, r=0.992, 45+997, 3grams, 2015-12-11
+sign|mark, subscribe, ratify;sine|trigonometric function;1000000                  # p=0.999, r=0.831, 997+109, 3grams, 2015-12-11
+sire|noun: title, verb: make by reproduction; sure|certain; 100000                # p=0.997, r=0.936, 987, 3grams, 2015-08-12
+soared|past of 'soare';sword|weapon;1000                                          # p=1.000, r=0.889, 69+524, 3grams, 2015-12-11
+sole|solitary, only;soul|the immaterial part of a person;1000000                  # p=0.998, r=0.569, 653+804, 3grams, 2015-12-11
+some|a few;sum|amount;10000000                                                    # p=0.993, r=0.734, 1000+886, 3grams, 2015-12-11
+son|a male offspring;sun|our solar system's star;100000                           # p=0.996, r=0.522, 1000+997, 3grams, 2015-12-11
+sonny|little son;sunny|like the sun;10000                                         # p=1.000, r=0.554, 67+175, 3grams, 2015-12-11
+sons|little sons;suns|plural of 'sun';10000000                                    # p=0.997, r=0.693, 1000+23, 3grams, 2015-12-11
+soot|carbon black;suit|lawsuit, suit of clothes;1000000                           # p=0.998, r=0.743, 44+851, 3grams, 2015-12-11
+stake|interest;steak|slice of meat;100000                                         # p=1.000, r=0.590, 250+94, 3grams, 2015-12-11
+stared|past of 'stare' (to look);starred|past of 'star';10000                     # p=0.993, r=0.551, 95+426, 3grams, 2015-12-11
+staring|gerund of 'stare' (to look);starring|gerund of 'star';100000              # p=1.000, r=0.608, 88+576, 3grams, 2015-12-11
+steal|take without the owner's consent;steel|an alloy of iron;10000000            # p=0.995, r=0.601, 255+996, 3grams, 2015-12-11
+step|footstep;steppe|grassland plains;10000000                                    # p=0.997, r=0.800, 992+110, 3grams, 2015-12-11
+storey|level of a building;story|narrative, tale;1000000                          # p=1.000, r=0.855, 66+1000, 3grams, 2015-12-11
+straight|directly, heterosexual;strait|narrow channel of the sea;1000000          # p=1.000, r=0.640, 999+270, 3grams, 2015-12-11
+suite|musical composition or hotel rooms;sweet|candy;10000                        # p=0.993, r=0.503, 615+745, 3grams, 2015-12-11
+tails|the rear ends of animals' bodies;tales|stories;10000                        # p=0.993, r=0.538, 175+636, 3grams, 2015-12-11
+tense|grammatical category;tents|portable shelters;1000                           # p=1.000, r=0.797, 361+43, 3grams, 2015-12-11
+than; that; 100000000                                                             # p=0.999, r=0.496, 1902, 3grams, 2015-08-12
+than|used in comparisons; then|next in order; 100000                              # p=0.999, r=0.789, 1949, 3grams, 2015-08-12
+their|as in 'It’s not their fault.'; there|as in 'Is there an answer?'; 1000      # p=0.994, r=0.966, 1939, 3grams, 2015-08-12
+the; to; 10000000000                                                              # p=0.998, r=0.477, 2000, 3grams, 2015-09-19
+thing|noun; think|usually a verb; 1000                                            # p=0.997, r=0.953, 1930, 3grams, 2015-08-12
+things|plural noun; thinks|verb; 1000000                                          # p=0.997, r=0.813, 1725, 3grams, 2015-09-24
+threw|past of throw; through|preposition, e.g. 'go through the door'; 100000000   # p=0.996, r=0.613, 1375, 3grams, 2015-08-12
+throne|chair of a monarch;thrown|participle of 'throw';100000                     # p=1.000, r=0.916, 1000+425, 3grams, 2015-12-11
+tide|rise and fall of sea levels;tied|past of 'tie';10000                         # p=1.000, r=0.872, 166+702, 3grams, 2015-12-11
+timber|wood;timbre|tone quality;1000000                                           # p=0.994, r=0.526, 281+50, 3grams, 2015-12-11
+tired|needing sleep;tried|past of 'try';10000                                     # p=1.000, r=0.875, 1000+998, 3grams, 2015-12-11
+tracked|past of 'track';tract|piece of land;10000000                              # p=0.990, r=0.617, 154+167, 3grams, 2015-12-11
+vary|change, alter; very|to a great extent; 100000                                # p=0.998, r=0.873, 1972, 3grams, 2015-08-12
+verses|plural of 'Verse';versus|against;1000000                                   # p=0.991, r=0.505, 300+534, 3grams, 2015-12-11
+vicious|cruel;viscous|like syrup;1000                                             # p=1.000, r=0.660, 97+65, 3grams, 2015-12-11
+vintage|classic;vantage|advantage;100                                             # p=1.000, r=0.560, 132+43, 3grams, 2015-12-11
+waist|body part between the ribs and hips; waste|worthless material; 1000         # p=0.996, r=0.860, 903, 3grams, 2015-08-12
+wait|anticipate or expect something;weight|mass;1000000                           # p=1.000, r=0.799, 994+1000, 3grams, 2015-12-11
+waive|do without;wave|oscillation of e.g. water;10000                             # p=1.000, r=0.913, 40+1000, 3grams, 2015-12-11
+war|armed conflict;wore|past of verb 'wear';10000000                              # p=0.998, r=0.764, 1000+473, 3grams, 2015-12-11
+warn|notify of danger;worn|past of verb 'wear';100                                # p=1.000, r=0.969, 179+554, 3grams, 2015-12-11
+warship|combat ship;worship|love uncritically;10000000                            # p=1.000, r=0.759, 77+645, 3grams, 2015-12-11
+was; way; 10000000                                                                # p=0.999, r=0.823, 1974, 3grams, 2015-08-18
+wax; way; 10000000                                                                # p=0.995, r=0.812, 1138, 3grams, 2015-08-12
+ways|plural of way;weighs|3rd person of verb 'weigh';10000000                     # p=1.000, r=0.897, 1000+102, 3grams, 2015-12-11
+weak|opposite of strong;week|a period of seven days;1000000                       # p=0.999, r=0.678, 999+1000, 3grams, 2015-12-11
+weather|atmospheric conditions; whether|as in 'whether or not'; 100000            # p=0.992, r=0.802, 1894, 3grams, 2015-08-12
+we; wee|a short time; 1000                                                        # p=0.999, r=0.971, 987, 3grams, 2015-08-12
+what;watt|a unit of power;10000000                                                # p=0.996, r=0.858, 963+132, 3grams, 2015-12-11
+which; witch|female sorcerer or magician; 10000000                                # p=0.996, r=0.839, 1175, 3grams, 2015-08-12
+while; whole; 100000                                                              # p=1.000, r=0.827, 1981, 3grams, 2015-08-25
+widow|woman whose husband is dead; window; 100000                                 # p=1.000, r=0.564, 1295, 3grams, 2015-08-24
+with; wit|humor; 1000000                                                          # p=0.996, r=0.859, 1073, 3grams, 2015-08-12
+wondered|questioned;wandered|walked around;10000000                               # p=1.000, r=0.782, 226+49, 3grams, 2015-12-11
+wondering|questioning;wandering|walking around;10000000                           # p=0.995, r=0.788, 449+85, 3grams, 2015-12-11
+wonder|to question;wander|to walk around;10000000                                 # p=0.998, r=0.809, 988+49, 3grams, 2015-12-11
+wring; wrong; 100000                                                              # p=1.000, r=0.970, 1000, 3grams, 2015-11-09
+your|possessive pronoun; you|personal pronoun; 10000                              # p=0.993, r=0.861, 1857, 3grams, 2015-08-12
