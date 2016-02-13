@@ -43,10 +43,10 @@ public class DemoFrame extends JFrame {
 
 //        LanguageToolSupport lt = new MyLanguageToolSupport(this, jTextArea);
         LanguageToolSupport lt = new LanguageToolSupport(jTextArea, 
-        		new UndoRedoSupport(jTextArea, JLanguageTool.getMessageBundle()));
+        		new UndoRedoSupport(jTextArea, JLanguageTool.getMessageBundle()),
+        		Languages.getLanguageForLocale(new Locale("en", "US")));
         // TODO : BUG if we correct with right click, we cannot undo without change the text
         // TODO : Set a maximum of suggestions
-        lt.setLanguage(Languages.getLanguageForLocale(new Locale("en", "US")));
     }
 
     public static void main(String args[]) {

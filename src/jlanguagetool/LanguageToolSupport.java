@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -45,7 +44,6 @@ import javax.swing.text.View;
 import org.apache.commons.lang.StringUtils;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
-import org.languagetool.Languages;
 import org.languagetool.MultiThreadedJLanguageTool;
 import org.languagetool.gui.Configuration;
 import org.languagetool.rules.ITSIssueType;
@@ -81,16 +79,16 @@ class LanguageToolSupport {
   /**
    * LanguageTool support for a JTextComponent
    */
-  public LanguageToolSupport(JTextComponent textComponent) {
-    this(textComponent, null, 500);
+  public LanguageToolSupport(JTextComponent textComponent, Language language) {
+    this(textComponent, null, 500, language);
   }
 
   /**
    * LanguageTool support for a JTextComponent
    */
   public LanguageToolSupport(JTextComponent textComponent, 
-		  UndoRedoSupport support) {
-    this(textComponent, support, 500);
+		  UndoRedoSupport support, Language language) {
+    this(textComponent, support, 500, language);
   }
 
   /**
@@ -99,13 +97,14 @@ class LanguageToolSupport {
    * @since 2.7
    */
   public LanguageToolSupport(JTextComponent textComponent,
-		  UndoRedoSupport support, int millisecondDelay) {
+		  UndoRedoSupport support, int millisecondDelay,
+		  Language language) {
     this.textComponent = textComponent;
     this.millisecondDelay = millisecondDelay;
     ruleMatches = new ArrayList<>();
     documentSpans = new ArrayList<>();    
     this.undo = support;
-    init();
+    init(language);
   }
 
   private void loadConfig() {
@@ -144,16 +143,11 @@ class LanguageToolSupport {
     }
   }
 
-  private void init() {
+  private void init(Language language) {
     try {
       config = new Configuration(new File(System.getProperty("user.home")), CONFIG_FILE, null);
     } catch (IOException ex) {
       throw new RuntimeException("Could not load configuration", ex);
-    }
-
-    Language defaultLanguage = config.getLanguage();
-    if(defaultLanguage == null) {
-        defaultLanguage = Languages.getLanguageForLocale(Locale.getDefault());
     }
 
     /**
@@ -163,7 +157,7 @@ class LanguageToolSupport {
      * often uses and init the LT object for that now, not just when it's first used.
      * This makes the first check feel much faster:
      */    
-    reloadLanguageTool(defaultLanguage);
+    reloadLanguageTool(language);
 
     redPainter = new HighlightPainter(Color.red);
     bluePainter = new HighlightPainter(Color.blue);
@@ -242,17 +236,6 @@ class LanguageToolSupport {
     if (!this.textComponent.getText().isEmpty() && backgroundCheckEnabled) {
       checkImmediately(null);
     }
-  }
-
-  public void setLanguage(Language language) {
-    reloadLanguageTool(language);
-    if (backgroundCheckEnabled) {
-      checkImmediately(null);
-    }
-  }
-
-  public Language getLanguage() {
-      return this.languageTool.getLanguage();
   }
 
   private Span getSpan(int offset) {
