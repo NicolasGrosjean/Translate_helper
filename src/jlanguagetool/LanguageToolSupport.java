@@ -15,34 +15,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.EventListenerList;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.AbstractDocument;
@@ -60,8 +50,6 @@ import org.languagetool.Language;
 import org.languagetool.Languages;
 import org.languagetool.MultiThreadedJLanguageTool;
 import org.languagetool.gui.Configuration;
-import org.languagetool.gui.ConfigurationDialog;
-import org.languagetool.language.BritishEnglish;
 import org.languagetool.rules.ITSIssueType;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
@@ -75,20 +63,9 @@ import org.languagetool.rules.RuleMatch;
 class LanguageToolSupport {
 
   static final String CONFIG_FILE = ".languagetool.cfg";
-  //maximum entries in the activate rule menu.
-  //If entries' number is bigger, create per category submenus
-  //can set to 0 to always create category submenus
-  private static final int MAX_RULES_NO_CATEGORY_MENU = 12;
-  //maximum rule menu entries, if more create a More submenu
-  private static final int MAX_RULES_PER_MENU = 12;
-  //maximum category menu entries, if more create a More submenu
-  private static final int MAX_CATEGORIES_PER_MENU = 12;
 
-  private final JFrame frame;
   private final JTextComponent textComponent;
-  private final EventListenerList listenerList = new EventListenerList();
   private final ResourceBundle messages;
-  private final Map<Language, ConfigurationDialog> configDialogs = new HashMap<>();
   private final List<RuleMatch> ruleMatches;
   private final List<Span> documentSpans;
 
@@ -98,9 +75,8 @@ class LanguageToolSupport {
   private ScheduledExecutorService checkExecutor;
   private MouseListener mouseListener;
   private ActionListener actionListener;
-  private int millisecondDelay = 1500;
+  private int millisecondDelay; // time between 2 text checks
   private AtomicInteger check;
-  private boolean popupMenuEnabled = true;
   private boolean backgroundCheckEnabled = true;
   private Configuration config;
   private final UndoRedoSupport undo;
@@ -108,8 +84,16 @@ class LanguageToolSupport {
   /**
    * LanguageTool support for a JTextComponent
    */
-  public LanguageToolSupport(JFrame frame, JTextComponent textComponent) {
-    this(frame, textComponent, null);
+  public LanguageToolSupport(JTextComponent textComponent) {
+    this(textComponent, null, 500);
+  }
+
+  /**
+   * LanguageTool support for a JTextComponent
+   */
+  public LanguageToolSupport(JTextComponent textComponent, 
+		  UndoRedoSupport support) {
+    this(textComponent, support, 500);
   }
 
   /**
@@ -117,101 +101,15 @@ class LanguageToolSupport {
    * 
    * @since 2.7
    */
-  public LanguageToolSupport(JFrame frame, JTextComponent textComponent, UndoRedoSupport support) {
-    this.frame = frame;
+  public LanguageToolSupport(JTextComponent textComponent,
+		  UndoRedoSupport support, int millisecondDelay) {
     this.textComponent = textComponent;
+    this.millisecondDelay = millisecondDelay;
     this.messages = JLanguageTool.getMessageBundle();
     ruleMatches = new ArrayList<>();
     documentSpans = new ArrayList<>();    
     this.undo = support;
     init();
-  }
-
-  JTextComponent getTextComponent() {
-    return textComponent;
-  }
-
-  List<RuleMatch> getMatches() {
-    return this.ruleMatches;
-  }
-
-  ConfigurationDialog getCurrentConfigDialog() {
-    Language language = this.languageTool.getLanguage();
-    final ConfigurationDialog configDialog;
-    if (configDialogs.containsKey(language)) {
-      configDialog = configDialogs.get(language);
-    } else {
-      configDialog = new ConfigurationDialog(frame, false, config);
-      configDialogs.put(language, configDialog);
-    }
-    return configDialog;
-  }
-
-  void reloadConfig() {
-    //FIXME
-    //if mother tongue changes then create new JLanguageTool instance
-
-    boolean update = false;
-  
-    Set<String> disabledRules = config.getDisabledRuleIds();
-    if (disabledRules == null) {
-      disabledRules = Collections.emptySet();
-    }
-
-    Set<String> common = new HashSet<>(disabledRules);
-    common.retainAll(languageTool.getDisabledRules());
-    Set<String> toDisable = new HashSet<>(disabledRules);
-    toDisable.removeAll(common);
-    Set<String> toEnable = new HashSet<>(languageTool.getDisabledRules());
-    toEnable.removeAll(common);
-    
-    for (final String ruleId : toDisable) {
-      languageTool.disableRule(ruleId);
-      update = true;
-    }
-    for (final String ruleId : toEnable) {
-      languageTool.enableRule(ruleId);
-      update = true;
-    }
-
-    Set<String> disabledCategories = config.getDisabledCategoryNames();
-    if (disabledCategories == null) {
-      disabledCategories = Collections.emptySet();
-    }
-    common = new HashSet<>(disabledCategories);
-    common.retainAll(languageTool.getDisabledCategories());
-    toDisable = new HashSet<>(disabledCategories);
-    toDisable.removeAll(common);
-    toEnable = new HashSet<>(languageTool.getDisabledCategories());
-    toEnable.removeAll(common);
-
-    if(!toDisable.isEmpty()) {
-      languageTool.getDisabledCategories().addAll(toDisable);
-      // ugly hack to trigger reInitSpellCheckIgnoreWords()
-      languageTool.disableRules(new ArrayList<String>());
-      update = true;
-    }
-    if(!toEnable.isEmpty()) {
-      languageTool.getDisabledCategories().removeAll(toEnable);
-      // ugly hack to trigger reInitSpellCheckIgnoreWords()
-      languageTool.disableRules(new ArrayList<String>());
-      update = true;
-    }
-
-    Set<String> enabledRules = config.getEnabledRuleIds();
-    if (enabledRules == null) {
-      enabledRules = Collections.emptySet();
-    }
-    for (String ruleName : enabledRules) {
-      languageTool.enableDefaultOffRule(ruleName);
-      languageTool.enableRule(ruleName);
-    }
-
-    if(update) {
-      //FIXME
-      //we could skip a full check if the user disabled but didn't enable rules
-      checkImmediately(null);
-    }
   }
 
   private void loadConfig() {
@@ -350,47 +248,6 @@ class LanguageToolSupport {
     }
   }
 
-  public int getMillisecondDelay() {
-    return millisecondDelay;
-  }
-
-  /**
-   * The text checking delay in milliseconds.
-   */
-  public void setMillisecondDelay(int millisecondDelay) {
-    this.millisecondDelay = millisecondDelay;
-  }
-
-  public boolean isPopupMenuEnabled() {
-    return popupMenuEnabled;
-  }
-
-  public void setPopupMenuEnabled(boolean popupMenuEnabled) {
-    if (this.popupMenuEnabled == popupMenuEnabled) {
-      return;
-    }
-    this.popupMenuEnabled = popupMenuEnabled;
-    if (popupMenuEnabled) {
-      textComponent.addMouseListener(mouseListener);
-    } else {
-      textComponent.removeMouseListener(mouseListener);
-    }
-  }
-
-  public boolean isBackgroundCheckEnabled() {
-    return backgroundCheckEnabled;
-  }
-
-  public void setBackgroundCheckEnabled(boolean backgroundCheckEnabled) {
-    if (this.backgroundCheckEnabled == backgroundCheckEnabled) {
-      return;
-    }
-    this.backgroundCheckEnabled = backgroundCheckEnabled;
-    if (backgroundCheckEnabled) {
-      checkImmediately(null);
-    }
-  }
-
   public void setLanguage(Language language) {
     reloadLanguageTool(language);
     if (backgroundCheckEnabled) {
@@ -398,18 +255,10 @@ class LanguageToolSupport {
     }
   }
 
-  Language getLanguage() {
+  public Language getLanguage() {
       return this.languageTool.getLanguage();
   }
 
-  public Configuration getConfig() {
-    return config;
-  }
-
-  // called from Main.showOptions() and Main.tagTextAndDisplayResults()
-  JLanguageTool getLanguageTool() {
-    return languageTool;
-  }
   private Span getSpan(int offset) {
     for (final Span cur : documentSpans) {
       if (cur.end > cur.start && cur.start <= offset && offset < cur.end) {
@@ -515,17 +364,9 @@ class LanguageToolSupport {
     }
   }
 
-  public void checkDelayed() {
-    checkDelayed(null);
-  }
-
   public void checkDelayed(Object caller) {
     check.getAndIncrement();
     checkExecutor.schedule(new RunnableImpl(caller), millisecondDelay, TimeUnit.MILLISECONDS);
-  }
-
-  public void checkImmediately() {
-    checkImmediately(null);
   }
 
   public void checkImmediately(Object caller) {
