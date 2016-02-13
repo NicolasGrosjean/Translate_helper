@@ -3,7 +3,6 @@ package jlanguagetool;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -65,7 +63,6 @@ class LanguageToolSupport {
   static final String CONFIG_FILE = ".languagetool.cfg";
 
   private final JTextComponent textComponent;
-  private final ResourceBundle messages;
   private final List<RuleMatch> ruleMatches;
   private final List<Span> documentSpans;
 
@@ -105,7 +102,6 @@ class LanguageToolSupport {
 		  UndoRedoSupport support, int millisecondDelay) {
     this.textComponent = textComponent;
     this.millisecondDelay = millisecondDelay;
-    this.messages = JLanguageTool.getMessageBundle();
     ruleMatches = new ArrayList<>();
     documentSpans = new ArrayList<>();    
     this.undo = support;
@@ -293,17 +289,6 @@ class LanguageToolSupport {
         popup.add(item);
         item.addActionListener(actionListener);
       }
-
-      popup.add(new JSeparator());
-
-      JMenuItem moreItem = new JMenuItem(messages.getString("guiMore"));
-      moreItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          showDialog(textComponent, span.msg, span.desc, span.rule);
-        }
-      });
-      popup.add(moreItem);
     }
 
     if (span != null) {
@@ -483,10 +468,6 @@ class LanguageToolSupport {
         ex.printStackTrace();
       }
     }
-  }
-
-  private void showDialog(Component parent, String title, String message, Rule rule) {
-//    Tools.showRuleInfoDialog(parent, title, message, rule, messages, languageTool.getLanguage().getShortNameWithCountryAndVariant());
   }
 
   private static class HighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {
