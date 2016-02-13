@@ -410,40 +410,6 @@ class LanguageToolSupport {
   JLanguageTool getLanguageTool() {
     return languageTool;
   }
-
-  void disableRule(String ruleId) {
-    Rule rule = this.getRuleForId(ruleId);
-    if(rule == null) {
-      //System.err.println("No rule with id: <"+ruleId+">");
-      return;
-    }
-    if(rule.isDefaultOff()) {
-      config.getEnabledRuleIds().remove(ruleId);
-    }
-    else {
-      config.getDisabledRuleIds().add(ruleId);
-    }
-    languageTool.disableRule(ruleId);
-    updateHighlights(ruleId);
-  }
-
-  void enableRule(String ruleId) {
-    Rule rule = this.getRuleForId(ruleId);
-    if(rule == null) {
-      //System.err.println("No rule with id: <"+ruleId+">");
-      return;
-    }
-    if(rule.isDefaultOff()) {
-      config.getEnabledRuleIds().add(ruleId);
-      languageTool.enableDefaultOffRule(ruleId);
-    }
-    else {
-      config.getDisabledRuleIds().remove(ruleId);
-    }
-    languageTool.enableRule(ruleId);
-    checkImmediately(null);
-  }
-
   private Span getSpan(int offset) {
     for (final Span cur : documentSpans) {
       if (cur.end > cur.start && cur.start <= offset && offset < cur.end) {
@@ -489,22 +455,6 @@ class LanguageToolSupport {
         }
       });
       popup.add(moreItem);
-
-      JMenuItem ignoreItem = new JMenuItem(messages.getString("guiTurnOffRule"));
-      ignoreItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          disableRule(span.rule.getId());
-        }
-      });
-      popup.add(ignoreItem);
-    }
-
-    List<Rule> disabledRules = getDisabledRules();
-    if (!disabledRules.isEmpty()) {
-      JMenu activateRuleMenu = new JMenu(messages.getString("guiActivateRule"));
-      addDisabledRulesToMenu(disabledRules, activateRuleMenu);
-      popup.add(activateRuleMenu);
     }
 
     if (span != null) {
@@ -530,102 +480,6 @@ class LanguageToolSupport {
     });
     popup.show(textComponent, event.getPoint().x, event.getPoint().y);
 
-  }
-
-  private List<Rule> getDisabledRules() {
-    List<Rule> disabledRules = new ArrayList<>();
-    for (String ruleId : languageTool.getDisabledRules()) {
-      Rule rule = getRuleForId(ruleId);
-      if (rule == null || rule.isDefaultOff()) {
-        continue;
-      }
-      disabledRules.add(rule);
-    }
-    Collections.sort(disabledRules, new Comparator<Rule>() {
-      @Override
-      public int compare(Rule r1, Rule r2) {
-        return r1.getDescription().compareTo(r2.getDescription());
-      }
-    });
-    return disabledRules;
-  }
-
-  private void addDisabledRulesToMenu(List<Rule> disabledRules, JMenu menu) {
-    if (disabledRules.size() <= MAX_RULES_NO_CATEGORY_MENU) {
-      createRulesMenu(menu, disabledRules);
-      return;
-    }
-
-    TreeMap<String, ArrayList<Rule>> categories = new TreeMap<>();
-    for (Rule rule : disabledRules) {
-      if (!categories.containsKey(rule.getCategory().getName())) {
-        categories.put(rule.getCategory().getName(), new ArrayList<Rule>());
-      }
-      categories.get(rule.getCategory().getName()).add(rule);
-    }
-
-    JMenu parent = menu;
-    int count = 0;
-    for (String category : categories.keySet()) {
-      count++;
-      JMenu submenu = new JMenu(category);
-      parent.add(submenu);
-      createRulesMenu(submenu, categories.get(category));
-
-      if(categories.keySet().size() <= MAX_CATEGORIES_PER_MENU) {
-        continue;
-      }
-
-      //if menu contains MAX_CATEGORIES_PER_MENU-1, add a `more` menu
-      //but only if the remain entries are more than one
-      if ((count % (MAX_CATEGORIES_PER_MENU - 1) == 0)
-              && (categories.keySet().size() - count > 1)) {
-        JMenu more = new JMenu(messages.getString("guiActivateRuleMoreCategories"));
-        parent.add(more);
-        parent = more;
-      }
-    }
-  }
-
-  private void createRulesMenu(JMenu parent, List<Rule> rules) {
-    JMenu menu = parent;
-    int count = 0;
-
-    for (Rule rule : rules) {
-      count++;
-      final String id = rule.getId();
-      JMenuItem ruleItem = new JMenuItem(rule.getDescription());
-      ruleItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          enableRule(id);
-        }
-      });
-      menu.add(ruleItem);
-
-      if(rules.size() <= MAX_RULES_PER_MENU) {
-        continue;
-      }
-
-      //if menu contains MAX_RULES_PER_MENU-1, add a `more` menu
-      //but only if the remain entries are more than one
-      if((count % (MAX_RULES_PER_MENU - 1) == 0)
-              && (rules.size() - count > 1)) {
-        JMenu more = new JMenu(messages.getString("guiActivateRuleMoreRules"));
-        menu.add(more);
-        menu = more;
-      }
-    }
-  }
-
-  Rule getRuleForId(String ruleId) {
-    final List<Rule> allRules = languageTool.getAllRules();
-    for (Rule rule : allRules) {
-      if (rule.getId().equals(ruleId)) {
-        return rule;
-      }
-    }
-    return null;
   }
 
   private void _actionPerformed(ActionEvent e) {
@@ -734,19 +588,6 @@ class LanguageToolSupport {
       }
     }
     updateHighlights();
-  }
-
-  private void updateHighlights(String disabledRule) {
-    List<Span> spans = new ArrayList<>();
-    List<RuleMatch> matches = new ArrayList<>();
-    for (RuleMatch match : ruleMatches) {
-      if (match.getRule().getId().equals(disabledRule)) {
-        continue;
-      }
-      matches.add(match);
-      spans.add(new Span(match));
-    }
-    prepareUpdateHighlights(matches, spans);
   }
 
   private void updateHighlights(List<RuleMatch> matches) {
