@@ -41,8 +41,8 @@ public class DemoFrame extends JFrame {
 
         pack();
 
-//        MyLanguageToolSupport lt = new MyLanguageToolSupport(this, jTextArea);
-        MyLanguageToolSupport lt = new MyLanguageToolSupport(this, jTextArea,
+//        LanguageToolSupport lt = new MyLanguageToolSupport(this, jTextArea);
+        LanguageToolSupport lt = new LanguageToolSupport(this, jTextArea,
         		new UndoRedoSupport(jTextArea, JLanguageTool.getMessageBundle()));
         // TODO : BUG if we correct with right click, we cannot undo without change the text
         lt.setLanguage(Languages.getLanguageForLocale(new Locale("en", "US")));
