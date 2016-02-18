@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.languagetool.JLanguageTool;
-import org.languagetool.gui.Main;
 import org.languagetool.language.BritishEnglish;
 import org.languagetool.language.French;
 import org.languagetool.rules.RuleMatch;

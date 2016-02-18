@@ -134,6 +134,8 @@ class LanguageToolSupport {
       //FIXME
       //no need to read again the file
       config = new Configuration(new File(System.getProperty("user.home")), CONFIG_FILE, language);
+      // TODO : see why the file C:\Users\Nicolas\CONFIG_FILE is used
+      // TODO : and how it is created. By using the standalone?
       //config still contains old language, update it
       this.config.setLanguage(language);
       languageTool = new MultiThreadedJLanguageTool(language, config.getMotherTongue());
@@ -144,19 +146,6 @@ class LanguageToolSupport {
   }
 
   private void init(Language language) {
-    try {
-      config = new Configuration(new File(System.getProperty("user.home")), CONFIG_FILE, null);
-    } catch (IOException ex) {
-      throw new RuntimeException("Could not load configuration", ex);
-    }
-
-    /**
-     * Warm-up: we have a lot of lazy init in LT, which causes the first check to
-     * be very slow (several seconds) for languages with a lot of data and a lot of
-     * rules. We just assume that the default language is the language that the user
-     * often uses and init the LT object for that now, not just when it's first used.
-     * This makes the first check feel much faster:
-     */    
     reloadLanguageTool(language);
 
     redPainter = new HighlightPainter(Color.red);
