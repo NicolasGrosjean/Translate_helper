@@ -59,6 +59,7 @@ import org.languagetool.rules.RuleMatch;
 class LanguageToolSupport {
 
   static final String CONFIG_FILE = ".languagetool.cfg";
+  static final int MAX_REPLACE = 5;
 
   private final JTextComponent textComponent;
   private final List<RuleMatch> ruleMatches;
@@ -256,10 +257,15 @@ class LanguageToolSupport {
 
       popup.add(new JSeparator());
 
+      int replaceItemNumber = 0;
       for (String r : span.replacement) {
+    	replaceItemNumber++;
         ReplaceMenuItem item = new ReplaceMenuItem(r, span);
         popup.add(item);
         item.addActionListener(actionListener);
+        if (replaceItemNumber == MAX_REPLACE) {
+        	break;
+        }
       }
     }
 

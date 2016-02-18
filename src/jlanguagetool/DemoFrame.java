@@ -46,7 +46,6 @@ public class DemoFrame extends JFrame {
         		new UndoRedoSupport(jTextArea, JLanguageTool.getMessageBundle()),
         		Languages.getLanguageForLocale(new Locale("en", "US")));
         // TODO : BUG if we correct with right click, we cannot undo without change the text
-        // TODO : Set a maximum of suggestions
     }
 
     public static void main(String args[]) {
