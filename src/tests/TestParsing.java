@@ -59,9 +59,6 @@ public class TestParsing {
 		Assert.assertEquals("Incorrect file found!",
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/several_lines_to_end.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/Titles - Celtic.csv",
-				filePaths.removeFirst().replace("\\", "/"));
 	}
 
 	@Test
@@ -99,6 +96,9 @@ public class TestParsing {
 
 	@Test
 	public void codeLineToTranslate() {
+		/**
+		 * @Warning: This code corresponding to this test is not yet implemented
+		 */
 		ParsedFile f = parsedFiles.getFile("code_line_to_translate.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
