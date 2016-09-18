@@ -56,6 +56,12 @@ public class TestParsing {
 		Assert.assertEquals("Incorrect file found!",
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/refused_copy.csv",
 				filePaths.removeFirst().replace("\\", "/"));
+		Assert.assertEquals("Incorrect file found!",
+				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/several_lines_to_end.csv",
+				filePaths.removeFirst().replace("\\", "/"));
+		Assert.assertEquals("Incorrect file found!",
+				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/Titles - Celtic.csv",
+				filePaths.removeFirst().replace("\\", "/"));
 	}
 
 	@Test

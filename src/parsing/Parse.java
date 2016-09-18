@@ -186,7 +186,13 @@ public class Parse {
 			// Parse the file line by line
 			while (line.hasNext()) {
 				lineNumber++;
-				expression = new Scanner(line.next());
+				String sLine = line.next();
+				// If the line is empty, skip the line
+				if (sLine.equals("")) {
+					continue;
+				}
+				// Otherwise parse it
+				expression = new Scanner(sLine);
 				expression.useDelimiter(";");
 				// The ID is the first expression of the line
 				String ID = "";
