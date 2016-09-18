@@ -86,7 +86,16 @@ public class Percentage extends JProgressBar implements TableCellRenderer {
 	 */
 	public static Comparator<String> comparator = new Comparator<String>() {
 		public int compare(String s1, String s2) {
-			return Integer.compare(stringToValue(s1), stringToValue(s2));
+			int i1 = stringToValue(s1);
+			int i2 = stringToValue(s2);
+			// Order firstly by percentage
+			if (i1 != i2) {
+				return Integer.compare(i1, i2);
+			} else {
+				// In case of equality, order by line total number
+				return Integer.compare(Integer.valueOf(s1.split("/")[1]),
+						Integer.valueOf(s2.split("/")[1]));
+			}
 		}
 	};
 
