@@ -68,6 +68,7 @@ public class Window extends JFrame {
 	private final ConfigStorage configuration;
 	private String fakeTranslationFile;
 	private String acceptedLoanwordFile;
+	private JPanel wsInformation;
 
 	// Table
 	private JTable table;
@@ -164,6 +165,9 @@ public class Window extends JFrame {
 		if (table != null) {
 			container.remove(tableSP);
 		}
+		if (wsInformation != null) {
+			container.remove(wsInformation);
+		}
 
 		// The working session can be modified
 		// (it is null at the window initialization)
@@ -172,7 +176,7 @@ public class Window extends JFrame {
 		}
 
 		// Display the information about the working session
-		JPanel wsInformation = new JPanel(new BorderLayout());
+		wsInformation = new JPanel(new BorderLayout());
 		JLabel currentConfiguration = new JLabel("Current configuration: " +
 				"directory=" + ws.getDirectory() + "       " +
 				"from " + ws.getSourceLanguage() + " to " + ws.getDestinationLanguage());
