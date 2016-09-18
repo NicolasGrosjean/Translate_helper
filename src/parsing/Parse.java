@@ -199,15 +199,8 @@ public class Parse {
 				if (expression.hasNext()) {
 					ID = expression.next();
 				}
-				if (ID.equals("")) {
-					// The line is invalid
-					expression.close();
-					line.close();
-					throw new IllegalArgumentException("Line " + lineNumber
-							+ " of the file " + filePath + " is invalid");
-				}
-				if (ID.charAt(0) == '#') {
-					// The line is commented => nothing to do
+				if ((ID.equals("")) || (ID.charAt(0) == '#')) {
+					// The line is not used => nothing to do
 				} else if (ID.equals("CODE")) {
 					//TODO : change the integers
 				} else {
