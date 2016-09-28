@@ -33,6 +33,9 @@ public class TestParsing {
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/accepted_copy.csv",
 				filePaths.removeFirst().replace("\\", "/"));
 		Assert.assertEquals("Incorrect file found!",
+				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/accepted_copy_with_accents.csv",
+				filePaths.removeFirst().replace("\\", "/"));
+		Assert.assertEquals("Incorrect file found!",
 				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/code_line.csv",
 				filePaths.removeFirst().replace("\\", "/"));
 		Assert.assertEquals("Incorrect file found!",
@@ -178,6 +181,18 @@ public class TestParsing {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
 	}
+
+	@Test
+	public void acceptedCopyWithAccents() {
+		ParsedFile f = parsedFiles.getFile("accepted_copy_with_accents.csv");
+		if (f != null) {
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
+		} else {
+			Assert.assertEquals("File not parsed", true, false); // Exception
+		}
+	}
+
 
 	@Test
 	public void fake_translation() {
