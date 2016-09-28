@@ -73,14 +73,14 @@ Antes
 Ostrogoths
 Jutes
 Jute
-GÃ¶taland
+Götaland
 Sahara
 Goths
 Lupine
 Rheged
 Huns
 Oualata
-GÃ¶taland
+Götaland
 Hephthalites
 Xiong
 Bedouins
@@ -109,7 +109,7 @@ Paris
 Res Publica
 Sitifensis
 Kernev
-VerkÃ¢na
+Verkâna
 Khuzestan
 Kidarite
 Elmet
@@ -120,14 +120,14 @@ Tamim
 Anizzah
 Doukkala
 Astures
-GÃ¶taland
+Götaland
 Durocotorum
 Maxima Sequanorum
 Histria
 Bodensee
 Rhodope
 Garamantes
-VerkÃ¢na
+Verkâna
 Ferghana
 Wessex
 Auvergne
@@ -148,7 +148,7 @@ Khazar
 Kirghiz
 Kara-Khitan
 Khitan
-GÃ¶ktÃ¼rk
+Göktürk
 Tuyuhun
 Tiele
 Gaochang
@@ -184,7 +184,7 @@ Ernakh
 Vakhtang
 Clovis
 Standard
-DieudonnÃ©
+Dieudonné
 Imazunen
 Normal
 Proconsul
