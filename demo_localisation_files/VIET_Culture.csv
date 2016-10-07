@@ -1,0 +1,111 @@
+gallic;Gallic;gaulois;Gallic;;Gallic;;;;;;;;;x
+north_african;North African;North African;North African;;North African;;;;;;;;;x
+bulgar;Bulgar;bulgare;Wolgabulgaren;;Volga-Bolgar;;;;;;;;;x
+berber;Berber;berbère;Berber;;Bereber;;;;;;;;;x
+nubian;Nubian;nubien;Nubier;;Nubio;;;;;;;;;x
+pashtun;Pashtun;pachtoune;Paschtunen;;Pashtún;;;;;;;;;x
+azeri;Azeri;azéri;Aserischen;;Azeri;;;;;;;;;x
+udmurt;Udmurt;oudmourte;Udmurtischen;;Udmurt;;;;;;;;;x
+tajik;Tajik;tadjik;Tadschiken;;Tayiko;;;;;;;;;x
+sicilian;Sicilian;sicilien;Sizilianer;;Siciliano;;;;;;;;;x
+siculo_arabic;Siculo-Arabic;sicilienne-arabe;Sizilianisch-arabischen;;Siciliano-Árabe;;;;;;;;;x
+griko;Griko;griko;Griko;;Griko;;;;;;;;;x
+norsewelsh;Norse-Briton;Norse-Briton;Norse-Briton;;Norse-Briton;;;;;;;;;x
+somali;Somali;somali;Somali;;Somalí;;;;;;;;;x
+mossi;Mossi;mossi;Mossi;;Mossi;;;;;;;;;x
+tatar;Crimean Tatar;tatar de Crimée;Crimean Tatar;;Crimean Tatar;;;;;;;;;x
+sudanese_arabic;Sudanese;soudanais;Sudanese;;Sudanese;;;;;;;;;x
+chagatai;Chagatai;chagatai;Chagatai;;Chagatai;;;;;;;;;x
+swahili;Swahili;swahili;Swahili;;Swahili;;;;;;;;;x
+indian;Indian;indien;Indian;;Indian;;;;;;;;;x
+gujarati;Gujarati;gujarati;Gujarati;;Gujarati;;;;;;;;;x
+icelandic;Icelandic;;;;;;;;;;;;;x
+tamil;Tamil;;;;;;;;;;;;;x
+sindhi;Sindhi;;;;;;;;;;;;;x
+sinic;East Asian;;;;;;;;;;;;;x
+chinese;Chinese;;;;;;;;;;;;;x
+japanese;Japanese;;;;;;;;;;;;;x
+korean;Korean;;;;;;;;;;;;;x
+vietnamese;Vietnamese;;;;;;;;;;;;;x
+bactrian;Bactrian;;;;;;;;;;;;;x
+sogdian;Sogdian;sogdien;;;;;;;;;;;;x
+serer;Serer;;;;;;;;;;;;;x
+crimean_jewish;Crimean Jewish;;;;;;;;;;;;;x
+pictish;Pictish;;;;;;;;;;;;;x
+uighur;Uighur;;;;;;;;;;;;;x
+songhai;Songhai;;;;;;;;;;;;;x
+cumbrian;Cumbrian;;;;;;;;;;;;;x
+khitan;Khitan;;;;;;;;;;;;;x
+norsegael;Norse-Gael;;;;;;;;;;;;;x
+tibetan;Tibetan;;;;;;;;;;;;;x
+beja;Beja;;;;;;;;;;;;;x
+nilotic;Nilotic;;;;;;;;;;;;;x
+daju;Daju;;;;;;;;;;;;;x
+zaghawa;Zaghawa;;;;;;;;;;;;;x
+kanuri;Kanuri;;;;;;;;;;;;;x
+hausa;Hausa;;;;;;;;;;;;;x
+central_african;Central African;;;;;;;;;;;;;x
+chinese_jewish;Chinese Jewish;;;;;;;;;;;;;x
+bukharim;Bukharan Jewish;;;;;;;;;;;;;x
+falashim;Beta Israel;;;;;;;;;;;;;x
+southeast_asian;Southeast Asian;;;;;;;;;;;;;x
+malay;Malay;;;;;;;;;;;;;x
+khmer;Khmer;;;;;;;;;;;;;x
+cham;Cham;;;;;;;;;;;;;x
+javanese;Javanese;;;;;;;;;;;;;x
+tagalog;Tagalog;;;;;;;;;;;;;x
+moluccan;Moluccan;;;;;;;;;;;;;x
+andaman;Andamanese;;;;;;;;;;;;;x
+andamanese;Andamanese;;;;;;;;;;;;;x
+papuan_group;Papuan;;;;;;;;;;;;;x
+papuan;Papuan;;;;;;;;;;;;;x
+taiwanese;Taiwanese;;;;;;;;;;;;;x
+formosan;Formosan;;;;;;;;;;;;;x
+ryukyuan;Ryukyuan;;;;;;;;;;;;;x
+indian_jewish;Indian Jewish;;;;;;;;;;;;;x
+konkani;Konkani;;;;;;;;;;;;;x
+sinhala;Sinhala;;;;;;;;;;;;;x
+lombard;Lombard;;;;;;;;;;;;;x
+punjabi;Punjabi;;;;;;;;;;;;;x
+tocharian;Tocharian;;;;;;;;;;;;;x
+himalayan;Himalayan;;;;;;;;;;;;;x
+guanche;Guanche;;;;;;;;;;;;;x
+maghreb_jewish;Maghrebi Jewish;;;;;;;;;;;;;x
+italian_jewish;Italian Jewish;;;;;;;;;;;;;x
+caucasian_jewish;Caucasian Jewish;;;;;;;;;;;;;x
+yemenite_jewish;Yemenite Jewish;;;;;;;;;;;;;x
+norsebriton;Norse-Briton;;;;;;;;;;;;;x
+cornish;Cornish;;;;;;;;;;;;;x
+coptic;Coptic;;;;;;;;;;;;;x
+assyrian;Assyrian;;;;;;;;;;;;;x
+crimean_gothic;Crimean Gothic;;;;;;;;;;;;;x
+parsi;Parsi;;;;;;;;;;;;;x
+khotanese;Khotanese;;;;;;;;;;;;;x
+frisian;Frisian;;;;;;;;;;;;;x
+afar;Afar;;;;;;;;;;;;;x
+#ETC;;;;;;;;;;;;;;x
+baron_andalusian_arabic;Wâli;Wâli;Wâli;;Valí;;;;;;;;;x
+baron_female_andalusian_arabic;Wâlia;Walia;Wâlia;;Valía;;;;;;;;;x
+barony_of_andalusian_arabic;Wilayah of;Wilaya de;Wilayah von;;Vilayato de;;;;;;;;;x
+count_andalusian_arabic;Sheikh;Cheikh;Scheich;;Jeque;;;;;;;;;x
+count_female_andalusian_arabic;Shaykhah;Cheykha;Shaykhah;;Jequesa;;;;;;;;;x
+county_of_andalusian_arabic;Sheikhdom of;Cheikat de;Scheichtum von;;Dominio del Jeque;;;;;;;;;x
+duke_andalusian_arabic;Emir;Émir;Emir;;Emir;;;;;;;;;x
+duke_female_andalusian_arabic;Emira;Émirat;Emirin;;Emira;;;;;;;;;x
+duchy_of_andalusian_arabic;Emirate of;Émirat de;Emirat von;;Emirato de;;;;;;;;;x
+king_andalusian_arabic;Sultan;Sultan;Sultan;;Sultán;;;;;;;;;x
+king_female_andalusian_arabic;Sultana;Sultane;Sultanin;;Sultana;;;;;;;;;x
+kingdom_of_andalusian_arabic;Sultanate of;Sultanat de;Sultanat von;;Sultanato de;;;;;;;;;x
+barony_andalusian_arabic;Wilayah;Wilaya;Wilayah;;Vilayato;;;;;;;;;x;
+county_andalusian_arabic;Sheikhdom;Cheikat;Scheichtum;;Dominio del Jeque;;;;;;;;;x;
+duchy_andalusian_arabic;Emirate;Émirat;Emirat;;Emirato;;;;;;;;;x;
+kingdom_andalusian_arabic;Sultanate;Sultanat;Sultanat;;Sultanato;;;;;;;;;x;
+job_chancellor_andalusian_arabic;Grand Vizier;Grand Vizir;Großwesir;;Gran Visir;;;;;;;;;x
+emperor_andalusian_arabic;Badshah;Badshah;Badshah;;Badshah;;;;;;;;;x
+emperor_berber;Badshah;Badshah;Badshah;;Badshah;;;;;;;;;x
+title_tanist_saxon;Aetheling;Aetheling;Aetheling;;Aetheling;;;;;;;;;x
+title_tanist_welsh;Edling;Edling;Edling;;Edling;;;;;;;;;x
+arabic;Semitic;Semitic;Semitic;Semitic;;;;;;;;;x
+#duke_lombard;Prince;Prince;Prinz;;Príncipe;;;;;;;;;x
+#duke_female_lombrd;Princess;Princesse;Prinzessin;;Princesa;;;;;;;;;x
+#duchy_of_lombard;Principality of;Principauté de;Fürstentum;;Principado de;;;;;;;;;x

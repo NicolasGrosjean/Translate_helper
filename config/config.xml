@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translateHelper>
+  <workingSession name="DEMO" directory="demo_localisation_files" source="ENGLISH" destination="FRENCH" />
+</translateHelper>

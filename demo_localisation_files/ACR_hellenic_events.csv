@@ -1,0 +1,105 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+#Event/decision/modifier definitions;;;;;;;;;;;;;;x
+###### Hellenic revival;;;;;;;;;;;;;;x
+nick_the_apostate;the Apostate;;;;;;;;;;;;;x
+opinion_no_hellenic_state_religion;Did not establish a Hellenic state religion;N'a pas choisi l'hellénisme comme religion d'état;;;;;;;;;;;;x
+opinion_no_forced_hellenic_state_religion;Did not enforce a Hellenic state religion;N'a pas forcé l'hellénisme en tant que religion d'état;;;;;;;;;;;;x
+opinion_hellenic_state_religion;Established a Hellenic state religion;A établi l'hellénisme comme religion d'état;;;;;;;;;;;;x
+opinion_forced_hellenic_state_religion;Enforced a Hellenic state religion;A forcé l'hellénisme comme religion d'état;;;;;;;;;;;;x
+opinion_adopted_hellenic_state_religion;Adopted the Hellenic state religion;A adopté l'hellénisme d'état;;;;;;;;;;;;x
+opinion_rejected_hellenic_state_religion;Rejected the Hellenic state religion;A rejeté l'hellénisme d'état;;;;;;;;;;;;x
+ancrel.2000.desc;A stuttering, but clearly brilliant, teacher of philosophy from the University of Constantinople has approached you and offered his services as an advisor. There is no doubt at court that he is a genius, and could provide much good council. However, some believe his reverence for Plato borders on the heretical. What is your answer?;;;;;;;;;;;;;x
+ancrel.2000.a;The Empire could use wise council in this time of need.;;;;;;;;;;;;;x
+ancrel.2000.a.tt;Michael 'the Stammerer' joins your court.;;;;;;;;;;;;;x
+ancrel.2000.b;I need swords and coin, not words!;;;;;;;;;;;;;x
+ancrel.2000.b.tt;The professor of philosophy stays at the University.;;;;;;;;;;;;;x
+ancrel.2002.desc;The professor who petitioned to join your court, [From.GetFirstNameWithNick], has come to you with a request. He is currently making a bid for the office of Hypatos Philosphon, "Chief Philosopher." This would make him the head of the University. "From this position I can better serve you and the Empire," he says. The burghers will not like this interference in local affairs.;;;;;;;;;;;;;x
+ancrel.2002.a;I'm the [Root.GetTitle], the burghers will learn this.;;;;;;;;;;;;;x
+ancrel.2002.b;I can't involve myself in this.;;;;;;;;;;;;;x
+ancrel.2005.desc;You've been approached by [From.GetTitledFirstName]. He says that the priesthood is concerned with the curriculum employed by [FromFrom.GetFirstName] and they believe the philosophy he teaches is too much like the pagan teachings of the old empire. [From.GetFirstName] implores you to deal with the matter. You could force [FromFrom.GetFirstName] to make a public profession of faith and restore the old curriculum, or allow him to continue.;;;;;;;;;;;;;x
+ancrel.2005.a;I support [FromFrom.GetFirstName]'s decisions...;;;;;;;;;;;;;x
+ancrel.2005.b;We need unity of faith in these dark times...;;;;;;;;;;;;;x
+ancrel.2007.desc;[From.GetFirstNameWithNick], the Hypatos Philosophon, has come to you with a proposal. "Once, Rome ruled the world. Now we are a shadow of that Empire. Nay, a sliver of a shadow. Since Constantine, we have been shattered, ever shrinking. What changed? Our gods. Our greatest threat, the Saracens, is a twisted form of the faith we have espoused for centuries. As if they are a dark mirror we look into. I say they are punishment for abandoning the gods of our ancestors. Now, in our darkest hour, may be our last chance to save our people and return to the old ways!";;;;;;;;;;;;;x
+ancrel.2007.a;Your words ring true, old friend. Perhaps now is the time...;;;;;;;;;;;;;x
+ancrel.2007.b;Heretic! Be gone from my sight!;;;;;;;;;;;;;x
+ancrel.2007.c;You are not wrong, but perhaps something different is in order...;;;;;;;;;;;;;x
+EVTDESCancrel.2101;As you are sitting down to dinner, your [Root.GetLordSpiritualName] comes up to you and tells you that [From.GetBestName] has strayed from the true faith. Claiming to have found enlightenment in the classical texts of ancient Rome and Greece, [From.GetSheHe] has forsaken [Root.Religion.GetRandomGodName] and professed his devotion to [From.Religion.GetRandomGodName].;Alors que vous vous asseyez pour dîner, votre [Root.GetLordSpiritualName] s'approche et vous explique que [From.GetBestName] s'est écarté de la vraie foi. Prétendant avoir trouvé l'illumination dans les textes classiques de la Rome et Grèce antique, [From.GetSheHe] a délaissé [Root.Religion.GetRandomGodName] et proclamé sa dévotion à [From.Religion.GetRandomGodName].;;;;;;;;;;;;x
+EVTOPTAancrel.2101;My [From.GetSonDaughter] did WHAT?;[From.GetSonDaughter] a fait QUOI ?;;;;;;;;;;;;x
+EVTOPTBancrel.2101;[From.GetSheHe] did WHAT?;[From.GetSheHe] a fait QUOI ?;;;;;;;;;;;;x
+EVTOPTCancrel.2101;Tell him I'd like to know more about these ancient gods.;;;;;;;;;;;;x
+EVTDESCancrel.2102;With the restoration of the religious institutions of old, you have the opportunity to re-establish the old imperial state religion once again, but your Christian vassals are not likely to appreciate such a decree.;Suite à la restauration des institutions religieuses du passé, vous avez l'opportunité de rétablir l'ancienne religion impériale à nouveau, mais vos vassaux chrétiens ne vont probablement pas apprécier un tel décret.;;;;;;;;;;;;x
+EVTOPTAancrel.2102;We must restore the glory of the old faith!;Nous devons restaurer la gloire de foi antique !;;;;;;;;;;;;x
+EVTTOOLTIPAancrel.2102;Parts of the Empire will convert to the re-established imperial state religion.\n;Des parties de l'Empire vont se convertir à la religion impériale rétablie.\n;;;;;;;;;;;;x
+EVTOPTBancrel.2102;Let my vassals choose their own faith.;Laissons me vassaux choisir leur propre foi.;;;;;;;;;;;;x
+EVTDESCancrel.2103;[From.GetTitledName] has endeavored to restore the ancient faith to the Empire, and demands that you convert.;[From.GetTitledName] s'efforce de restaurer la foi antique de l'Empire, et exige votre conversion.;;;;;;;;;;;;x
+EVTOPTAancrel.2103;Glory to [From.Religion.GetRandomGodName] and the Empire!;Gloire à [From.Religion.GetRandomGodName] et à l'Empire !;;;;;;;;;;;;x
+EVTOPTBancrel.2103;May [Root.Religion.GetRandomGodName] protect us.;Que [Root.Religion.GetRandomGodName] nous protège.;;;;;;;;;;;;x
+###### Pontifex Maximus;;;;;;;;;;;;;;x
+pontifex_restored;Pontificate Restored;;;;;;;;;;;;;x
+recreate_pontificate;Restore the Pontificate Maxima;;;;;;;;;;;;;x
+recreate_pontificate_desc;Restore the priesthood of the Hellenic faith and declare yourself the Pontifex Maximus!;;;;;;;;;;;;;x
+EVTNAMEancrel.2104;Return of the Pontificate Maxima;;;;;;;;;;;;;x
+EVTDESCancrel.2104;After an interlude lasting a few centuries following the adoption of Christianity in Rome, Hellenism has returned as the state religion of [From.PrimaryTitle.GetName] and [From.GetTitledFirstName] has ordered the reinstitution of the Collegium Pontificum.\n\nThe Pontificate Maxima will serve as the highest religious authority in the Hellenic world, with powers ranging from the blessing of future military expeditions to the nomination of Vestals and flamens.;;;;;;;;;;;;;x
+EVTOPTAancrel.2104;Rejoice!;Réjouissons-nous !;Frohlocket!;;¡Regocijaos!;;;;;;;;;x
+EVTOPTBancrel.2104;Heathens!;Païens !;Ketzer!;;¡Paganos!;;;;;;;;;x
+###### Mani Penninsula;;;;;;;;;;;;;;x
+EVTDESCancrel.2105;You have heard rumours about a group of Hellenic peasants on the Mani Penninsula who continue to practice their old ways. There is much debate at court on how large that group is, and how much their practices may have evolved since the old times...;;;;;;;;;;;;;x
+EVTOPTAancrel.2105;This is an opportunity to better know my realm.;;;;;;;;;;;;;x
+EVTOPTBancrel.2105;How stupid, the Hellenic faith is long dead !;;;;;;;;;;;;;x
+travel_penninsula;You travel to the penninsula...;;;;;;;;;;;;;x
+EVTDESCancrel.2106;Reaching the tip of the penninsula, you discover in the hills a waterless and innaccesible place where the Maniots live. As you approach, you notice an old [Root.target_maniot_priest.GetManWoman] who seems to be waiting for you. [Root.target_maniot_priest.GetSheHeCap] explains that the gods have sent signs of your arrival.;;;;;;;;;;;;;x
+EVTOPTAancrel.2106;An augur, how facinating!;;;;;;;;;;;;;x
+listen_to_maniot;Listen to the story of the augur;;;;;;;;;;;;;x
+EVTOPTBancrel.2106;Enough, imprison [Root.target_maniot_priest.GetHerHim] and fetch a [Root.Religion.GetPriestTitle] to convert those pagans.;;;;;;;;;;;;;x
+EVTDESCancrel.2107;The augur describes how the Maniots managed to keep the knowledge of the old Hellenic practices. [Root.target_maniot_priest.GetSheHeCap] has forseen that a ruler would one day restore the old faith, and build a mighty Empire that would last centuries.;;;;;;;;;;;;;x
+EVTOPTAancrel.2107;Obviously the gods have spoken, I shall embrace my destiny!;;;;;;;;;;;;;x
+EVTOPTBancrel.2107;Funny how augurs always tell you what you want to hear...;;;;;;;;;;;;;x
+###### Hellenic Legion;;;;;;;;;;;;;;x
+EVTTITLEancrel.2109;The Rise of the Hellenic Faith;;;;;;;;;;;;;x
+EVTDESCancrel.2109;Secret adherents to the ancient beliefs of the Greek and Roman people have been coming forward in droves. Holding onto the ancient customs of Rome and led by a Centurio, they refer to themselves as the Hellenic Legion. Sworn to push back the tide of the Sons of Abraham, these zealots are prepared to be the sword arm of a new Hellenism.;;;;;;;;;;;;;x
+EVTOPTAancrel.2109;Interesting...;;;;;;;;;;;;;x
+###### Roman revival;;;;;;;;;;;;;;x
+was_refused_roman_revival;Roman revival refused;S'est vu refusé la renaissance romaine;;;;;;;;;;;;x
+was_allowed_roman_revival;Roman revival allowed;S'est vu autorisé la renaissance romaine;;;;;;;;;;;;x
+refused_roman_revival;Refused Roman revival;A refusé la renaissance romaine;;;;;;;;;;;;x
+allowed_roman_revival;Allowed Roman revival;A autorisé la renaissance romaine;;;;;;;;;;;;x
+EVTDESCancrel.2152;As you are holding court, [From.GetTitledFirstName] approaches you with a petition supported by several prominent burghers in [From.PrimaryTitle.GetName], asking for your permission to restore the rights and customs befitting citizens of a Roman city.;Tandis que vous recevez la cour, [From.GetTitledFirstName] vous approche avec une pétition signée par plusieurs citoyens éminents de [From.PrimaryTitle.GetName], demandant la permission de restaurer les droits et coutumes convenant aux citoyens d'une ville romaine.;;;;;;;;;;;;x
+EVTOPTAancrel.2152;Of course, Roman customs are far superior to [From.Capital.Culture.GetName]!;Bien sur, les coutumes romaines sont bien meilleures que [From.Capital.Culture.GetName] !;;;;;;;;;;;;x
+EVTOPTBancrel.2152;If that is the will of the people, so be it.;Si c'est le volonté du peuple, qu'il en soit ainsi.;;;;;;;;;;;;x
+EVTOPTCancrel.2152;No, [Root.Culture.GetName] customs are superior and should be maintained!;Non, les coutumes [Root.Culture.GetName] sont meilleures et doivent être conservées !;;;;;;;;;;;;x
+EVTOPTDancrel.2152;No, I will not have any walking relics in my realm!;Non, je ne veut pas de reliques vivantes sur mon domaine !;;;;;;;;;;;;x
+EVTOPTAancrel.2153;An excellence idea, let's get started immediately!;Une excellente idée, commençons immédiatement !;;;;;;;;;;;;x
+EVTOPTBancrel.2153;You'll have my permission;Vous aurez ma permission.;;;;;;;;;;;;x
+EVTDESCancrel.2154;[From.GetTitledFirstName] has approved the petition of [From.From.GetTitledFirstName] and allowed the burghers in [From.From.PrimaryTitle.GetName] to restore the rights and customs they think befitting citizens of a Roman city.;[From.GetTitledFirstName] a approuvé la pétition de [From.From.GetTitledFirstName] et autorisé les citoyens de [From.From.PrimaryTitle.GetName] à restaurer les droits et coutumes qu'ils pensent convenables pour des citoyens d'une ville romaine.;;;;;;;;;;;;x
+EVTOPTAancrel.2154;Excelent, let's get started immediately!;Excellent, mettons nous au travail tout de suite !;;;;;;;;;;;;x
+EVTOPTBancrel.2154;Good for them, I guess...;C'est bon pour eux, je suppose...;;;;;;;;;;;;x
+EVTOPTCancrel.2154;Great news!;Excellente nouvelle !;;;;;;;;;;;;x
+EVTDESCancrel.2156;The burghers in [From.From.PrimaryTitle.GetName] have chosen to restore most customs practiced in old Roman times. With time, Roman culture may spread to the whole province.;Les citoyens de [From.From.PrimaryTitle.GetName] ont choisi de restaurer la plupart des coutumes pratiquées au temps de la Rome antique. Avec du temps, la culture romaine pourrait se propager à toute la province.;;;;;;;;;;;;x
+EVTOPTAancrel.2156;Perhaps I should do the same;Peut être je devrais faire de même;;;;;;;;;;;;x
+EVTDESCancrel.2158;With the restoration of Roman customs in [From.PrimaryTitle.GetName] the populace in [From.Capital.GetName] have embraced Roman culture.;Suite a la restauration de la culture romaine à [From.PrimaryTitle.GetName], la population de [From.Capital.GetName] a adopté la culture romaine.;;;;;;;;;;;;x
+#;;;;;;;;;;;;;;x
+EVTDESCancrel.2110;Without the Flaminica Dialis to assist you in your duties, the ancient religious laws require that you retire.;Sans la Flaminica Dialis pour vous assister dans vos fonctions, la loi religieuse antique exige que vous démissionniez.;;;;;;;;;;;;x
+EVTDESCancrel.2111;Without the Flaminica Martialis to assist you in your duties, the ancient religious laws require that you retire.;Sans la Flaminica Martialis pour vous assister dans vos fonctions, la loi religieuse antique exige que vous démissionniez.;;;;;;;;;;;;x
+EVTDESCancrel.2112;Without the Flaminica Quirinalis to assist you in your duties, the ancient religious laws require that you retire.;Sans la Flaminica Quirinalis pour vous assister  dans vos fonctions, la loi religieuse antique exige que vous démissionniez.;;;;;;;;;;;;x
+#;;;;;;;;;;;;;;x
+nominate_vestalis_decision;Nominate [Root.GetTitledFirstName] as Vestalis;Nommer [Root.GetTitledFirstName] en tant que Vestale;;;;;;;;;;;;x
+nominate_vestalis_decision_desc;Nominate [Root.GetFirstName] for 30 years of dedicated service to the goddess Vesta. If accepted, she will abandon all claims at temporal power.;Nommer [Root.GetFirstName] pour 30 ans au service de Vesta.;;;;;;;;;;;;x
+opinion_nominated_vestalis;Nominated a Vestalis;A nommé une Vestale;;;;;;;;;;;;x
+EVTDESCancrel.2121;After 30 years of devoted service to Vesta the time has come for you to retire from public office.;Après 30 ans dévoués au service de Vesta, le moment est venu pour vous de vous retirer de votre fonction publique.;;;;;;;;;;;;x
+EVTDESCancrel.2124;One of your vassals has nominated a child for service to Vesta.;L'un de vos vassaux a nommé un enfant au service de Vesta;;;;;;;;;;;;x
+EVTOPTAancrel.2124;Appoint her as Vestalis;La nommer en tant que Vestale;;;;;;;;;;;;x
+EVTOPTBancrel.2124;I can find someone better;Vous pouvez trouver mieux.;Ich kann einen Besseren finden;;Puedo hallar a alguien mejor;;;;;;;;;x
+EVTOPTCancrel.2124;I'm afraid there is no opening in the College of the Vestales.;Il n'y a malheureusement pas de poste libre dans le Collège des Vestales.;;;;;;;;;;;;x
+EVTDESCancrel.2240;A local Augur has come to your court to perform a public Auguria, the ceremony is held in a plain outside the castle walls and while approaching clouds make you worrisome, the Augur will not postpone it. After observing the entrails of many sacrifices, the Augur is about to proclaim the will of the gods when a bolt of lightning strikes him violently!;;;;;;;;;;;;;x
+EVTOPTAancrel.2240;It seems the gods spoke for themselves;;;;;;;;;;;;;x
+EVTOPTBancrel.2240;Am I next?;;;;;;;;;;;;;x
+EVTDESCancrel.2241;While watching the latest play from a local philosopher, you notice that some of the actors are completely drunk. This is an insult to your honor and to the art of the Theatre, though the man in charge assures you they will be taken care of, it is your duty to take charge.;;;;;;;;;;;;;x
+EVTOPTAancrel.2241;Kick them out!;;;;;;;;;;;;;x
+EVTOPTBancrel.2241;Actually, this strengthens the play;;;;;;;;;;;;;x
+ancrel.2010.title;The Sacred Band Founded;La Bande Sacrée Fondée;The Sacred Band Founded;;The Sacred Band Founded;;;;;;;;;x
+ancrel.2010.desc;We have founded the Sacred Band, a closed brotherhood of soldiers whose iron discipline shall defend Hellenic believers everywhere.;Nous avons fondé la Bande Sacrée, une fraternité de soldats triés sur le volet dont la discipline de fer viendra à la défense des disciples helléniques où qu'ils soient.;We have founded the Sacred Band, a closed brotherhood of soldiers whose iron discipline shall defend Hellenic believers everywhere.;;We have founded the Sacred Band, a closed brotherhood of soldiers whose iron discipline shall defend Hellenic believers everywhere.;;;;;;;;;x
+ancrel.2010.a;Excellent...;;;;;;;;;;;;;x
+ancrel.2011.title;The Sacred Band;La Bande Sacrée;The Sacred Band Founded;;The Sacred Band Founded;;;;;;;;;x
+ancrel.2011.desc;The Sacred Band are a brotherhood of soldiers noted for their stalwart discipline and unwavering resolution who have sworn to never rest until the Gods of Olympus are granted the respect they are due.;La Bande Sacrée est une fraternité de soldats connus pour leur discipline, leur loyauté et leur détermination sans faille, qui ont fait le serment de ne jamais trouver le repos jusqu'à ce que les Dieulx de l'Olympe reçoivent le respect qu'ils méritent.;The Sacred Band are a brotherhood of soldiers noted for their stalwart discipline and unwavering resolution who have sworn to never rest until the Gods of Olympus are granted the respect they are due.;;The Sacred Band are a brotherhood of soldiers noted for their stalwart discipline and unwavering resolution who have sworn to never rest until the Gods of Olympus are granted the respect they are due.;;;;;;;;;x
+ancrel.2011.a;Very good!;;;;;;;;;;;;;x
+ancrel.2011.b;This is grave news...;;;;;;;;;;;;;x
