@@ -75,18 +75,16 @@ public class Window extends JFrame {
 	private int tableRowHeight;
 	private JScrollPane tableSP;
 
-	private String[] columnToolTips = {null, null,
-		    "Number of lines which don't have any source text",
-		    "Percentage of lines which are translated", null};
+	private String[] columnToolTips = { null, null, "Number of lines which don't have any source text",
+			"Percentage of lines which are translated", null };
 
-	public Window(String title, int width, int height, WorkingSession ws,
-			int tableRowHeight, ConfigStorage configuration,
-			String fakeTranslationFile, String acceptedLoanwordFile) {
+	public Window(String title, int width, int height, WorkingSession ws, int tableRowHeight,
+			ConfigStorage configuration, String fakeTranslationFile, String acceptedLoanwordFile) {
 		this.tableRowHeight = tableRowHeight;
 		this.configuration = configuration;
 		this.fakeTranslationFile = fakeTranslationFile;
 		this.acceptedLoanwordFile = acceptedLoanwordFile;
-	
+
 		// Window
 		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,12 +100,12 @@ public class Window extends JFrame {
 		if (ws != null) {
 			loadWorkingSession(ws);
 		}
-				
+
 		// Container adding
 		this.setContentPane(container);
 
 		// New icon image
-		//setIconImage(Toolkit.getDefaultToolkit().getImage("ressources/icon.png"));
+		// setIconImage(Toolkit.getDefaultToolkit().getImage("ressources/icon.png"));
 
 		// Menus
 		JMenuBar windowMenuBar = new JMenuBar();
@@ -127,7 +125,7 @@ public class Window extends JFrame {
 		wsMenu.add(wsOpenRecently);
 		wsMenu.addSeparator();
 		// Modify current working session
-		wsModify= new JMenuItem("Modify");
+		wsModify = new JMenuItem("Modify");
 		wsModify.setEnabled(configuration.hasWorkingSession());
 		wsModify.addActionListener(new DialogWorkingSession(false));
 		wsMenu.add(wsModify);
@@ -155,7 +153,9 @@ public class Window extends JFrame {
 
 	/**
 	 * Load a working session : parse the directory and create the JTable
-	 * @param ws The Working session to load
+	 * 
+	 * @param ws
+	 *            The Working session to load
 	 */
 	private void loadWorkingSession(WorkingSession ws) {
 		// Set the new current working session
@@ -177,40 +177,41 @@ public class Window extends JFrame {
 
 		// Display the information about the working session
 		wsInformation = new JPanel(new BorderLayout());
-		JLabel currentConfiguration = new JLabel("Current configuration: " +
-				"directory=" + ws.getDirectory() + "       " +
-				"from " + ws.getSourceLanguage() + " to " + ws.getDestinationLanguage());
+		JLabel currentConfiguration = new JLabel("Current configuration: " + "directory=" + ws.getDirectory()
+				+ "       " + "from " + ws.getSourceLanguage() + " to " + ws.getDestinationLanguage());
 		wsInformation.add(currentConfiguration);
 		container.add(wsInformation, BorderLayout.NORTH);
-		
+
 		// Table of the files
-		String columnTitles[] = {"", "File", "Missing source text", "Translated", " "};
+		String columnTitles[] = { "", "File", "Missing source text", "Translated", " "};
+		// WARNING the columnTitles need to be different that's why the last is "  " and not " "
 		Parse p = new Parse(ws, fakeTranslationFile, acceptedLoanwordFile);
 		DiagnosticTableModel tableModel = new DiagnosticTableModel(p.toArray(), columnTitles);
 		table = new JTable(tableModel) {
 			// Override createDefaultTableHeader to have column tool tips
-			// Source : http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#headertooltip
-		    protected JTableHeader createDefaultTableHeader() {
-		        return new JTableHeader(columnModel) {
-		            public String getToolTipText(MouseEvent e) {
-		                java.awt.Point p = e.getPoint();
-		                int index = columnModel.getColumnIndexAtX(p.x);
-		                int realIndex = columnModel.getColumn(index).getModelIndex();
-		                return columnToolTips[realIndex];
-		            }
-		        };
-		    }
+			// Source :
+			// http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#headertooltip
+			protected JTableHeader createDefaultTableHeader() {
+				return new JTableHeader(columnModel) {
+					public String getToolTipText(MouseEvent e) {
+						java.awt.Point p = e.getPoint();
+						int index = columnModel.getColumnIndexAtX(p.x);
+						int realIndex = columnModel.getColumn(index).getModelIndex();
+						return columnToolTips[realIndex];
+					}
+				};
+			}
 		};
 		// Table configuration
 		table.setRowHeight(tableRowHeight);
 		table.getColumn(columnTitles[0]).setMaxWidth(20);
 		table.getColumn(columnTitles[1]).setPreferredWidth(400);
-		table.getColumn(columnTitles[2]).setCellRenderer(new ColoredInteger());
+		table.getColumn(columnTitles[2]).setCellRenderer(new ColoredInteger(ws.getDirectory()));
 		table.getColumn(columnTitles[2]).setPreferredWidth(90);
 		table.getColumn(columnTitles[3]).setCellRenderer(new Percentage());
 		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
-		table.getColumn(columnTitles[4]).setCellEditor(new DetailsButton(new JCheckBox(),
-				!ws.getDestinationLanguage().isNone()));
+		table.getColumn(columnTitles[4])
+				.setCellEditor(new DetailsButton(new JCheckBox(), !ws.getDestinationLanguage().isNone()));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
 
 		// The table can be sorted with the column headers
@@ -218,8 +219,7 @@ public class Window extends JFrame {
 			table.setAutoCreateRowSorter(true);
 		} else {
 			// Sort the third column according the percentage
-			TableRowSorter<DiagnosticTableModel> sorter =
-					new TableRowSorter<DiagnosticTableModel>(tableModel);
+			TableRowSorter<DiagnosticTableModel> sorter = new TableRowSorter<DiagnosticTableModel>(tableModel);
 			sorter.setComparator(3, Percentage.comparator);
 			table.setRowSorter(sorter);
 		}
@@ -257,9 +257,10 @@ public class Window extends JFrame {
 
 	/**
 	 * Use the itextpdf library to print pdf
+	 * 
 	 * @param outputFileName
-	 * @throws DocumentException 
-	 * @throws FileNotFoundException 
+	 * @throws DocumentException
+	 * @throws FileNotFoundException
 	 */
 	private void printPDF(String title, String outputFileName) throws FileNotFoundException, DocumentException {
 		Document document = new Document();
@@ -268,19 +269,19 @@ public class Window extends JFrame {
 
 		// Put the title
 		Font titleFont = FontFactory.getFont("Times-Roman", 30, Font.BOLD);
-        Paragraph titleParagraph = new Paragraph(title, titleFont);
-        titleParagraph.setSpacingAfter(20);
-        titleParagraph.setAlignment(Element.ALIGN_CENTER);
-        document.add(titleParagraph);
+		Paragraph titleParagraph = new Paragraph(title, titleFont);
+		titleParagraph.setSpacingAfter(20);
+		titleParagraph.setAlignment(Element.ALIGN_CENTER);
+		document.add(titleParagraph);
 
-        // Put a description
-        Font descriptionFont = FontFactory.getFont("Times-Roman", 14, Font.BOLD);
-        Paragraph descriptionParagraph = new Paragraph("Diagnostic done with " +
-        		ws.getSourceLanguage() + " as source language and " +
-        		ws.getDestinationLanguage() + " as destination language.", descriptionFont);
-        descriptionParagraph.setSpacingAfter(20);
-        descriptionParagraph.setAlignment(Element.ALIGN_CENTER);
-        document.add(descriptionParagraph);
+		// Put a description
+		Font descriptionFont = FontFactory.getFont("Times-Roman", 14, Font.BOLD);
+		Paragraph descriptionParagraph = new Paragraph("Diagnostic done with " + ws.getSourceLanguage()
+				+ " as source language and " + ws.getDestinationLanguage() + " as destination language.",
+				descriptionFont);
+		descriptionParagraph.setSpacingAfter(20);
+		descriptionParagraph.setAlignment(Element.ALIGN_CENTER);
+		document.add(descriptionParagraph);
 
 		// Print the table
 		PdfPTable pdfTable = null;
@@ -289,25 +290,25 @@ public class Window extends JFrame {
 		} else {
 			pdfTable = new PdfPTable(3);
 		}
-		int columnNumber = (ws.getDestinationLanguage().isNone())? table.getColumnCount() - 2 : table.getColumnCount() - 1;
+		int columnNumber = (ws.getDestinationLanguage().isNone()) ? table.getColumnCount() - 2
+				: table.getColumnCount() - 1;
 		for (int j = 1; j < columnNumber; j++) {
 			pdfTable.addCell(table.getColumnName(j));
 		}
 		for (int i = 0; i < table.getRowCount(); i++) {
 			// Only selected files are printed
-			if (table.getValueAt(i, 0) instanceof Boolean &&
-					!(Boolean)table.getValueAt(i, 0)) {
+			if (table.getValueAt(i, 0) instanceof Boolean && !(Boolean) table.getValueAt(i, 0)) {
 				continue;
 			}
 
 			// File name (= anchor, i.e internal link)
 			ParsedFile f = null;
 			if (table.getValueAt(i, 1) instanceof ParsedFile) {
-				f = (ParsedFile)table.getValueAt(i, 1);
+				f = (ParsedFile) table.getValueAt(i, 1);
 			}
 			PdfPCell cell = null;
-			if (f.getNumberMissingSourceLines() > 0 ||
-					(f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
+			if (f.getNumberMissingSourceLines() > 0
+					|| (f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
 				Anchor fileName = new Anchor(table.getModel().getValueAt(i, 1).toString());
 				fileName.setReference("#" + table.getModel().getValueAt(i, 1).toString());
 				cell = new PdfPCell(fileName);
@@ -320,20 +321,21 @@ public class Window extends JFrame {
 			// Number of missing source text lines
 			Object value = table.getModel().getValueAt(i, 2);
 			cell = new PdfPCell(new Phrase(value.toString()));
-			int iValue = (Integer)value;
+			int iValue = (Integer) value;
 			if (iValue == 0) {
 				cell.setBackgroundColor(BaseColor.GREEN);
-			} else{
+			} else {
 				cell.setBackgroundColor(BaseColor.RED);
 			}
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pdfTable.addCell(cell);
 
-			// Translation percentage done if the language destination is specified
+			// Translation percentage done if the language destination is
+			// specified
 			if (!ws.getDestinationLanguage().isNone()) {
 				value = table.getModel().getValueAt(i, 3);
 				cell = new PdfPCell(new Phrase(value.toString()));
-				iValue = Percentage.stringToValue((String)value);
+				iValue = Percentage.stringToValue((String) value);
 				if (iValue == 100) {
 					cell.setBackgroundColor(BaseColor.GREEN);
 				} else if (iValue >= 50) {
@@ -350,9 +352,9 @@ public class Window extends JFrame {
 		}
 		float[] relativeWidths;
 		if (ws.getDestinationLanguage().isNone()) {
-			relativeWidths = new float[] {0.75f, 0.25f};
+			relativeWidths = new float[] { 0.75f, 0.25f };
 		} else {
-			relativeWidths = new float[] {0.55f, 0.25f, 0.2f};
+			relativeWidths = new float[] { 0.55f, 0.25f, 0.2f };
 		}
 		pdfTable.setWidths(relativeWidths);
 		pdfTable.setWidthPercentage(100f);
@@ -363,7 +365,7 @@ public class Window extends JFrame {
 		Paragraph indicationParagraph = new Paragraph(
 				"Click on the filename (in case of missing problems) to see the details", italicFont);
 		indicationParagraph.setAlignment(Element.ALIGN_CENTER);
-        document.add(indicationParagraph);
+		document.add(indicationParagraph);
 
 		// New page
 		document.newPage();
@@ -372,23 +374,22 @@ public class Window extends JFrame {
 		Paragraph detailTitleParagraph = new Paragraph(title + " - details", titleFont);
 		detailTitleParagraph.setSpacingAfter(20);
 		detailTitleParagraph.setAlignment(Element.ALIGN_CENTER);
-        document.add(detailTitleParagraph);
+		document.add(detailTitleParagraph);
 		Font font = FontFactory.getFont("Times-Roman", 12);
 		Font fontboldFile = FontFactory.getFont("Times-Roman", 20, Font.BOLD);
 		Font fontboldType = FontFactory.getFont("Times-Roman", 16, Font.BOLD);
-		for(int i = 0; i < table.getRowCount(); i++) {
+		for (int i = 0; i < table.getRowCount(); i++) {
 			// Only details of selected files are printed
-			if (table.getValueAt(i, 0) instanceof Boolean &&
-					!(Boolean)table.getValueAt(i, 0)) {
+			if (table.getValueAt(i, 0) instanceof Boolean && !(Boolean) table.getValueAt(i, 0)) {
 				continue;
 			}
 
 			ParsedFile f = null;
 			if (table.getValueAt(i, 1) instanceof ParsedFile) {
-				f = (ParsedFile)table.getValueAt(i, 1);
+				f = (ParsedFile) table.getValueAt(i, 1);
 			}
-			if (f.getNumberMissingSourceLines() > 0 ||
-					(f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
+			if (f.getNumberMissingSourceLines() > 0
+					|| (f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {
 				Anchor fileAnchor = new Anchor(":");
 				fileAnchor.setName(f.getName());
 				Paragraph fileName = new Paragraph(f.getName(), fontboldFile);
@@ -396,35 +397,35 @@ public class Window extends JFrame {
 				document.add(fileName);
 			}
 			if (f.getNumberMissingSourceLines() > 0) {
-				document.add(new Paragraph("Missing source text (" +
-						f.getNumberMissingSourceLines() + " elements)", fontboldType));
+				document.add(new Paragraph("Missing source text (" + f.getNumberMissingSourceLines() + " elements)",
+						fontboldType));
 				document.add(new Paragraph(f.getMissingSourceText(), font));
 			}
 			if (f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone()) {
-				document.add(new Paragraph("Missing translation (" +
-						f.getNumberLineToTranslate() + " elements)", fontboldType));
+				document.add(new Paragraph("Missing translation (" + f.getNumberLineToTranslate() + " elements)",
+						fontboldType));
 				document.add(new Paragraph(f.getMissingTranslation(), font));
 			}
 		}
 		document.close();
 
-		JOptionPane.showMessageDialog(this, "The file " + outputFileName +
-				" was successfully generated.", "", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "The file " + outputFileName + " was successfully generated.", "",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static void setLookAndFeel(String lf) {
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if (lf.equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+				if (lf.equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (InstantiationException e) {
+		} catch (ClassNotFoundException e) {
+		} catch (UnsupportedLookAndFeelException e) {
+		} catch (IllegalAccessException e) {
 		}
-		catch (InstantiationException e) {}
-		catch (ClassNotFoundException e) {}
-		catch (UnsupportedLookAndFeelException e) {}
-		catch (IllegalAccessException e) {}
 	}
 
 	class DialogWorkingSession implements ActionListener {
@@ -436,19 +437,16 @@ public class Window extends JFrame {
 
 		public void actionPerformed(ActionEvent arg0) {
 
-
 			WorkingSessionDialog wSDialog;
 			try {
 				if (newWS) {
-					wSDialog = new WorkingSessionDialog(Window.this,
-							"New configuration", true);
+					wSDialog = new WorkingSessionDialog(Window.this, "New configuration", true);
 				} else {
-					wSDialog = new WorkingSessionDialog(Window.this,
-							"Modify configuration", true, ws);
+					wSDialog = new WorkingSessionDialog(Window.this, "Modify configuration", true, ws);
 				}
 				WorkingSession workingSession = wSDialog.getWorkingSession();
 
-				if (workingSession !=null) {
+				if (workingSession != null) {
 					// The user defined a working session
 					loadWorkingSession(workingSession);
 
@@ -496,7 +494,7 @@ public class Window extends JFrame {
 	}
 
 	class SelectAllListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {	
+		public void actionPerformed(ActionEvent arg0) {
 			for (int i = 0; i < table.getRowCount(); i++) {
 				table.setValueAt(new Boolean(true), i, 0);
 			}
@@ -520,7 +518,7 @@ public class Window extends JFrame {
 			boolean selectedFiles = false;
 			for (int i = 0; i < table.getRowCount(); i++) {
 				if (table.getValueAt(i, 0) instanceof Boolean) {
-					if ((Boolean)table.getValueAt(i, 0)) {
+					if ((Boolean) table.getValueAt(i, 0)) {
 						selectedFiles = true;
 					} else {
 						unselectedFiles = true;
@@ -528,10 +526,12 @@ public class Window extends JFrame {
 				}
 			}
 			if (!selectedFiles) {
-				JOptionPane.showMessageDialog(null, "At least one file must be selected!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "At least one file must be selected!", "ERROR",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			} else if (unselectedFiles) {
-				JOptionPane.showMessageDialog(null, "Only selected files will appear in the PDF!", "WARNING", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Only selected files will appear in the PDF!", "WARNING",
+						JOptionPane.WARNING_MESSAGE);
 			}
 
 			PdfDialog dialog = new PdfDialog(Window.this, "Export to PDF", true, ws.getName());
