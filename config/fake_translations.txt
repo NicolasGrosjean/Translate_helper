@@ -1,3 +1,7 @@
 ENGLISH
 FRENCH
+SPANISH
+GERMAN
 X
+x
+blou
