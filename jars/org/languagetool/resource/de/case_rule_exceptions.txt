@@ -1,226 +1,209 @@
 # CaseRule exceptions - phrases (regular expressions) to be spelled uppercase
-Alexanders? de[rmns] Großen?
-Als Erstes
+Afrikanischen? Union
+# (Alexander|Friedrich|Karl)s? de[rmns] Großen?
+# Als Erstes|Nächstes
+Aktuellen? Stunde
+Allgemeinen? Geschäftsbedingungen
+Allgemeine[nr]? Deutsche[nr]? Automobilclub
 Alt und Jung
 Amnesty International
-Arabischen? Halbinsel
-Arktische[rn]? Ozeans?
-Atlantische[rn]? Ozeans?
-aus dem Nichts
-Auswärtige[ns]? Amte?s?
+Apokalyptische[nr]? Reiters?
+Astronomischen? Einheit(en)?
+Arabischen? Halbinsel|Liga|Emiraten?
+Arabische[nr]? Frühlings?
+(Arktische|Atlantische|Pazifische|Stille)[rn]? Ozeans?
+Auswärtige[mns]? Amte?s?
+Bayerische[sn] Staats.*|Landesamt(es|s)?
+Bayerischen? Staats.*|Verdienstmedaille|Rundfunks?|Ministerpräsident(en)?
+Bayerische[nr]? Hof|Walds?
+(Bekennend|Evangelisch|Katholisch)en? Kirche
+Blaue[nr]? Reiters?|Band(s|es)?|Planet(en)?|Brief[es]?|Moschee|Enzians?
+Bögen
+Braune[rn]? Zwerge?s?
 Britischen? Inseln
+Bundesminister(s?|iums?|in) für Arbeit und Soziales
 Bürgerliche[ns]? Gesetzbuche?s?
 Chinesischen? Mauer
 das Hier und Heute
-der Hohen Schule
-die Hohe Schule
+[dD]as [fF]ür und [Ww]ider
+[dD]as [Pp]ro und [Kk]ontra
+Demokratischen? Republik|Partei|Volksrepublik
+([Dd]e[rns]|[Ii]m) Englische[rn]? Gartens?
+die Hohe Pforte|Schule
+der Hohen Pforte|Schule
+Deutschen? Museums?
 Digital Video
-Dreißigjährigen? Kriege?s?
+(Dreißig|Hundert|Sieben)jährigen? Kriege?s?
 Dritten? Welt
+(Osmanischen?|Dritten?) Reich(es|s)?
 Drum und Dran
+Duisburger
+Dunklen? Materie|Energie
+Eidgenössischen? Technischen? Hochschule
 ein absolutes Muss
-ein Muss
-ein Vielfaches
-Erste[ern]? Mai
+[eE]ine (gute|glatte|schlechte) Eins|Zwei|Drei|Vier|Fünf|Sechs
+[eE]ine Eins|Zwei|Drei|Vier|Fünf|Sechs
+Eiserne[ns]? Kreuz
+Eisernen Kreuzes
+Eisernen? Kreuze|Vorhangs?
+Erste[rn]? Mai|Liga
 Erste[rnm]? Weltkriege?s?
-Erster Weltkrieg
-etwas Neues
-Europäischen? Gemeinschaft|Parlamente?s?|Union
+Essener
+Europäischen? Fonds|(Atomg|G)emeinschaft|Parlamente?s?|Union|Gerichtshof(es|s)?|Patentamt(es|s)?|Wirtschaftsgemeinschaft|Kommission|Rat(es|s)?|Zentralbank|Menschenrechtskonvention|Agentur|Arzneimittel-Agentur
 Ewige[rn]? Stadt
-Ferne[rn]? Osten
-Französischen? Revolution
-Friedrichs? de[snm] Großen
-Gelbe Karte
-Gelben Karte
-Gelben Karten
+Fast Food
+Ferne[rn]? Ostens?
+(Franzö|Rus)sischen? Revolution
+Frankfurter Allgemeinen?
+Freien? Universität
+Geheimen? Staatspolizei
+Gelben? Karten?|Trikots?|Rüben?
+Gelbe[nr]? Fluss(es)?|Engel[ns]?|Seiten?|Sacks?
+Gelobten? Lands?
+Gewerbetreibende[rn]?
+Gleich und Gleich
 Gleicher unter Gleichen
-Goldene Schnitt
+Gleiches mit Gleichem
+Goldene[nr]? Schnitt|Bulle|Palme
+Goldenen Schnitte?s|Zwanzigern?
 Goldene Zwanziger
-Goldenen Schnitt
-Goldenen Schnittes
-Goldenen Schnitts
-Goldenen Zwanziger
-Goldenen Zwanzigern
-Goldener Schnitt
+Goldene[sn]? Zeitalters?|(Ehren|Verdienst)zeichens?
+Gordische[nr]? Knotens?
+Göttlichen? Komödie
+Großen? Antillen|Preis|Koalition|Kreisstadt|Mauer|Wagen|Zapfenstreichs?|Belts?
+Großen Bären|Kurfürsten|Teiche?s|Wagens
+Großer? Bär|Kurfürst|Teich
+Große[ns]? (Bundesv|V)erdienstkreuz
+Großen (Bundesv|V)erdienstkreuzes
 Groß und Klein
-Große Antillen
-Große Bär
-Große Koalition
-Große Kurfürst
-Große Teich
-Große Wagen
-Großen Antillen
-Großen Bären
-Großen Koalition
-Großen Kurfürsten
-Großen Teiches
-Großen Teichs
-Großen Wagen
-Großen Wagens
-Großer Bär
-Großer Kurfürst
-Großer Teich
-Haute Couture
-Heilige Römische Reich
-Heiligen Römischen Reich
-Heiligen Römischen Reiches
-Heiligen Römischen Reichs
-Heiliges Römisches Reich
-im Großen und Ganzen
-Im Großen und Ganzen
-im Guten wie im Schlechten
-Im Guten wie im Schlechten
-im Hier und Jetzt
-im Weiteren
-Indische Ozean
-Indischen Ozean
-Indischen Ozeans
-Indischer Ozean
-Internationale Währungsfonds
-Internationalen Filmfestspiele
-Internationalen Filmfestspielen
-Internationalen Währungsfonds
-Internationaler Währungsfonds
-Japanische Alpen
-Japanische Meer
-Japanischen Alpen
-Japanischen Meer
-Japanisches Meer
-Jung und Alt
-Kalte Krieg
-Kalten Krieg
-Kalten Krieges
-Kalter Krieg
-kaum Neues
-Kleine Antillen
-Kleine Bär
-Kleinen Antillen
-Kleiner Bär
-Las Vegas
-Letzte Wille
-Letzten Willen
-Letzten Willens
-Letzter Wille
-Mittlere Osten
-Mittleren Osten
-Mittlerer Osten
-Nahen Osten
-Naher Osten
-Neue Welt
-Neuen Welt
-Neuer Welt
-nichts Besseres
-nichts Neues
-nichts Schöneres
-nichts Wichtigeres
-Oberste Gerichtshof
-Obersten Gerichtshof
-Obersten Gerichtshofes
-Obersten Gerichtshofs
-Oberster Gerichtshof
-ohne Wenn und Aber
-Olympische Komitee
-Olympische Spiele
-Olympischen Komitee
-Olympischen Komitees
-Olympischen Sommerspiele
-Olympischen Sommerspielen
-Olympischen Spiele
-Olympischen Spielen
-Olympischen Winterspiele
-Olympischen Winterspielen
-Pazifische Ozean
-Pazifischen Ozean
-Pazifischen Ozeans
-Pazifischer Ozean
-Regierende Bürgermeister
-Regierende Bürgermeisterin
-Regierenden Bürgermeister
-Regierenden Bürgermeisterin
-Regierenden Bürgermeisters
-Regierender Bürgermeister
-Rheinische Post
-Rheinischen Post
-Römische Reich Deutscher Nation
-Römischen Reich
-Römischen Reich Deutscher Nation
-Römischen Reiches
-Römischen Reiches Deutscher Nation
-Römischen Reichs
-Römisches Reich
-Rote Liste
-Roten Liste
-Rote Karte
-Rote Kreuz
-Rote Meer
-Rote Planet
-Rote Riesen
-Roten Karte
-Roten Karten
-Roten Kreuz
-Roten Kreuzes
-Roten Meer
-Roten Meeres
-Roten Planeten
-Roten Riesen
-Roter Planet
-Roter Riese
-Rotes Kreuz
-Rotes Meer
-Russische Föderation
-Russischen Föderation
-Russischen Reich
-Russischen Reiches
-Russischen Reichs
-Russisches Reich
-Sächsische Schweiz
-Sächsischen Schweiz
-Sächsischer Schweiz
-Schwarze Brett
-Schwarze Bretter
-Schwarze Meer
-Schwarzen Brett
-Schwarzen Bretter
-Schwarzen Brettern
-Schwarzen Brettes
-Schwarzen Meer
-Schwarzen Meeres
-Schwarzes Brett
-Schwarzes Meer
-Süddeutsche Zeitung
-Süddeutschen Zeitung
-Tel Aviv
-Tschechische Republik
-Tschechischen Republik
-Vereinten Nationen
-viel Neues
-wenig Neues
-Wenn und Aber
-Westfälische Friede
-Westfälische Frieden
-Westfälische Pforte
-Westfälischen Frieden
-Westfälischen Friedens
-Westfälischen Pforte
-Wissenschaftliche Dienst
-Wissenschaftlichen Dienst
-Wissenschaftlichen Dienstes
-Zehn Gebote
-Zehn Geboten
-Zweite Deutsche Fernsehen
-Zweitem Weltkrieg
-Zweiten Deutschen Fernsehens
-Zweiten Weltkrieg
-Zweiten Weltkrieges
-Zweiten Weltkriegs
-Zweiter Weltkrieg
-Zweites Deutsches Fernsehen
-vorgestern|gestern|heute|morgen|übermorgen Früh
-(Rote[nr]?|Schwarze[rn]?) Johannisbeeren?
-Gelbe[rn] Engel[ns]?
-Gelbe[rn] Seiten?
-Gelbe[nr] Fluss(es)?
-Unbefleckten? Empfängnis
-Statistischen? Bundesamt(s|es)?
+Großwild
+Grüne[rn] Punkts?|Woche
 Hängenden Gärten
-([Dd]er|[Im]m|[Dd]es) Englische[rn]? Gartens?
+Großes vor
+Haute Couture
+Heiligen? Drei Königen?
+Heiligen Römischen Reich|Reiche?s
+Heilige Römische Reich
+Heiliges Römisches Reich
+Hohe[nr]? Rat|Kommissar|Vertreter|Tatra
+Hohen Rate?s|Kommissars|Vertreters
+Hotel Vier Jahreszeiten
+[iI]m Großen und Ganzen
+[iI]m Guten wie im Schlechten
+([iI]m|das) Hier und Jetzt
+[iI]m Innere?n (eine[rs]|de[rs])
+[iI]m Nirgendwo|Weiteren|Schweiße
+Indischen Ozeans
+Indische[nr]? Ozean
+Inneren? Medizin|Gürtel|Mongolei
+Inoffizielle[rn]? Mitarbeiter[sn]?
+Internationalen? Filmfestspielen?|Atomenergie(-Organisation|behörde|organisation)|Fernmeldeunion|Komitees?|.*tag
+Internationale[nr]? Währungsfonds|(Seeg|Strafg|Sportg|Militärg|G)erichtshofs?
+Internationalen (Seeg|Strafg|Sportg|G)erichtshofe?s
+Internationale[ns]? Olympische[ns]? Komitees?
+Islamische[rn]? Staats?
+Islamischen Staate?s
+Japanische[ns]? Alpen|Meer
+Jung und Alt
+Jüngstes? Gericht
+Jüngsten Gerichts
+Jüngsten? Tags?
+Kalten Kriege?s
+Kalte[mnr]? Krieg
+Katholischen? Liga|Universität
+kaum Neues
+Kleinen? Antillen|Anfragen?|Zeitung
+Kleiner? Bär
+(Kommunist|Sozialdemokrat)ischen? Partei
+#Künstliche[rn]? Intelligenz -- according to Duden this is no exception K89
+Königlichen? Hoheit
+Las Palmas
+Letzte[nr]? Wille
+Letzten Willens
+Macht Stehende
+Manschetten?
+Medizinischen? Hochschule|Fakultät
+Militärische[rn]? Abschirmdiensts?
+Mittlere[nr]? Ostens?|Rings?
+Moby Dick
+Mittwochfrüh
+[Mm]it Ach und
+(Mon|Diens|Donners|Frei|Sams|Sonn)tagfrüh
+Muttersprachler[ns]?
+Nahe[nr]? Ostens?
+Nationale[nr]? Sicherheitsrat(e?s)?|Volksarmee
+Neue[nr]? Welt|Markt
+Neuen? Testaments?|Rundschau
+Norddeutsche[nr]? Bund(e?s)?
+Obersten Gerichtshofe?s
+Oberste[nr]? Gerichtshof|Heeresleitung|Bundesgerichts?
+Olympischen? Komitee|Dorf|Sommerspiele|Flagge|Winterspielen?
+Olympischen Komitees|Sommerspielen|Spielen|Dorfe?s
+Olympische[nr]? Spiele
+Palästinensischen? Autonomie.+
+Parlamentarische[rn]? Rats?|Rates|Kontrollgremiums?|Untersuchungsausschuss(es)?
+Persische[nr]? Golfs?
+Physikalische[nr]? Gesellschaft(en)?
+Regierenden Bürgermeisters
+Regierende[mnr]? Bürgermeister(in)?
+Rheinischen? Post
+Römischen Reich Deutscher Nation
+Römischen Reiche?s|Verträgen?
+Römischen Reiches Deutscher Nation
+Römische[ns]? Reich
+Römische Reich Deutscher Nation
+Roten? Beete|Karten?|Khmer|Liste|Armee|Platz|Rüben?
+Rote[nms]? Kreuz|Rathaus
+Roten Meeres|Planeten|Kreuzes
+Rote[nr]? Riesen?|Milan
+(Rote[nr]?|Schwarze[rn]?) Johannisbeeren?
+Rote[ns]? Meer
+Roter? Planet
+Roten Planeten
+Russischen? Föderation
+Russischen Reiche?s
+Russische[ns]? Reich
+(Sächsische|Fränkische)[nr]? Schweiz
+Sanitär
+Schwäbisch Halls?
+Schwarze Bretter|Löcher
+Schwarzen Brettern?|Brette?s|Meere?s|Lochs|Löchern
+Schwarze[mns]? Brett|Meer|Loch
+Seiner? Exzellenz
+.+ischen? Akademie der
+Seltene[nr]? Erden
+Single Malt
+Sozialistischen? Sowjetrepublik(en)?|(Einheits)?[pP]artei
+Spanischen? Grippe|Erbfolgekriegs?|Bürgerkriegs?|Niederlande|Treppe|Fliege|Reitschule
+Staatlichen? Universität
+Staatsangehörige[rn]?
+Statistische[mns]? Bundesamt(s|es)?
+Statistische[rn]?|Theoretische[rn]? Physik
+Steinerne[sn]? Meer
+Steinernen? Brücke
+Stiege
+Süddeutschen? Zeitung
+Technische[ns]? Hilfswerks?
+Technischen? (Fachh|H)ochschulen?|Universität
+Technische[nr]? Direktors?
+Tel Aviv
+T(schech|ürk)ischen? Republik
+Trank
+Unbefleckten? Empfängnis
+Unter den Linden
+Vereinigten? Arabischen? Emirate
+Vereinten Nationen
+[vV]orgestern|[Gg]estern|[Hh]eute|[Mm]orgen|[Üü]bermorgen Früh
+Weh und Ach
+Weiße[nr]? Zwerge?|Sonntags?|Tod
+Wenn und Aber
+Westfälischen? Frieden?|Pforte
+Westfälischen Friedens
+Wilde[nr]? Westens?
+Wissenschaftlichen? Dienst
+Wissenschaftlichen Dienste?s
+Zehn Geboten?
+Zweite Deutsche Fernsehen
+Zweite[mnr]? Weltkrieg
+Zweiten Weltkriege?s
+Zweite[ns]? Deutsche[ns]? Fernsehen

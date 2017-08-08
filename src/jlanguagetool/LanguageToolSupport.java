@@ -115,16 +115,16 @@ class LanguageToolSupport {
         languageTool.disableRule(ruleId);
       }
     }
-    final Set<String> disabledCategories = config.getDisabledCategoryNames();
+    /*final Set<String> disabledCategories = config.getDisabledCategoryNames();
     if (disabledCategories != null) {
       for (final String categoryName : disabledCategories) {
         languageTool.disableCategory(categoryName);
       }
-    }
+    }*/
     final Set<String> enabledRules = config.getEnabledRuleIds();
     if (enabledRules != null) {
       for (String ruleName : enabledRules) {
-        languageTool.enableDefaultOffRule(ruleName);
+        //languageTool.enableDefaultOffRule(ruleName);
         languageTool.enableRule(ruleName);
       }
     }
@@ -556,7 +556,7 @@ class LanguageToolSupport {
       msg = tmp;//Tools.shortenComment(tmp);
       desc = match.getMessage();
       replacement = new ArrayList<>();
-      replacement.addAll(match.getSuggestedReplacements());
+      replacement.addAll(match.getSuggestedReplacements()); // TODO: Override this for French
       rule = match.getRule();
     }
   }

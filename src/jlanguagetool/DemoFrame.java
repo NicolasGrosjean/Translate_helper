@@ -42,9 +42,9 @@ public class DemoFrame extends JFrame {
         pack();
 
 //        LanguageToolSupport lt = new MyLanguageToolSupport(this, jTextArea);
-        LanguageToolSupport lt = new LanguageToolSupport(jTextArea, 
+        new LanguageToolSupport(jTextArea, 
         		new UndoRedoSupport(jTextArea, JLanguageTool.getMessageBundle()),
-        		Languages.getLanguageForLocale(new Locale("en", "US")));
+        		Languages.getLanguageForLocale(new Locale("fr", "FR")));
         // TODO : BUG if we correct with right click, we cannot undo without change the text
     }
 

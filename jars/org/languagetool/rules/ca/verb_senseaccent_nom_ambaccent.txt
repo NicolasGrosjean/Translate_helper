@@ -398,8 +398,8 @@ guardo;guardó;NCMS000
 guio;guió;NCMS000
 guixo;guixó;NCMS000
 habit;hàbit;NCMS000
-habitat;hàbitat;NCMS000
-habitats;hàbitats;NCMP000
+#habitat;hàbitat;NCMS000
+#habitats;hàbitats;NCMP000
 hernia;hèrnia;NCFS000
 hernies;hèrnies;NCFP000
 hibrid;híbrid;NCMS000
@@ -711,6 +711,8 @@ secundaries;secundàries;NCFP000
 sego;segó;NCMS000
 sentencia;sentència;NCFS000
 sentencies;sentències;NCFP000
+seqüencia;seqüència;NCFS000
+seqüencies;seqüències;NCFP000
 serie;sèrie;NCFS000
 series;sèries;NCFP000
 sincope;síncope;NCFS000

@@ -2,6 +2,7 @@
 #(c) 2012 Marcin Milkowski
 #Licensed under LGPL
 #The list includes mostly words from http://www.learnenglish.de/mistakes/USvsBrEnglish.html
+airplane=aeroplane
 #baby buggy=pram
 bathroom=toilet
 bellboy=page
@@ -12,7 +13,7 @@ busy=engaged
 #candy apple=toffee apple
 carnival=funfair
 #checking account=current account
-chips=crisps
+#chips=crisps
 cookies=biscuits
 #correctional officer=prison officer
 #cotton candy=candyfloss
@@ -83,7 +84,7 @@ trash=rubbish
 trash can=dustbin
 #trolley car=tram
 truck=lorry
-trunk=boot
+#trunk=boot
 undershirt=vest
 vacation=holiday
 washcloth=flannel

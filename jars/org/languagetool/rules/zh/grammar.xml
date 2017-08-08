@@ -28,7 +28,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	<!-- ====================================================================== -->
 	<!-- 拼写： 词语错误 -->
 	<!-- ====================================================================== -->
-	<category name="词语错误">
+	<category id="CAT1" name="词语错误">
+		<rule id="BO1_BO2" name="搏/膊">
+			<pattern>
+				<marker>
+					<token>脉膊</token>
+				</marker>
+			</pattern>
+			<message>
+				您的意思是"
+				<suggestion>脉搏</suggestion>
+				"？
+			</message>
+			<short>词语错误</short>
+			<example correction="脉搏"><marker>脉膊</marker>跳得平稳。</example>
+			<example>脉搏跳得平稳。</example>
+		</rule>
 		<rulegroup id="QIA1_QIA2" name="恰/洽">
 			<rule>
 				<pattern>
@@ -8245,7 +8260,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	<!-- ====================================================================== -->
 	<!-- 拼写： 成语错误 -->
 	<!-- ====================================================================== -->
-	<category name="成语错误">
+	<category id="CAT2" name="成语错误">
 		<rule id="XIANGFUXIANGCHENG" name="相辅相成">
 			<pattern>
 				<token>相辅</token>
@@ -14498,7 +14513,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	<!-- ====================================================================== -->
 	<!-- 语法：实词的词法 -->
 	<!-- ====================================================================== -->
-	<category name="词法-实词">
+	<category id="CAT3" name="词法-实词">
 		<rulegroup id="wa1" name="词性误用">
 			<rule>
 				<pattern>
@@ -14636,7 +14651,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	<!-- ====================================================================== -->
 	<!-- 语法：虚词的词法 -->
 	<!-- ====================================================================== -->
-	<category name="词法-虚词">
+	<category id="CAT4" name="词法-虚词">
 		<rulegroup id="wb1" name="副词">
 			<rule>
 				<pattern>
@@ -16097,7 +16112,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	<!-- ====================================================================== -->
 	<!-- 语法：句法 -->
 	<!-- ====================================================================== -->
-	<category name="句法">
+	<category id="CAT5" name="句法">
 		<rulegroup id="s2" name="成分赘余">
 			<rule>
 				<pattern>
@@ -16823,5 +16838,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 				<example>3个市长和3个书记莅临我校指导工作。</example>
 			</rule>
 		</rulegroup>
+		<rule id="SHI_ADHECTIVE_ERROR" name="'是'+形容词">
+            <pattern>
+              <token>是</token>
+              <token postag='a|an' postag_regexp='yes'></token>
+             </pattern>
+             <message>您不可用“是”来表达个形容词。大部分人都平常用“很”来代替“是”。您是不是想表达<suggestion>很<match no="2"/></suggestion>？</message>
+             <example correction="很乖">你<marker>是乖</marker>。</example>
+             <example correction="很饿">你<marker>是饿</marker>。</example>
+        </rule>
 	</category>
 </rules>

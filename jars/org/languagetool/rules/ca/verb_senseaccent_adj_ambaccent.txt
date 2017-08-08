@@ -240,6 +240,8 @@ instrumentaries;instrumentàries;AQ0FP0
 integra;íntegra;AQ0FS0
 integre;íntegre;AQ0MS0
 integres;íntegres;AQ0CP0
+intermedia;intermèdia;AQ0FS0
+intermedies;intermèdies;AQ0FP0
 intim;íntim;AQ0MS0
 intima;íntima;AQ0FS0
 intimes;íntimes;AQ0FP0
@@ -403,7 +405,7 @@ revolucionaria;revolucionària;AQ0FS0
 revolucionaries;revolucionàries;AQ0FP0
 rodo;rodó;AQ0MS0
 sali;salí;AQ0MS0
-salic;sàlic;AQ0MS0
+#salic;sàlic;AQ0MS0
 salica;sàlica;AQ0FS0
 saliques;sàliques;AQ0FP0
 secundaria;secundària;AQ0FS0
