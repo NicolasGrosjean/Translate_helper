@@ -74,7 +74,6 @@ class LanguageToolSupport {
   private int millisecondDelay; // time between 2 text checks
   private AtomicInteger check;
   private boolean backgroundCheckEnabled = true;
-  private Configuration config;
   private final UndoRedoSupport undo;
 
   /**
@@ -108,46 +107,8 @@ class LanguageToolSupport {
     init(language);
   }
 
-  private void loadConfig() {
-    final Set<String> disabledRules = config.getDisabledRuleIds();
-    if (disabledRules != null) {
-      for (final String ruleId : disabledRules) {
-        languageTool.disableRule(ruleId);
-      }
-    }
-    /*final Set<String> disabledCategories = config.getDisabledCategoryNames();
-    if (disabledCategories != null) {
-      for (final String categoryName : disabledCategories) {
-        languageTool.disableCategory(categoryName);
-      }
-    }*/
-    final Set<String> enabledRules = config.getEnabledRuleIds();
-    if (enabledRules != null) {
-      for (String ruleName : enabledRules) {
-        //languageTool.enableDefaultOffRule(ruleName);
-        languageTool.enableRule(ruleName);
-      }
-    }
-  }
-
-  private void reloadLanguageTool(Language language) {
-    try {
-      //FIXME
-      //no need to read again the file
-      config = new Configuration(new File(System.getProperty("user.home")), CONFIG_FILE, language);
-      // TODO : see why the file C:\Users\Nicolas\CONFIG_FILE is used
-      // TODO : and how it is created. By using the standalone?
-      //config still contains old language, update it
-      this.config.setLanguage(language);
-      languageTool = new MultiThreadedJLanguageTool(language, config.getMotherTongue());
-      loadConfig();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   private void init(Language language) {
-    reloadLanguageTool(language);
+	languageTool = new JLanguageTool(language);
 
     redPainter = new HighlightPainter(Color.red);
     bluePainter = new HighlightPainter(Color.blue);
