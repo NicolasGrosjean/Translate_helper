@@ -77,12 +77,14 @@ public class ParsedFile {
 		}
 	}
 	
-	public void addLastLineToTranslate(int lineNumber, String ID, String reason) {
-		linesToTranslate.addLast(new ParsedEntry(lineNumber, ID, reason));
+	public void addLastLineToTranslate(int lineNumber, String id, String reason,
+			String sourceText, String destinationText) {
+		linesToTranslate.addLast(new ParsedEntry(lineNumber, id, reason, sourceText, destinationText));
 	}
 
-	public void addLastMissingSourceLine(int lineNumber, String ID, String reason) {
-		missingSourceLines.addLast(new ParsedEntry(lineNumber, ID, reason));
+	public void addLastMissingSourceLine(int lineNumber, String id, String reason,
+			String sourceText, String destinationText) {
+		missingSourceLines.addLast(new ParsedEntry(lineNumber, id, reason, sourceText, destinationText));
 	}
 
 	public Iterator<ParsedEntry> getDescendingIteratorLineToTranslate() {

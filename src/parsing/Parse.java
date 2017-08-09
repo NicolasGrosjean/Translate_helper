@@ -243,15 +243,18 @@ public class Parse {
 					// Firstly individually
 					String sourceAnalysis = analyzeExpression(sourceExpression);
 					if (!sourceAnalysis.equals("")) {
-						parsedFile.addLastMissingSourceLine(lineNumber, ID, sourceAnalysis);
+						parsedFile.addLastMissingSourceLine(lineNumber, ID, sourceAnalysis,
+								sourceExpression, destinationExpression);
 					}
 					String destinationAnalysis = analyzeExpression(destinationExpression);
 					if (!destinationAnalysis.equals("")) {
-						parsedFile.addLastLineToTranslate(lineNumber, ID, destinationAnalysis);
+						parsedFile.addLastLineToTranslate(lineNumber, ID, destinationAnalysis,
+								sourceExpression, destinationExpression);
 					} else {
 						if (sourceExpression.equals(destinationExpression) &&
 								!acceptedLoanword.contains(destinationExpression)) {
-							parsedFile.addLastLineToTranslate(lineNumber, ID, ParsedEntry.copyText);
+							parsedFile.addLastLineToTranslate(lineNumber, ID, ParsedEntry.copyText,
+									sourceExpression, destinationExpression);
 						}
 					}
 				}			

@@ -7,14 +7,18 @@ public class ParsedEntry {
 	public static String copyText = "Copy of source text";
 
 	private int lineNumber;
-	private String ID;
+	private String id;
 	private String reason;
+	private String sourceText;
+	private String destinationText;
 
-	public ParsedEntry(int lineNumber, String ID, String reason) {
-		super();
+	public ParsedEntry(int lineNumber, String id, String reason,
+			String sourceText, String destinationText) {
 		this.lineNumber = lineNumber;
-		this.ID = ID;
+		this.id = id;
 		this.reason = reason;
+		this.sourceText = sourceText;
+		this.destinationText = destinationText;
 	}
 
 	public int getLineNumber() {
@@ -22,20 +26,27 @@ public class ParsedEntry {
 	}
 
 	public String getID() {
-		return ID;
+		return id;
 	}
 
 	public String getReason() {
 		return reason;
 	}
 
+	public String getSourceText() {
+		return sourceText;
+	}
+
+	public String getDestinationText() {
+		return destinationText;
+	}
+
 	@Override
 	public String toString() {
 		if (reason.equals(missingText)) {
-			return lineNumber + " : " + ID;
+			return lineNumber + " : " + id;
 		} else {
-			return lineNumber + " : " + ID +
-					" (" + reason + ")";
+			return lineNumber + " : " + id + " (" + reason + ")";
 		}
 	}
 }
