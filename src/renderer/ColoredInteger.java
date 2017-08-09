@@ -41,16 +41,6 @@ public class ColoredInteger extends JLabel implements TableCellRenderer {
 			} else {
 				setBackground(Color.GREEN);
 			}
-
-			if (isSelected && (table.getValueAt(row, col - 1) instanceof CK2ParsedFile)) {
-				IParsedFile f = (IParsedFile) table.getValueAt(row, col - 1);
-				try {
-					Desktop.getDesktop().open(new File(directory + f.getName()));
-				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName(), "ERROR",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
 		} else {
 			throw new IllegalArgumentException("ColoredInteger need an integer!");
 		}

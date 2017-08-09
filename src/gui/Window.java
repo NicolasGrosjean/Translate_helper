@@ -2,13 +2,16 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.swing.JButton;
@@ -42,6 +45,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import parsing.Parse;
+import parsing.CK2ParsedFile;
 import parsing.IParsedFile;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
@@ -50,6 +54,8 @@ import config.ConfigStorage;
 import config.WorkingSession;
 
 public class Window extends JFrame {
+	private static int FILE_COLUMN = 1;
+	private static int OPEN_FILE_COLUMN = 3;
 
 	// Object container
 	private JPanel container = new JPanel();
@@ -218,6 +224,9 @@ public class Window extends JFrame {
 			sorter.setComparator(3, Percentage.comparator);
 			table.setRowSorter(sorter);
 		}
+		
+		// Open file when click on name
+		table.addMouseListener(new OpenFileListener(ws.getDirectory()));
 
 		// The table is add with a scroll pane (useful if it has many lines)
 		tableSP = new JScrollPane(table);
@@ -422,7 +431,32 @@ public class Window extends JFrame {
 		} catch (IllegalAccessException e) {
 		}
 	}
+	
+	class OpenFileListener extends java.awt.event.MouseAdapter {
+		private String directory;
 
+		OpenFileListener(String directory) {
+			this.directory = (directory.endsWith("/")) ? directory : directory + "/";
+		}
+		
+		@Override
+	    public void mouseClicked(java.awt.event.MouseEvent e) {
+	        int row = table.rowAtPoint(e.getPoint());
+	        int column = table.columnAtPoint(e.getPoint());
+	        if (row >= 0 && column == OPEN_FILE_COLUMN) {
+	        	if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
+	        		IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
+	        		try {
+	        			Desktop.getDesktop().open(new File(directory + f.getName()));
+	        		} catch (IllegalArgumentException | IOException exception) {
+	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName(), "ERROR",
+	        					JOptionPane.ERROR_MESSAGE);
+	        		}
+	        	}
+	        }
+	    }
+	}
+	
 	class DialogWorkingSession implements ActionListener {
 		private boolean newWS;
 

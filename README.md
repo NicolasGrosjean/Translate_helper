@@ -18,7 +18,7 @@ An application to help to translate the Paradox games localisation files.
 * Add in the file config/fake_translations.txt the expressions which are not translation (ex: FRENCH) (add them one by line)
 * Add in the file config/available_languages.csv new language by adding the column number (start by 0) and the language name
 
-# Used API
+# Used librairies
 * itextpdf: Create a pdf for the export to pdf
 * jdom: Read and write XML for the config files
 * languagetool: NOT YET USED, I expect use it for orthagraphic and grammar errors
