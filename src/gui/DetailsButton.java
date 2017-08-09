@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
-import parsing.ParsedFile;
+import parsing.IParsedFile;
 
 public class DetailsButton extends DefaultCellEditor {
 
@@ -57,8 +57,8 @@ public class DetailsButton extends DefaultCellEditor {
 		public JButton getButton(){return this.button;}
 
 		public void actionPerformed(ActionEvent event) {
-			if (table.getValueAt(row, column-3) instanceof ParsedFile) {
-				ParsedFile f = (ParsedFile)table.getValueAt(row, column-3);
+			if (table.getValueAt(row, column-3) instanceof IParsedFile) {
+				IParsedFile f = (IParsedFile)table.getValueAt(row, column-3);
 				new DetailsDialog(null, f.getName(), true, f, hasDestinationLanguage);
 			}
 		}

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import parsing.IParsedFile;
 import parsing.ParsedFile;
 
 /**
@@ -42,7 +43,7 @@ public class ColoredInteger extends JLabel implements TableCellRenderer {
 			}
 
 			if (isSelected && (table.getValueAt(row, col - 1) instanceof ParsedFile)) {
-				ParsedFile f = (ParsedFile) table.getValueAt(row, col - 1);
+				IParsedFile f = (IParsedFile) table.getValueAt(row, col - 1);
 				try {
 					Desktop.getDesktop().open(new File(directory + f.getName()));
 				} catch (IOException e) {

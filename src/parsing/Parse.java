@@ -15,7 +15,7 @@ public class Parse {
 	/**
 	 * List of the "localisation" files
 	 */
-	private LinkedList<ParsedFile> files;
+	private LinkedList<IParsedFile> files;
 
 	/**
 	 * Definition of the source language in the "localisation" files
@@ -48,7 +48,7 @@ public class Parse {
 			String acceptedLoanwordFile) {
 		sourceLanguage = new Language(codeSourceLanguage, defaultSourceLanguageColumn);
 		destinationLanguage = new Language(codeDestinationLanguage, defaultDestinationLanguageColumn);
-		files = new LinkedList<ParsedFile>();
+		files = new LinkedList<IParsedFile>();
 		fakeTranslation = readList(fakeTranslationFile);
 		acceptedLoanword = readList(acceptedLoanwordFile);
 		for (String filePath : filePaths) {
@@ -75,8 +75,8 @@ public class Parse {
 	 * Get the stored file from its name or null if not found
 	 * @return
 	 */
-	public ParsedFile getFile(String name) {
-		for (ParsedFile f : files) {
+	public IParsedFile getFile(String name) {
+		for (IParsedFile f : files) {
 			if (f.getName().equals(name)) {
 				return f;
 			}
@@ -90,7 +90,7 @@ public class Parse {
 	 */
 	public String getListMissingSourceText() {
 		String res = "";
-		for (ParsedFile f : files) {
+		for (IParsedFile f : files) {
 			res += f.getName() + "\n";
 			if (f.getNumberMissingSourceLines() > 0) {
 				res += f.getMissingSourceText() + "\n";
@@ -134,7 +134,7 @@ public class Parse {
 	public Object[][] toArray() {
 		Object[][] array = new Object[files.size()][];
 		int i =0;
-		for (ParsedFile f : files) {
+		for (IParsedFile f : files) {
 			array[i] = new Object[5];
 			array[i][0] = new Boolean(true); // check box
 			array[i][1] = f; // file (only its name will be displayed)		

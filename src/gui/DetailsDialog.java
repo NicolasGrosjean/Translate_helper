@@ -7,11 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import parsing.ParsedFile;
+import parsing.IParsedFile;
 
 public class DetailsDialog extends JDialog {
 	public DetailsDialog(JFrame parent, String title, boolean modal,
-			ParsedFile file, boolean hasDestinationLanguage) {
+			IParsedFile file, boolean hasDestinationLanguage) {
 		// Create the JDialog
 		super(parent, title, modal);
 		setSize(500, 600);

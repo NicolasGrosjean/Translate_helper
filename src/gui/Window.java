@@ -3,17 +3,12 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Shape;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Iterator;
 
 import javax.swing.JButton;
@@ -47,7 +42,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import parsing.Parse;
-import parsing.ParsedFile;
+import parsing.IParsedFile;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
 import renderer.Percentage;
@@ -302,9 +297,9 @@ public class Window extends JFrame {
 			}
 
 			// File name (= anchor, i.e internal link)
-			ParsedFile f = null;
-			if (table.getValueAt(i, 1) instanceof ParsedFile) {
-				f = (ParsedFile) table.getValueAt(i, 1);
+			IParsedFile f = null;
+			if (table.getValueAt(i, 1) instanceof IParsedFile) {
+				f = (IParsedFile) table.getValueAt(i, 1);
 			}
 			PdfPCell cell = null;
 			if (f.getNumberMissingSourceLines() > 0
@@ -384,9 +379,9 @@ public class Window extends JFrame {
 				continue;
 			}
 
-			ParsedFile f = null;
-			if (table.getValueAt(i, 1) instanceof ParsedFile) {
-				f = (ParsedFile) table.getValueAt(i, 1);
+			IParsedFile f = null;
+			if (table.getValueAt(i, 1) instanceof IParsedFile) {
+				f = (IParsedFile) table.getValueAt(i, 1);
 			}
 			if (f.getNumberMissingSourceLines() > 0
 					|| (f.getNumberLineToTranslate() > 0 && !ws.getDestinationLanguage().isNone())) {

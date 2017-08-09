@@ -3,7 +3,7 @@ package parsing;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ParsedFile {
+public class ParsedFile implements IParsedFile {
 	/**
 	 * Name of the file
 	 */
