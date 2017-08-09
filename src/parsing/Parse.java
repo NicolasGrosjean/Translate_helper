@@ -171,8 +171,8 @@ public class Parse {
 		return filePaths;
 	}
 
-	private ParsedFile parseAFile(String filePath) {
-		ParsedFile parsedFile = new ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
+	private CK2ParsedFile parseAFile(String filePath) {
+		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
 		int lineNumber = 0;
 		int usefulLineNumber = 0;
 		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();

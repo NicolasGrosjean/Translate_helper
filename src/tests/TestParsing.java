@@ -10,7 +10,7 @@ import org.junit.Test;
 import parsing.ParsedEntry;
 import parsing.IParsedFile;
 import parsing.Parse;
-import parsing.ParsedFile;
+import parsing.CK2ParsedFile;
 
 /**
  * Test the parsing package
@@ -103,7 +103,7 @@ public class TestParsing {
 		/**
 		 * @Warning: This code corresponding to this test is not yet implemented
 		 */
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("code_line_to_translate.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("code_line_to_translate.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -120,7 +120,7 @@ public class TestParsing {
 
 	@Test
 	public void missingTranslation() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("missing_translation.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("missing_translation.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -137,7 +137,7 @@ public class TestParsing {
 	
 	@Test
 	public void missingSource() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("missing_source.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("missing_source.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 2 lines to translate", 2, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have 2 missing source texts", 2, f.getNumberMissingSourceLines());
@@ -174,7 +174,7 @@ public class TestParsing {
 
 	@Test
 	public void acceptedCopy() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("accepted_copy.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("accepted_copy.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -185,7 +185,7 @@ public class TestParsing {
 
 	@Test
 	public void acceptedCopyWithAccents() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("accepted_copy_with_accents.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("accepted_copy_with_accents.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -197,7 +197,7 @@ public class TestParsing {
 
 	@Test
 	public void fake_translation() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("fake_translation.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("fake_translation.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -214,7 +214,7 @@ public class TestParsing {
 
 	@Test
 	public void refusedCopy() {
-		ParsedFile f = (ParsedFile)parsedFiles.getFile("refused_copy.csv");
+		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("refused_copy.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());

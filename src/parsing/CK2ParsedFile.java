@@ -3,7 +3,7 @@ package parsing;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ParsedFile implements IParsedFile {
+public class CK2ParsedFile implements IParsedFile {
 	/**
 	 * Name of the file
 	 */
@@ -29,7 +29,7 @@ public class ParsedFile implements IParsedFile {
 	 */
 	private LinkedList<ParsedEntry> missingSourceLines;
 
-	public ParsedFile(String name) {
+	public CK2ParsedFile(String name) {
 		this.name = name;
 		lineNumber = -1; // default value to ensure unique initialization later
 		usefulLineNumber = -1; // default value to ensure unique initialization later
