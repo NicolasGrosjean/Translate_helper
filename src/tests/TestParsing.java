@@ -13,8 +13,9 @@ import parsing.Parse;
 import parsing.CK2ParsedFile;
 
 /**
- * Test the parsing package
- * NOTA : To run it with Eclipse, go to the project > Properties > Add Library... > JUnit
+ * Test the parsing package NOTA : To run it with Eclipse, go to the project >
+ * Properties > Add Library... > JUnit
+ * 
  * @author Nicolas Grosjean
  *
  */
@@ -23,45 +24,34 @@ public class TestParsing {
 
 	@BeforeClass
 	public static void SetUp() {
-		parsedFiles = new Parse(Parse.listDirectoryFiles("C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files"),
-				"FRENCH", 2, "ENGLISH", 1, "config/fake_translations.txt", "config/accepted_loanwords.txt");
+		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files"), "FRENCH", 2, "ENGLISH", 1,
+				"config/fake_translations.txt", "config/accepted_loanwords.txt");
 	}
 
 	@Test
 	public void testListDirectoryFiles() {
-		LinkedList<String> filePaths = Parse.listDirectoryFiles("C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files");
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/accepted_copy.csv",
+		LinkedList<String> filePaths = Parse.listDirectoryFiles("./test_localisation_files");
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/accepted_copy.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/accepted_copy_with_accents.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/accepted_copy_with_accents.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/code_line.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/code_line.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/code_line_to_translate.csv",
-				filePaths.removeFirst().replace("\\", "/"));		
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/comment_line.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/code_line_to_translate.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/fake_translation.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/comment_line.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/missing_source.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/fake_translation.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/missing_translation.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/missing_source.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/nothing_to_translate.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/missing_translation.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/refused_copy.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/nothing_to_translate.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!",
-				"C:/Users/Nicolas/workspace/Translate_helper/test_localisation_files/several_lines_to_end.csv",
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/refused_copy.csv",
+				filePaths.removeFirst().replace("\\", "/"));
+		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/several_lines_to_end.csv",
 				filePaths.removeFirst().replace("\\", "/"));
 	}
 
@@ -103,7 +93,7 @@ public class TestParsing {
 		/**
 		 * @Warning: This code corresponding to this test is not yet implemented
 		 */
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("code_line_to_translate.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("code_line_to_translate.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -120,7 +110,7 @@ public class TestParsing {
 
 	@Test
 	public void missingTranslation() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("missing_translation.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("missing_translation.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -134,17 +124,17 @@ public class TestParsing {
 			Assert.assertEquals("File not parsed", true, false); // Exception
 		}
 	}
-	
+
 	@Test
 	public void missingSource() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("missing_source.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("missing_source.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 2 lines to translate", 2, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have 2 missing source texts", 2, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Iterator<ParsedEntry> missingSourceLinesIterator = f.getDescendingIteratorMissingSourceLines();
 			// First line to translate
-			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());		
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
 			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
@@ -174,7 +164,7 @@ public class TestParsing {
 
 	@Test
 	public void acceptedCopy() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("accepted_copy.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("accepted_copy.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -185,7 +175,7 @@ public class TestParsing {
 
 	@Test
 	public void acceptedCopyWithAccents() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("accepted_copy_with_accents.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("accepted_copy_with_accents.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -194,10 +184,9 @@ public class TestParsing {
 		}
 	}
 
-
 	@Test
 	public void fake_translation() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("fake_translation.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("fake_translation.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -214,7 +203,7 @@ public class TestParsing {
 
 	@Test
 	public void refusedCopy() {
-		CK2ParsedFile f = (CK2ParsedFile)parsedFiles.getFile("refused_copy.csv");
+		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("refused_copy.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());

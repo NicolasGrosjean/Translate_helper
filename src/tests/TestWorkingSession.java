@@ -17,7 +17,7 @@ import config.WorkingSession;
 public class TestWorkingSession {
 	@Test
 	public void testSetAvailableLanguages() {
-		WorkingSession.setAvailableLanguages("C:/Users/Nicolas/workspace/Translate_helper/config/available_languages.csv");
+		WorkingSession.setAvailableLanguages("./config/available_languages.csv");
 		LinkedList<Language> availableLanguages = WorkingSession.getAvailableLanguages();
 		//Assert.assertEquals("Incorrect number of languages", 2, availableLanguages.size());
 		// First language

@@ -1,9 +1,27 @@
 package parsing;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Scanner;
 
-public class CK2ParsedFile implements IParsedFile {
+import translator.ITranslator;
+import translator.TranslatedEntry;
+
+public class CK2ParsedFile implements IParsedFile, ITranslator {
+	/**
+	 * Path of the file
+	 */
+	private String filePath;
+	
 	/**
 	 * Name of the file
 	 */
@@ -28,9 +46,12 @@ public class CK2ParsedFile implements IParsedFile {
 	 * List of the line where the "localisation" is missing for the source language
 	 */
 	private LinkedList<ParsedEntry> missingSourceLines;
+	
+	private int lineToTranslateIndex = 0;
 
-	public CK2ParsedFile(String name) {
-		this.name = name;
+	public CK2ParsedFile(String filePath) {
+		this.filePath = filePath;
+		name = filePath.substring(filePath.lastIndexOf("\\") + 1);
 		lineNumber = -1; // default value to ensure unique initialization later
 		usefulLineNumber = -1; // default value to ensure unique initialization later
 		linesToTranslate = new LinkedList<ParsedEntry>();
@@ -122,5 +143,77 @@ public class CK2ParsedFile implements IParsedFile {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public TranslatedEntry getFirstEntryToTranslate() {
+		lineToTranslateIndex = 1;
+		if (linesToTranslate.size() > 0) {
+			return new TranslatedEntry(linesToTranslate.getFirst());
+		}
+		return null;
+	}
+
+	@Override
+	public TranslatedEntry getNextEntryToTranslate() {
+		lineToTranslateIndex++;
+		if (lineToTranslateIndex < linesToTranslate.size()) {
+			return new TranslatedEntry(linesToTranslate.get(lineToTranslateIndex));
+		}
+		return null;
+	}
+
+	@Override
+	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave,
+			Language destinationLanguage) {
+		TranslatedEntry nextEntry = getNextEntryToTranslate();
+		BufferedReader file = null;
+		String lines = "";
+		try {
+			file = new BufferedReader(new FileReader(filePath));
+			String line;
+			int i = 0;
+		    while ((line = file.readLine()) != null)
+		    {
+		    	i++;
+		    	if (i == entryToSave.getDestLineNumber()) {
+		    		String[] localisations = line.split(";");
+		    		localisations[destinationLanguage.getDefaultColumn()] = entryToSave.getDestination();
+		    		line = "";
+		    		for (String s: localisations)
+		    		{
+		    			line += s + ";";
+		    		}
+		    		// Add the line without the last semicolon
+		    		line = line.substring(0, line.length() - 1);
+		    	}
+		        lines += line + System.lineSeparator();
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (file != null)
+					file.close();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(filePath), "UTF-8");
+		    writer.print(lines);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null)
+				writer.close();
+		}
+		return nextEntry;
+	}
+
+	@Override
+	public void setLoanWords(TranslatedEntry loanWordEntry) {
+		// TODO Auto-generated method stub
 	}
 }

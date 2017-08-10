@@ -172,7 +172,7 @@ public class Parse {
 	}
 
 	private CK2ParsedFile parseAFile(String filePath) {
-		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath.substring(filePath.lastIndexOf("\\") + 1));
+		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath);
 		int lineNumber = 0;
 		int usefulLineNumber = 0;
 		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();
