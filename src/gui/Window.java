@@ -448,9 +448,22 @@ public class Window extends JFrame {
 	        		IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
 	        		try {
 	        			Desktop.getDesktop().open(new File(directory + f.getName()));
-	        		} catch (IllegalArgumentException | IOException exception) {
-	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName(), "ERROR",
-	        					JOptionPane.ERROR_MESSAGE);
+	        		} catch ( IllegalArgumentException exception) {
+	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
+	        					".\nThe file doesn't exist anymore.",
+	        					"ERROR", JOptionPane.ERROR_MESSAGE);
+	        		} catch ( UnsupportedOperationException  exception) {
+	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
+	        					".\nYour platform doesn't allow to open files.",
+	        					"ERROR", JOptionPane.ERROR_MESSAGE);
+	        		} catch ( IOException exception) {
+	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
+	        					".\nNo defined application to open this file or the application failed to launch.",
+	        					"ERROR", JOptionPane.ERROR_MESSAGE);
+	        		} catch ( SecurityException exception) {
+	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
+	        					".\nInsuffisant permission to open this file. ",
+	        					"ERROR", JOptionPane.ERROR_MESSAGE);
 	        		}
 	        	}
 	        }
