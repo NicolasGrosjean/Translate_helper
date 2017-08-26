@@ -1,6 +1,7 @@
 package tests;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,5 +68,11 @@ public class TestSaving {
 		}
 		Assert.assertEquals("Incorrect line number!", expected.length, i);
 		br.close();
+	}
+	
+	@AfterClass
+	public static void AfterCLass()
+	{
+		new File("./test_localisation_files/save_file.csv").delete();
 	}
 }
