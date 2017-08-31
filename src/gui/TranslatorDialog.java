@@ -53,6 +53,7 @@ public class TranslatorDialog extends JDialog {
 		
 		JButton nextSaveBtn = new JButton("Save this translation and go to next entry");
 		nextSaveBtn.addActionListener(e -> {
+			updateEntry();
 			entry = file.getNextEntryToTranslateAndSave(entry, destinationLanguage);
 			updateTextArea();
 		});
@@ -73,5 +74,11 @@ public class TranslatorDialog extends JDialog {
 		} else {
 			// TODO : Set a pop-up and close
 		}
+	}
+	
+	private void updateEntry()
+	{
+		// TODO : Update source if we want to save it
+		entry.setDestination(destTextArea.getText());
 	}
 }

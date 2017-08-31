@@ -29,6 +29,10 @@ public class TranslatedEntry {
 		return destination;
 	}
 
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
 	public int getDestLineNumber() {
 		return destLineNumber;
 	}
