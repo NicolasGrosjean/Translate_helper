@@ -212,7 +212,9 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[3]).setCellRenderer(new Percentage());
 		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
 		table.getColumn(columnTitles[4])
-				.setCellEditor(new DetailsButton(new JCheckBox(), !ws.getDestinationLanguage().isNone()));
+				.setCellEditor(new DetailsButton(new JCheckBox(),
+												!ws.getDestinationLanguage().isNone(),
+												ws.getDestinationLanguage()));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
 
 		// The table can be sorted with the column headers

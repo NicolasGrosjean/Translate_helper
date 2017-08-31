@@ -10,17 +10,20 @@ import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
 import parsing.IParsedFile;
+import parsing.Language;
+import translator.ITranslatorParsedFile;
 
 public class DetailsButton extends DefaultCellEditor {
 
 	protected JButton button;
 	private ButtonListener bListener;
 
-	public DetailsButton(JCheckBox checkBox, boolean hasDestinationLanguage) {
+	public DetailsButton(JCheckBox checkBox, boolean hasDestinationLanguage,
+			Language destinationLanguage) {
 		super(checkBox);
 		button = new JButton();
 		button.setOpaque(true);
-		bListener = new ButtonListener(hasDestinationLanguage);
+		bListener = new ButtonListener(hasDestinationLanguage, destinationLanguage);
 		button.addActionListener(bListener);
 	}
 
@@ -45,10 +48,13 @@ public class DetailsButton extends DefaultCellEditor {
 		private int column, row;
 		private JTable table;
 		private JButton button;
+		
 		private boolean hasDestinationLanguage;
+		private Language destinationLanguage;
 
-		ButtonListener(boolean hasDestinationLanguage) {
+		ButtonListener(boolean hasDestinationLanguage, Language destinationLanguage) {
 			this.hasDestinationLanguage = hasDestinationLanguage;
+			this.destinationLanguage = destinationLanguage;
 		}
 
 		public void setColumn(int col){this.column = col;}
@@ -57,9 +63,10 @@ public class DetailsButton extends DefaultCellEditor {
 		public JButton getButton(){return this.button;}
 
 		public void actionPerformed(ActionEvent event) {
-			if (table.getValueAt(row, column-3) instanceof IParsedFile) {
-				IParsedFile f = (IParsedFile)table.getValueAt(row, column-3);
-				new DetailsDialog(null, f.getName(), true, f, hasDestinationLanguage);
+			if (table.getValueAt(row, column-3) instanceof ITranslatorParsedFile) {
+				ITranslatorParsedFile f = (ITranslatorParsedFile)table.getValueAt(row, column-3);
+				new DetailsDialog(null, f.getName(), true, f,
+						hasDestinationLanguage, destinationLanguage);
 			}
 		}
 	}
