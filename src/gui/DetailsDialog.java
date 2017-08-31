@@ -80,7 +80,7 @@ public class DetailsDialog extends JDialog {
 		}
 		
 		public void actionPerformed(ActionEvent event) {
-			new TranslatorDialog(null, title, true, file);
+			new TranslatorDialog(null, title, true, file, destinationLanguage);
 		}
 	}
 }
