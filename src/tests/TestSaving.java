@@ -41,20 +41,30 @@ public class TestSaving {
 		CK2ParsedFile file = new CK2ParsedFile(filePath);
 		file.setLineNumber(4);
 		file.addLastLineToTranslate(2, "TRADE.0005A", "", "OK", "J'en prends note");
-		file.addLastLineToTranslate(3, "TRADE.0005B", "", "Toto", "J'en prends note");
-		file.addLastLineToTranslate(4, "TRADE.0005C", "", "OK", "J'en prends note");
+		file.addLastLineToTranslate(3, "TRADE.0005B", "", "Toto", "Titi et grosminet");
+		file.addLastLineToTranslate(4, "TRADE.0005C", "", "What?", "Quoi?");
+		file.addLastLineToTranslate(5, "TRADE.0005D", "", "Okay", "D'ac");
 		
 		// Create a file corresponding to these data
 		String[] expected = { "CODE;ENGLISH;FRENCH;;;;;;;;;;;;x",
 							"TRADE.0005A;OK;J'en prends note;;Ja;;;Amigo;;;;;;;x",
 							"TRADE.0005B;Toto;Titi et grosminet;;Nein;;Holla;;;;;;;;x",
-							"TRADE.0005C;What?;Quoi?;;Schnell;;;;Gracie;;;;;;x" };
+							"TRADE.0005C;What?;Quoi?;;Schnell;;;;Gracie;;;;;;x",
+							"TRADE.0005D;Okay;D'ac;;OK;;;;Ok;;;;;;x",};
 		List<String> lines = Arrays.asList(expected);
 		Path filetoWtrite = Paths.get(filePath);
 		Files.write(filetoWtrite, lines, Charset.forName("UTF-8"));
 
+		// Skip first line
+		file.getFirstEntryToTranslate();
+		TranslatedEntry nextEntry = file.getNextEntryToTranslate();
+		Assert.assertEquals("Incorrect next entry!", "Toto", nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", "Titi et grosminet", nextEntry.getDestination());
+		
 		// Modify and save the file
-		file.getNextEntryToTranslateAndSave(entryToSave, destinationLanguage);
+		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave, destinationLanguage);
+		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
 
 		// Check that is what we expect
 		expected[2] = "TRADE.0005B;Toto;Tata;;Nein;;Holla;;;;;;;;x";

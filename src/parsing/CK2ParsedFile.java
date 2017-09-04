@@ -148,7 +148,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 
 	@Override
 	public TranslatedEntry getFirstEntryToTranslate() {
-		lineToTranslateIndex = 1;
+		lineToTranslateIndex = 0;
 		if (linesToTranslate.size() > 0) {
 			return new TranslatedEntry(linesToTranslate.getFirst());
 		}
