@@ -39,7 +39,7 @@ public class TestSaving {
 		// Create data
 		String filePath = "./test_localisation_files/save_file.csv";
 		CK2ParsedFile file = new CK2ParsedFile(filePath);
-		file.setLineNumber(4);
+		file.setLineNumber(5);
 		file.addLastLineToTranslate(2, "TRADE.0005A", "", "OK", "J'en prends note");
 		file.addLastLineToTranslate(3, "TRADE.0005B", "", "Toto", "Titi et grosminet");
 		file.addLastLineToTranslate(4, "TRADE.0005C", "", "What?", "Quoi?");
@@ -55,7 +55,7 @@ public class TestSaving {
 		Path filetoWtrite = Paths.get(filePath);
 		Files.write(filetoWtrite, lines, Charset.forName("UTF-8"));
 
-		// Skip first line
+		// Skip first line to translate
 		file.getFirstEntryToTranslate();
 		TranslatedEntry nextEntry = file.getNextEntryToTranslate();
 		Assert.assertEquals("Incorrect next entry!", "Toto", nextEntry.getSource());
@@ -79,10 +79,45 @@ public class TestSaving {
 		Assert.assertEquals("Incorrect line number!", expected.length, i);
 		br.close();
 	}
+
+	@Test
+	public void testSaveInCK2LocalisationFileSpecialChar() throws IOException {
+		// Create data
+		String filePath = "./test_localisation_files/save_file2.csv";
+		CK2ParsedFile file = new CK2ParsedFile(filePath);
+		file.setLineNumber(2);
+		file.addLastLineToTranslate(2, "TRADE.0005A", "", "§YReligious head suitability: $SCORE$§!", "");
+		
+		// Create a file corresponding to these data
+		String[] expected = { "CODE;ENGLISH;FRENCH;;;;;;;;;;;;x",
+								"TRADE.0005A;§YReligious head suitability: $SCORE$§!;;;Ja;;;Amigo;;;;;;;x"};
+		List<String> lines = Arrays.asList(expected);
+		Path filetoWtrite = Paths.get(filePath);
+		Files.write(filetoWtrite, lines, Charset.forName("UTF-8"));
+		
+		file.getFirstEntryToTranslate();
+		// Modify and save the file
+		TranslatedEntry entryToSave2 = new TranslatedEntry("§YReligious head suitability: $SCORE$§!", "Tata", 2);
+		file.getNextEntryToTranslateAndSave(entryToSave2, destinationLanguage);
+		
+		// Check that is what we expect
+		expected[1] = "TRADE.0005A;§YReligious head suitability: $SCORE$§!;Tata;;Ja;;;Amigo;;;;;;;x";
+		FileInputStream fis = new FileInputStream(filePath);
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		String line = null;
+		int i = 0;
+		while ((line = br.readLine()) != null) {
+			Assert.assertEquals("Incorrect line!", expected[i], line);
+			i++;
+		}
+		Assert.assertEquals("Incorrect line number!", expected.length, i);
+		br.close();
+	}
 	
 	@AfterClass
 	public static void AfterCLass()
 	{
 		new File("./test_localisation_files/save_file.csv").delete();
+		new File("./test_localisation_files/save_file2.csv").delete();
 	}
 }
