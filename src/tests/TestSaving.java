@@ -53,7 +53,7 @@ public class TestSaving {
 							"TRADE.0005D;Okay;D'ac;;OK;;;;Ok;;;;;;x",};
 		List<String> lines = Arrays.asList(expected);
 		Path filetoWtrite = Paths.get(filePath);
-		Files.write(filetoWtrite, lines, Charset.forName("UTF-8"));
+		Files.write(filetoWtrite, lines, Charset.forName("ISO_8859_1"));
 
 		// Skip first line to translate
 		file.getFirstEntryToTranslate();
@@ -96,7 +96,7 @@ public class TestSaving {
 								"TRADE.0005A;§YReligious head suitability: $SCORE$§!;;;Ja;;;Amigo;;;;;;;x"};
 		List<String> lines = Arrays.asList(expected);
 		Path filetoWtrite = Paths.get(filePath);
-		Files.write(filetoWtrite, lines, Charset.forName("UTF-8"));
+		Files.write(filetoWtrite, lines, Charset.forName("ISO_8859_1"));
 		
 		file.getFirstEntryToTranslate();
 		// Modify and save the file

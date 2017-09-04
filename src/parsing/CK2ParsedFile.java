@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -203,7 +205,8 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		}
 		PrintWriter writer = null;
 		try {
-			writer = new PrintWriter(new File(filePath), "UTF-8");
+			writer = new PrintWriter(new OutputStreamWriter(
+					new FileOutputStream(filePath), StandardCharsets.ISO_8859_1), true);
 		    writer.print(lines);
 		} catch (IOException e) {
 			e.printStackTrace();
