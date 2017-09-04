@@ -70,14 +70,17 @@ public class TestSaving {
 		expected[2] = "TRADE.0005B;Toto;Tata;;Nein;;Holla;;;;;;;;x";
 		FileInputStream fis = new FileInputStream(filePath);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-		String line = null;
-		int i = 0;
-		while ((line = br.readLine()) != null) {
-			Assert.assertEquals("Incorrect line!", expected[i], line);
-			i++;
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
 		}
-		Assert.assertEquals("Incorrect line number!", expected.length, i);
-		br.close();
 	}
 
 	@Test
@@ -104,14 +107,17 @@ public class TestSaving {
 		expected[1] = "TRADE.0005A;§YReligious head suitability: $SCORE$§!;Tata;;Ja;;;Amigo;;;;;;;x";
 		FileInputStream fis = new FileInputStream(filePath);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-		String line = null;
-		int i = 0;
-		while ((line = br.readLine()) != null) {
-			Assert.assertEquals("Incorrect line!", expected[i], line);
-			i++;
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
 		}
-		Assert.assertEquals("Incorrect line number!", expected.length, i);
-		br.close();
 	}
 	
 	@AfterClass
