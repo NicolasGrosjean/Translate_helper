@@ -158,6 +158,11 @@ public class Window extends JFrame {
 		setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
+	
+	public void refreshWorkingSession()
+	{
+		loadWorkingSession(ws);
+	}
 
 	/**
 	 * Load a working session : parse the directory and create the JTable
@@ -221,7 +226,7 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[4])
 				.setCellEditor(new DetailsButton(new JCheckBox(),
 												!ws.getDestinationLanguage().isNone(),
-												ws.getDestinationLanguage()));
+												ws.getDestinationLanguage(), this));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
 
 		// The table can be sorted with the column headers

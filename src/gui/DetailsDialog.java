@@ -18,7 +18,7 @@ import translator.ITranslatorParsedFile;
 public class DetailsDialog extends JDialog {
 	public DetailsDialog(JFrame parent, String title, boolean modal,
 			ITranslatorParsedFile file, boolean hasDestinationLanguage,
-			Language destinationLanguage) {
+			Language destinationLanguage, Window window) {
 		// Create the JDialog
 		super(parent, title, modal);
 		setSize(500, 600);
@@ -49,7 +49,7 @@ public class DetailsDialog extends JDialog {
 		// Translate action
 		if (hasDestinationLanguage) {
 			JButton translateBtn = new JButton("Translate");
-			translateBtn.addActionListener(new TranslateListener(title, file, destinationLanguage));
+			translateBtn.addActionListener(new TranslateListener(title, file, destinationLanguage, window));
 			getContentPane().add(translateBtn, BorderLayout.SOUTH);
 		}
 		setVisible(true);
@@ -71,12 +71,15 @@ public class DetailsDialog extends JDialog {
 		private String title;
 		private ITranslator file;
 		private Language destinationLanguage;
+		private Window window;
 		
 
-		public TranslateListener(String title, ITranslator file, Language destinationLanguage) {
+		public TranslateListener(String title, ITranslator file,
+				Language destinationLanguage, Window window) {
 			this.title = title;
 			this.file = file;
 			this.destinationLanguage = destinationLanguage;
+			this.window = window;
 		}
 		
 		public void actionPerformed(ActionEvent event) {
@@ -85,6 +88,9 @@ public class DetailsDialog extends JDialog {
 			
 			// Open a new one
 			new TranslatorDialog(null, title, true, file, destinationLanguage);
+			
+			// Refresh working session
+			window.refreshWorkingSession();
 		}
 	}
 }
