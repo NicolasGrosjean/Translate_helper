@@ -80,6 +80,10 @@ public class DetailsDialog extends JDialog {
 		}
 		
 		public void actionPerformed(ActionEvent event) {
+			// Close this dialog
+			setVisible(false);
+			
+			// Open a new one
 			new TranslatorDialog(null, title, true, file, destinationLanguage);
 		}
 	}
