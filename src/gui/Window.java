@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -130,6 +131,12 @@ public class Window extends JFrame {
 		wsModify.setEnabled(configuration.hasWorkingSession());
 		wsModify.addActionListener(new DialogWorkingSession(false));
 		wsMenu.add(wsModify);
+		// Refresh current working session
+		JMenuItem wsRefresh = new JMenuItem("Refresh");
+		wsRefresh.setEnabled(configuration.hasWorkingSession());
+		wsRefresh.addActionListener(new RefreshWorkingSession(ws));
+		wsRefresh.setAccelerator(KeyStroke.getKeyStroke("F5"));
+		wsMenu.add(wsRefresh);
 		windowMenuBar.add(wsMenu);
 		setJMenuBar(windowMenuBar);
 
@@ -258,6 +265,7 @@ public class Window extends JFrame {
 				wsMenuItem.addActionListener(new OpenRecentWorkingSession(ws));
 				wsOpenRecently.add(wsMenuItem);
 			}
+			
 		}
 	}
 
@@ -531,6 +539,22 @@ public class Window extends JFrame {
 				configuration.becomeFirst(ws);
 				configuration.saveConfigFile();
 				updateOpenRecentlyMenu();
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	class RefreshWorkingSession implements ActionListener {
+		private WorkingSession ws;
+
+		RefreshWorkingSession(WorkingSession ws) {
+			this.ws = ws;
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			try {
+				loadWorkingSession(ws);
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
 			}
