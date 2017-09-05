@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -30,7 +31,8 @@ public class TranslatorDialog extends JDialog {
 
 		// Text areas
 		sourceTextArea = new JTextArea();
-		sourceTextArea.setEditable(false); // TODO: Put in gray
+		sourceTextArea.setEditable(false);
+		sourceTextArea.setBackground(Color.LIGHT_GRAY);
 		destTextArea = new JTextArea();
 		
 		entry = file.getFirstEntryToTranslate();
