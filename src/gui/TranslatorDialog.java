@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,6 +35,7 @@ public class TranslatorDialog extends JDialog {
 		sourceTextArea.setEditable(false);
 		sourceTextArea.setBackground(Color.LIGHT_GRAY);
 		destTextArea = new JTextArea();
+		// TODO set multi-lines
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextArea();
@@ -74,7 +76,9 @@ public class TranslatorDialog extends JDialog {
 			sourceTextArea.setText(entry.getSource());
 			destTextArea.setText(entry.getDestination());
 		} else {
-			// TODO : Set a pop-up and close
+			JOptionPane.showMessageDialog(null, "The translation of this file is finished",
+					"File translation end", JOptionPane.INFORMATION_MESSAGE);
+			setVisible(false);
 		}
 	}
 	
