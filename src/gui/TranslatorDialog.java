@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -31,16 +32,18 @@ public class TranslatorDialog extends JDialog {
 		setLocationRelativeTo(null);
 
 		// Text areas
+		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
 		sourceTextArea = new JTextArea();
 		sourceTextArea.setEditable(false);
 		sourceTextArea.setBackground(Color.LIGHT_GRAY);
 		sourceTextArea.setLineWrap(true);
 		sourceTextArea.setWrapStyleWord(true);
+		sourceTextArea.setFont(textFont);
 		// Destination
 		destTextArea = new JTextArea();
 		destTextArea.setLineWrap(true);
 		destTextArea.setWrapStyleWord(true);
-		// TODO increase size
+		destTextArea.setFont(textFont);
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextArea();
