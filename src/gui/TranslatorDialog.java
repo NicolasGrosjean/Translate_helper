@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,6 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.languagetool.JLanguageTool;
+import org.languagetool.Languages;
+
+import jlanguagetool.LanguageToolSupport;
+import jlanguagetool.UndoRedoSupport;
 import parsing.Language;
 import translator.ITranslator;
 import translator.TranslatedEntry;
@@ -44,13 +48,16 @@ public class TranslatorDialog extends JDialog {
 		destTextArea.setLineWrap(true);
 		destTextArea.setWrapStyleWord(true);
 		destTextArea.setFont(textFont);
+		 new LanguageToolSupport(destTextArea, 
+	        		new UndoRedoSupport(destTextArea, JLanguageTool.getMessageBundle()),
+	        		Languages.getLanguageForLocale(destinationLanguage.getLocale()));
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextArea();
 
 		JPanel textPan = new JPanel(new GridLayout(1, 2, 5, 5));
-		textPan.add(sourceTextArea);
-		textPan.add(destTextArea);		
+		textPan.add(new JScrollPane(sourceTextArea));
+		textPan.add(new JScrollPane(destTextArea));		
 		getContentPane().add(textPan, BorderLayout.CENTER);
 		
 		// Bottom

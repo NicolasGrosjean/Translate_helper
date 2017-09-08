@@ -42,26 +42,17 @@ public class Parse {
 	 * or without source language text
 	 * @param filePaths The list of the names of the files to parse
 	 */
-	public Parse(LinkedList<String> filePaths, String codeSourceLanguage,
-			int defaultSourceLanguageColumn, String codeDestinationLanguage,
-			int defaultDestinationLanguageColumn, String fakeTranslationFile,
+	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
+			Language destinationLanguage, String fakeTranslationFile,
 			String acceptedLoanwordFile) {
-		sourceLanguage = new Language(codeSourceLanguage, defaultSourceLanguageColumn);
-		destinationLanguage = new Language(codeDestinationLanguage, defaultDestinationLanguageColumn);
+		this.sourceLanguage = sourceLanguage;
+		this.destinationLanguage = destinationLanguage;
 		files = new LinkedList<IParsedFile>();
 		fakeTranslation = readList(fakeTranslationFile);
 		acceptedLoanword = readList(acceptedLoanwordFile);
 		for (String filePath : filePaths) {
 			files.addLast(parseAFile(filePath));
 		}
-	}
-
-	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
-			Language destinationLanguage, String fakeTranslationFile,
-			String acceptedLoanwordFile) {
-		this(filePaths, sourceLanguage.getCode(), sourceLanguage.getDefaultColumn(),
-				destinationLanguage.getCode(), destinationLanguage.getDefaultColumn(),
-				fakeTranslationFile, acceptedLoanwordFile);
 	}
 
 	public Parse(WorkingSession ws, String fakeTranslationFile,

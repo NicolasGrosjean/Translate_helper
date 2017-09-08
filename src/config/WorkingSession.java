@@ -129,7 +129,11 @@ public class WorkingSession {
 					throw new IllegalArgumentException("Code for language missing.");
 				}
 				String code = scanner.next();
-				availableLanguages.addLast(new Language(code, defaultColumnNumber));
+				if (!scanner.hasNext()) {
+					throw new IllegalArgumentException("ISO 639 code for language missing.");
+				}
+				String isoCode = scanner.next();
+				availableLanguages.addLast(new Language(code, defaultColumnNumber, isoCode));
 				// If the line terminate by a ';', we skip it by read the empty string
 				while (!scanner.hasNextInt() && scanner.hasNext()) {
 					String s = scanner.next();
@@ -163,16 +167,16 @@ public class WorkingSession {
 		return WorkingSession.availableLanguages;
 	}
 
-	public static int getLanguageDefaultColumn(String language) {
+	public static Language getLanguage(String language) {
 		if (!isAvailableLanguagesInitialized()) {
 			throw new IllegalArgumentException("The list of available languages was not initialized!");
 		}
 		if (language.equals(Language.defaultLanguageCode)) {
-			return Language.defaultLanguageColumn;
+			return new Language();
 		}
 		for (Language l : WorkingSession.availableLanguages) {
 			if (l.getCode().equals(language)) {
-				return l.getDefaultColumn();
+				return l;
 			}
 		}
 		throw new IllegalArgumentException("Language " + language + " is not available");

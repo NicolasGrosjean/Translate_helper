@@ -1,5 +1,7 @@
 package parsing;
 
+import java.util.Locale;
+
 public class Language {
 	/**
 	 * Code of the language in the "localisation" files
@@ -10,17 +12,25 @@ public class Language {
 	 * Default column in the "localisation" files
 	 */
 	private int defaultColumn;
+	
+	/**
+	 * Locale object of the language
+	 */
+	private Locale locale;
 
 	public final static String defaultLanguageCode = "NONE";
 	public final static int defaultLanguageColumn = -1;
+	public final static String defaultLocaleISO = "en";
 
-	public Language(String code, int defaultColumn) {
+	public Language(String code, int defaultColumn, String languageISO) {
 		this.code = code;
 		this.defaultColumn = defaultColumn;
+		// ISO 639
+		this.locale = new Locale(languageISO);
 	}
 
 	public Language() {
-		this(defaultLanguageCode, defaultLanguageColumn);
+		this(defaultLanguageCode, defaultLanguageColumn, defaultLocaleISO);
 	}
 
 	public String getCode() {
@@ -29,6 +39,10 @@ public class Language {
 
 	public int getDefaultColumn() {
 		return defaultColumn;
+	}
+
+	public Locale getLocale() {
+		return locale;
 	}
 
 	/**

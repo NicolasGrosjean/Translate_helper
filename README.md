@@ -8,6 +8,16 @@ An application to help to translate the Paradox games localisation files.
 * See the details for each file
 * Share this diagnostic by generating a pdf report (select the files which will be appear into it)
 
+![alt text](Diagnostic.png)
+
+# Translation
+* See the source and the destination text
+* Write or fix the destination with spell and grammar checking
+* Skip entries to translate if you wish
+* Save source text as loan word
+
+![alt text](Translation.png)
+
 # How to use it
 * Download the repository
 * Double-click on Script_translate_helper.bat or directly on TranslateHelper.jar if you have put java in your PATH
@@ -21,5 +31,5 @@ An application to help to translate the Paradox games localisation files.
 # Used librairies
 * itextpdf: Create a pdf for the export to pdf
 * jdom: Read and write XML for the config files
-* languagetool: NOT YET USED, I expect use it for orthagraphic and grammar errors
+* languagetool: Check spelling and grammar
 Like the creator asked, I have let their full packages in the directory jars/

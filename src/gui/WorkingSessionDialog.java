@@ -73,7 +73,7 @@ public class WorkingSessionDialog extends JDialog {
 		Language[] avalaibleSourceLanguages = WorkingSession.getAvailableLanguages().toArray(new Language[0]);
 		// The available languages for the destination language are NONE and the available source languages
 		Language[] avalaibleDestinationLanguages = new Language[avalaibleSourceLanguages.length + 1];		
-		avalaibleDestinationLanguages[0] = new Language("NONE", -1);
+		avalaibleDestinationLanguages[0] = new Language();
 		for (int i = 0; i < avalaibleSourceLanguages.length; i++) {
 			avalaibleDestinationLanguages[i + 1] = avalaibleSourceLanguages[i];
 		}

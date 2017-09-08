@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import parsing.ParsedEntry;
 import parsing.IParsedFile;
+import parsing.Language;
 import parsing.Parse;
 import parsing.CK2ParsedFile;
 
@@ -24,7 +25,8 @@ public class TestParsing {
 
 	@BeforeClass
 	public static void SetUp() {
-		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files"), "FRENCH", 2, "ENGLISH", 1,
+		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files"),
+				new Language("FRENCH", 2, "fr"), new Language("ENGLISH", 1, "en"),
 				"config/fake_translations.txt", "config/accepted_loanwords.txt");
 	}
 

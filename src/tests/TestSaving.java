@@ -31,7 +31,7 @@ public class TestSaving {
 	@BeforeClass
 	public static void SetUp() {
 		entryToSave = new TranslatedEntry("Toto", "Tata", 3);
-		destinationLanguage = new Language("FRENCH", 2);
+		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
 
 	@Test

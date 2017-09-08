@@ -59,10 +59,8 @@ public class ConfigStorage {
 			//			}
 			workingSessions.addLast(new WorkingSession(wsElem.getAttributeValue(wsNameAttribute),
 					wsElem.getAttributeValue(wsDirectoryAttribute),
-					new Language(wsElem.getAttributeValue(wsSourceLanguageAttribute),
-							WorkingSession.getLanguageDefaultColumn(wsElem.getAttributeValue(wsSourceLanguageAttribute))),
-					new Language(wsElem.getAttributeValue(wsDestinationLanguageAttribute),
-							WorkingSession.getLanguageDefaultColumn(wsElem.getAttributeValue(wsDestinationLanguageAttribute)))));
+					WorkingSession.getLanguage(wsElem.getAttributeValue(wsSourceLanguageAttribute)),
+					WorkingSession.getLanguage(wsElem.getAttributeValue(wsDestinationLanguageAttribute))));
 		}
 	}
 

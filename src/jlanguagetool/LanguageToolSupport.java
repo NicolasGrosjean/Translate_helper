@@ -56,7 +56,7 @@ import org.languagetool.rules.RuleMatch;
  * @author Panagiotis Minos
  * @since 2.3
  */
-class LanguageToolSupport {
+public class LanguageToolSupport {
 
   static final String CONFIG_FILE = ".languagetool.cfg";
   static final int MAX_REPLACE = 5;

@@ -25,7 +25,7 @@ import org.languagetool.JLanguageTool;
  *
  * @author Panagiotis Minos
  */
-class UndoRedoSupport {
+public class UndoRedoSupport {
 
   final UndoAction undoAction;
   final RedoAction redoAction;
@@ -34,7 +34,7 @@ class UndoRedoSupport {
   private boolean compoundMode = false;
   private CompoundEdit ce = null;
 
-  UndoRedoSupport(JTextComponent textComponent, ResourceBundle messages) {
+  public UndoRedoSupport(JTextComponent textComponent, ResourceBundle messages) {
     this.messages = messages;
     undoManager = new UndoManager();
     undoAction = new UndoAction();
