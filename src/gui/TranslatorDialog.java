@@ -34,8 +34,13 @@ public class TranslatorDialog extends JDialog {
 		sourceTextArea = new JTextArea();
 		sourceTextArea.setEditable(false);
 		sourceTextArea.setBackground(Color.LIGHT_GRAY);
+		sourceTextArea.setLineWrap(true);
+		sourceTextArea.setWrapStyleWord(true);
+		// Destination
 		destTextArea = new JTextArea();
-		// TODO set multi-lines
+		destTextArea.setLineWrap(true);
+		destTextArea.setWrapStyleWord(true);
+		// TODO increase size
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextArea();
