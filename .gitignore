@@ -3,3 +3,5 @@
 .settings/org.eclipse.jdt.core.prefs
 *.class
 analyze.txt
+TranslateHelper.jar
+TranslateHelper_lib/
