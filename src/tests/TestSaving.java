@@ -53,7 +53,7 @@ public class TestSaving {
 							"TRADE.0005D;Okay;D'ac;;OK;;;;Ok;;;;;;x",};
 		List<String> lines = Arrays.asList(expected);
 		Path filetoWtrite = Paths.get(filePath);
-		Files.write(filetoWtrite, lines, Charset.forName("ISO_8859_1"));
+		Files.write(filetoWtrite, lines, Charset.forName("Cp1252"));
 
 		// Skip first line to translate
 		file.getFirstEntryToTranslate();
@@ -96,7 +96,7 @@ public class TestSaving {
 								"TRADE.0005A;§YReligious head suitability: $SCORE$§!;;;Ja;;;Amigo;;;;;;;x"};
 		List<String> lines = Arrays.asList(expected);
 		Path filetoWtrite = Paths.get(filePath);
-		Files.write(filetoWtrite, lines, Charset.forName("ISO_8859_1"));
+		Files.write(filetoWtrite, lines, Charset.forName("Cp1252"));
 		
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
@@ -105,6 +105,46 @@ public class TestSaving {
 		
 		// Check that is what we expect
 		expected[1] = "TRADE.0005A;§YReligious head suitability: $SCORE$§!;Tata;;Ja;;;Amigo;;;;;;;x";
+		FileInputStream fis = new FileInputStream(filePath);
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
+		}
+	}
+
+	@Test
+	public void testSaveInCK2LocalisationFileAccents() throws IOException {
+		// Create data
+		String filePath = "./test_localisation_files/save_file2.csv";
+		CK2ParsedFile file = new CK2ParsedFile(filePath);
+		file.setLineNumber(2);
+		String source = "Send a letter to our religious head in the hope of getting our sins forgiven and increasing our piety.";
+		String dest = "Envoyons une lettre au chef religieux en espérant que nos péchés seront pardonnés et que notre piété s’améliorera."; 
+				
+		file.addLastLineToTranslate(2, "TRADE.0005A", "", source, dest);
+		
+		// Create a file corresponding to these data
+		String[] expected = { "CODE;ENGLISH;FRENCH;;;;;;;;;;;;x",
+				"buy_indulgence_for_sins_desc;" + source + ";" + dest + ";;Ja;;;Amigo;;;;;;;x"};
+		List<String> lines = Arrays.asList(expected);
+		Path filetoWtrite = Paths.get(filePath);
+		Files.write(filetoWtrite, lines, Charset.forName("Cp1252"));
+		
+		file.getFirstEntryToTranslate();
+		// Modify and save the file
+		TranslatedEntry entryToSave2 = new TranslatedEntry(source, dest, 2);
+		file.getNextEntryToTranslateAndSave(entryToSave2, destinationLanguage);
+		
+		// Check that is what we expect
+		expected[1] = "buy_indulgence_for_sins_desc;" + source + ";" + dest + ";;Ja;;;Amigo;;;;;;;x";
 		FileInputStream fis = new FileInputStream(filePath);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 		try {
