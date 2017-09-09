@@ -208,7 +208,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new OutputStreamWriter(
-					new FileOutputStream(filePath), StandardCharsets.ISO_8859_1), true);
+					new FileOutputStream(filePath), "windows-1252"), true);
 		    writer.print(lines);
 		} catch (IOException e) {
 			e.printStackTrace();
