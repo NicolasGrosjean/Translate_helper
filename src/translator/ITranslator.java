@@ -25,8 +25,10 @@ public interface ITranslator {
 			Language destinationLanguage);
 	
 	/**
-	 * Set that the entry is a loan word and so is a correct translation
+	 * Set that the entry is a loan word and so is a correct translation.
+	 * Get the next entry to translate.
 	 * @param loanWordEntry
+	 * @return
 	 */
-	public void setLoanWords(TranslatedEntry loanWordEntry);
+	public TranslatedEntry getNextEntryToTranslateAndSetLoanWord(TranslatedEntry loanWordEntry);
 }

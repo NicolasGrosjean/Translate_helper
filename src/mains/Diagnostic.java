@@ -7,6 +7,7 @@ import config.WorkingSession;
 import gui.Window;
 
 public class Diagnostic {
+	public static final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
 
 	public static void main(String[] args) {
 		Window window = null;
@@ -15,7 +16,6 @@ public class Diagnostic {
 			WorkingSession.setAvailableLanguages("config/available_languages.csv");
 			final String configurationFile = "config/config.xml";
 			final String fakeTranslationFile = "config/fake_translations.txt";
-			final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
 			ConfigStorage configuration = new ConfigStorage(configurationFile);
 
 			// Create the window

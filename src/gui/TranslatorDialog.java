@@ -62,7 +62,10 @@ public class TranslatorDialog extends JDialog {
 		
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
-		loanWordBtn.addActionListener(e -> file.setLoanWords(entry));
+		loanWordBtn.addActionListener(e -> {
+			entry = file.getNextEntryToTranslateAndSetLoanWord(entry);
+			updateTextArea();
+		});
 		
 		JButton nextBtn = new JButton("Next entry without saving");
 		nextBtn.addActionListener(e ->{ 

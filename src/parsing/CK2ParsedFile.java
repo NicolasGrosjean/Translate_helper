@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import mains.Diagnostic;
 import translator.ITranslator;
 import translator.ITranslatorParsedFile;
 import translator.TranslatedEntry;
@@ -218,7 +220,23 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 	}
 
 	@Override
-	public void setLoanWords(TranslatedEntry loanWordEntry) {
-		// TODO Auto-generated method stub
+	public TranslatedEntry getNextEntryToTranslateAndSetLoanWord(TranslatedEntry loanWordEntry) {
+		String filename= Diagnostic.acceptedLoanwordFile;
+		FileWriter fw = null;
+		try
+		{
+			fw = new FileWriter(filename,true);
+		    fw.write(loanWordEntry.getSource());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fw != null)
+					fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return getNextEntryToTranslate();
 	}
 }
