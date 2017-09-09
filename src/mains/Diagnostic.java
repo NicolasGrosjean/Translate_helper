@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import config.ConfigStorage;
 import config.WorkingSession;
 import gui.Window;
+import versionning.OnlineVersionChecker;
 
 /**
  *
@@ -15,6 +16,8 @@ public class Diagnostic {
 	public static final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
 
 	public static void main(String[] args) {
+		new OnlineVersionChecker();
+
 		Window window = null;
 		try {
 			//Read the configuration files
