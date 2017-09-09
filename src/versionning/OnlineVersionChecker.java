@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class OnlineVersionChecker {
 	// TODO change it
 	private static String URL_APP_INFO_TXT = "https://raw.githubusercontent.com/NicolasGrosjean/Translate_helper/master/AppInfo.txt";
-	public static String VERSION = "1.0";
+	public static String VERSION = "1.1";
 	
 	private String onlineVersion;
 	
