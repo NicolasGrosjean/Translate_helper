@@ -6,6 +6,11 @@ import config.ConfigStorage;
 import config.WorkingSession;
 import gui.Window;
 
+/**
+ *
+ * @author GROSJEAN Nicolas (alias Mouchi)
+ *
+ */
 public class Diagnostic {
 	public static final String acceptedLoanwordFile = "config/accepted_loanwords.txt";
 
