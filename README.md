@@ -19,7 +19,7 @@ An application to help to translate the Paradox games localisation files.
 ![alt text](Translation.png)
 
 # How to use it
-* Download the repository
+* Download the [lastest release](https://github.com/NicolasGrosjean/Translate_helper/releases)
 * Double-click on Script_translate_helper.bat or directly on TranslateHelper.jar if you have put java in your PATH
 * The application is configured with a demo. You can modify it and add your own configurations with the Configuration menu
 
@@ -31,5 +31,4 @@ An application to help to translate the Paradox games localisation files.
 # Used librairies
 * itextpdf: Create a pdf for the export to pdf
 * jdom: Read and write XML for the config files
-* languagetool: Check spelling and grammar
-Like the creator asked, I have let their full packages in the directory jars/
+* languagetool: Check spelling and grammar. Like the creator asked, I have let their full packages in the directory jars/
