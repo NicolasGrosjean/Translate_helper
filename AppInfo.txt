@@ -1,1 +1,2 @@
 AppVersion=1.1
+- Fix an encoding issue with some special characters
