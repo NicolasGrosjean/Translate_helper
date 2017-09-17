@@ -225,6 +225,7 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
 		table.getColumn(columnTitles[4])
 				.setCellEditor(new DetailsButton(new JCheckBox(),
+												ws.getSourceLanguage(),
 												!ws.getDestinationLanguage().isNone(),
 												ws.getDestinationLanguage(), this));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);

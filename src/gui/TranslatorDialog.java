@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,16 +31,24 @@ public class TranslatorDialog extends JDialog {
 	private JTextArea destTextArea;
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
-			ITranslator file, Language destinationLanguage) {		
+			ITranslator file, Language sourceLanguage,
+			Language destinationLanguage) {		
 		// Create the JDialog
 		super(parent, "", modal);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		
 		this.fileName = fileName;
-
-		// Text areas
+		
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
+		
+		// Lanuguage labels
+		JLabel sourceLangLabel = new JLabel(sourceLanguage.getCode());
+		sourceLangLabel.setFont(textFont);
+		JLabel destLangLabel = new JLabel(destinationLanguage.getCode());
+		destLangLabel.setFont(textFont);		
+		
+		// Text areas
 		sourceTextArea = new JTextArea();
 		sourceTextArea.setEditable(false);
 		sourceTextArea.setBackground(Color.LIGHT_GRAY);
@@ -57,10 +66,18 @@ public class TranslatorDialog extends JDialog {
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextAreaAndTitle();
-
+		
+		JPanel sourcePan = new JPanel(new BorderLayout());
+		sourcePan.add(sourceLangLabel, BorderLayout.NORTH);
+		sourcePan.add(new JScrollPane(sourceTextArea), BorderLayout.CENTER);
+		
+		JPanel destPan = new JPanel(new BorderLayout());
+		destPan.add(destLangLabel, BorderLayout.NORTH);
+		destPan.add(new JScrollPane(destTextArea), BorderLayout.CENTER);
+		
 		JPanel textPan = new JPanel(new GridLayout(1, 2, 5, 5));
-		textPan.add(new JScrollPane(sourceTextArea));
-		textPan.add(new JScrollPane(destTextArea));		
+		textPan.add(sourcePan);
+		textPan.add(destPan);		
 		getContentPane().add(textPan, BorderLayout.CENTER);
 		
 		// Bottom
