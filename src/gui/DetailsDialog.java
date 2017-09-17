@@ -68,15 +68,15 @@ public class DetailsDialog extends JDialog {
 	}
 	
 	class TranslateListener implements ActionListener {
-		private String title;
+		private String fileName;
 		private ITranslator file;
 		private Language destinationLanguage;
 		private Window window;
 		
 
-		public TranslateListener(String title, ITranslator file,
+		public TranslateListener(String fileName, ITranslator file,
 				Language destinationLanguage, Window window) {
-			this.title = title;
+			this.fileName = fileName;
 			this.file = file;
 			this.destinationLanguage = destinationLanguage;
 			this.window = window;
@@ -87,7 +87,7 @@ public class DetailsDialog extends JDialog {
 			setVisible(false);
 			
 			// Open a new one
-			new TranslatorDialog(null, title, true, file, destinationLanguage);
+			new TranslatorDialog(null, fileName, true, file, destinationLanguage);
 			
 			// Refresh working session
 			window.refreshWorkingSession();

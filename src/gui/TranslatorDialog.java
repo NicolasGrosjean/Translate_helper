@@ -23,17 +23,20 @@ import translator.ITranslator;
 import translator.TranslatedEntry;
 
 public class TranslatorDialog extends JDialog {
+	private String fileName;
 	private TranslatedEntry entry;
 	
 	private JTextArea sourceTextArea;
 	private JTextArea destTextArea;
 	
-	public TranslatorDialog(JFrame parent, String title, boolean modal,
-			ITranslator file, Language destinationLanguage) {
+	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
+			ITranslator file, Language destinationLanguage) {		
 		// Create the JDialog
-		super(parent, title, modal);
+		super(parent, "", modal);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
+		
+		this.fileName = fileName;
 
 		// Text areas
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
@@ -53,7 +56,7 @@ public class TranslatorDialog extends JDialog {
 	        		Languages.getLanguageForLocale(destinationLanguage.getLocale()));
 		
 		entry = file.getFirstEntryToTranslate();
-		updateTextArea();
+		updateTextAreaAndTitle();
 
 		JPanel textPan = new JPanel(new GridLayout(1, 2, 5, 5));
 		textPan.add(new JScrollPane(sourceTextArea));
@@ -64,20 +67,20 @@ public class TranslatorDialog extends JDialog {
 		JButton loanWordBtn = new JButton("Set source as loan words");
 		loanWordBtn.addActionListener(e -> {
 			entry = file.getNextEntryToTranslateAndSetLoanWord(entry);
-			updateTextArea();
+			updateTextAreaAndTitle();
 		});
 		
 		JButton nextBtn = new JButton("Next entry without saving");
 		nextBtn.addActionListener(e ->{ 
 			entry = file.getNextEntryToTranslate();
-			updateTextArea();
+			updateTextAreaAndTitle();
 		});
 		
 		JButton nextSaveBtn = new JButton("Save this translation and go to next entry");
 		nextSaveBtn.addActionListener(e -> {
 			updateEntry();
 			entry = file.getNextEntryToTranslateAndSave(entry, destinationLanguage);
-			updateTextArea();
+			updateTextAreaAndTitle();
 		});
 		
 		JPanel btnPan = new JPanel(new GridLayout(1, 3, 5, 5));
@@ -89,10 +92,11 @@ public class TranslatorDialog extends JDialog {
 		setVisible(true);
 	}
 	
-	private void updateTextArea() {
+	private void updateTextAreaAndTitle() {
 		if (entry != null) {
 			sourceTextArea.setText(entry.getSource());
 			destTextArea.setText(entry.getDestination());
+			setTitle(fileName + " - " + entry.getId());
 		} else {
 			JOptionPane.showMessageDialog(null, "The translation of this file is finished",
 					"File translation end", JOptionPane.INFORMATION_MESSAGE);
