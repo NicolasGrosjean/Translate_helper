@@ -55,7 +55,9 @@ public class OnlineVersionChecker {
 						}
 					}
 				} else {
-					changelog += "\n" + inputLine;
+					if (inputLine.length() > 0) {
+						changelog += "\n" + inputLine;
+					}
 				}
 			}
 	        in.close();
