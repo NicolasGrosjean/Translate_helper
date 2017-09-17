@@ -28,6 +28,10 @@ public class TranslatedEntry {
 		return source;
 	}
 
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public String getDestination() {
 		return destination;
 	}

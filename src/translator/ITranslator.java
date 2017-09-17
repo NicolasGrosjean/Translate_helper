@@ -18,11 +18,12 @@ public interface ITranslator {
 	/**
 	 * Save an entry and get the next entry to translate or null if there is no one
 	 * @param entryToSave
+	 * @param sourceLanguage
 	 * @param destinationLanguage
 	 * @return
 	 */
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave,
-			Language destinationLanguage);
+			Language sourceLanguage, Language destinationLanguage);
 	
 	/**
 	 * Set that the entry is a loan word and so is a correct translation.

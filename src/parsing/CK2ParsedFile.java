@@ -170,7 +170,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 
 	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave,
-			Language destinationLanguage) {
+			Language sourceLanguage, Language destinationLanguage) {
 		TranslatedEntry nextEntry = getNextEntryToTranslate();
 		BufferedReader file = null;
 		String lines = "";
@@ -183,7 +183,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		    	i++;
 		    	if (i == entryToSave.getDestLineNumber()) {
 		    		String[] localisations = line.split(";");
-		    		// TODO : Save also the source language ?
+		    		localisations[sourceLanguage.getDefaultColumn()] = entryToSave.getSource();
 		    		localisations[destinationLanguage.getDefaultColumn()] = entryToSave.getDestination();
 		    		line = "";
 		    		for (String s: localisations)

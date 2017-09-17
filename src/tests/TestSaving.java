@@ -26,11 +26,13 @@ import translator.TranslatedEntry;
 
 public class TestSaving {
 	private static TranslatedEntry entryToSave;
+	private static Language sourceLanguage;
 	private static Language destinationLanguage;
 
 	@BeforeClass
 	public static void SetUp() {
 		entryToSave = new TranslatedEntry("Toto", "Tata", 3, "toto");
+		sourceLanguage = new Language("ENGLISH", 1, "en");
 		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
 
@@ -62,7 +64,7 @@ public class TestSaving {
 		Assert.assertEquals("Incorrect next entry!", "Titi et grosminet", nextEntry.getDestination());
 		
 		// Modify and save the file
-		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave, destinationLanguage);
+		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave, sourceLanguage, destinationLanguage);
 		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
 		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
 
@@ -102,7 +104,7 @@ public class TestSaving {
 		// Modify and save the file
 		TranslatedEntry entryToSave2 = new TranslatedEntry("§YReligious head suitability: $SCORE$§!",
 				"Tata", 2, "TRADE.0005A");
-		file.getNextEntryToTranslateAndSave(entryToSave2, destinationLanguage);
+		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
 		expected[1] = "TRADE.0005A;§YReligious head suitability: $SCORE$§!;Tata;;Ja;;;Amigo;;;;;;;x";
@@ -143,7 +145,7 @@ public class TestSaving {
 		// Modify and save the file
 		TranslatedEntry entryToSave2 = new TranslatedEntry(source, dest, 2,
 				"buy_indulgence_for_sins_desc");
-		file.getNextEntryToTranslateAndSave(entryToSave2, destinationLanguage);
+		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
 		expected[1] = "buy_indulgence_for_sins_desc;" + source + ";" + dest + ";;Ja;;;Amigo;;;;;;;x";

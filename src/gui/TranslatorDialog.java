@@ -50,8 +50,6 @@ public class TranslatorDialog extends JDialog {
 		
 		// Text areas
 		sourceTextArea = new JTextArea();
-		sourceTextArea.setEditable(false);
-		sourceTextArea.setBackground(Color.LIGHT_GRAY);
 		sourceTextArea.setLineWrap(true);
 		sourceTextArea.setWrapStyleWord(true);
 		sourceTextArea.setFont(textFont);
@@ -96,7 +94,7 @@ public class TranslatorDialog extends JDialog {
 		JButton nextSaveBtn = new JButton("Save this translation and go to next entry");
 		nextSaveBtn.addActionListener(e -> {
 			updateEntry();
-			entry = file.getNextEntryToTranslateAndSave(entry, destinationLanguage);
+			entry = file.getNextEntryToTranslateAndSave(entry, sourceLanguage, destinationLanguage);
 			updateTextAreaAndTitle();
 		});
 		
@@ -123,7 +121,7 @@ public class TranslatorDialog extends JDialog {
 	
 	private void updateEntry()
 	{
-		// TODO : Update source if we want to save it
+		entry.setSource(sourceTextArea.getText());
 		entry.setDestination(destTextArea.getText());
 	}
 }
