@@ -1,2 +1,7 @@
+AppVersion=1.2
+- Allow to modify source text
+- Add entry and languages in the translation dialog
+- Improve the version checker
+
 AppVersion=1.1
 - Fix an encoding issue with some special characters
