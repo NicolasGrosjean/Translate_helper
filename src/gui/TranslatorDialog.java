@@ -53,6 +53,9 @@ public class TranslatorDialog extends JDialog {
 		sourceTextArea.setLineWrap(true);
 		sourceTextArea.setWrapStyleWord(true);
 		sourceTextArea.setFont(textFont);
+		 new LanguageToolSupport(sourceTextArea, 
+	        		new UndoRedoSupport(sourceTextArea, JLanguageTool.getMessageBundle()),
+	        		Languages.getLanguageForLocale(sourceLanguage.getLocale()));
 		// Destination
 		destTextArea = new JTextArea();
 		destTextArea.setLineWrap(true);
