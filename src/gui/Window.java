@@ -242,9 +242,6 @@ public class Window extends JFrame {
 			table.setRowSorter(sorter);
 		}
 
-		// Open file when click on name
-		table.addMouseListener(new OpenFileListener(ws.getDirectory()));
-
 		// Context menu
 		table.setComponentPopupMenu(createContextMenu());
 
@@ -440,9 +437,9 @@ public class Window extends JFrame {
 
 	private JPopupMenu createContextMenu() {
 		JPopupMenu contextMenu = new JPopupMenu();
+		
 		JMenuItem checkLineItem = new JMenuItem("Check all the lines");
 		checkLineItem.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
             	int row = table.getSelectedRows()[0];
@@ -456,8 +453,42 @@ public class Window extends JFrame {
         });
         contextMenu.add(checkLineItem);
         
+		JMenuItem openFileItem = new JMenuItem("Open file in the default software");
+		openFileItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRows()[0];
+				String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
+				if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
+					IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
+					try {
+						Desktop.getDesktop().open(new File(directory + f.getName()));
+					} catch (IllegalArgumentException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName() + ".\nThe file doesn't exist anymore.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (UnsupportedOperationException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName()
+										+ ".\nYour platform doesn't allow to open files.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (IOException exception) {
+						JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName()
+								+ ".\nNo defined application to open this file or the application failed to launch.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (SecurityException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName()
+										+ ".\nInsuffisant permission to open this file. ",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+        contextMenu.add(openFileItem);
+        
+        // Select a line by right clicking
         contextMenu.addPopupMenuListener(new PopupMenuListener() {
-
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -498,46 +529,6 @@ public class Window extends JFrame {
 		} catch (ClassNotFoundException e) {
 		} catch (UnsupportedLookAndFeelException e) {
 		} catch (IllegalAccessException e) {
-		}
-	}
-
-	class OpenFileListener extends java.awt.event.MouseAdapter {
-		private String directory;
-
-		OpenFileListener(String directory) {
-			this.directory = (directory.endsWith("/")) ? directory : directory + "/";
-		}
-
-		@Override
-		public void mouseClicked(java.awt.event.MouseEvent e) {
-			int row = table.rowAtPoint(e.getPoint());
-			int column = table.columnAtPoint(e.getPoint());
-			if (row >= 0 && column == OPEN_FILE_COLUMN) {
-				if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
-					IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
-					try {
-						Desktop.getDesktop().open(new File(directory + f.getName()));
-					} catch (IllegalArgumentException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName() + ".\nThe file doesn't exist anymore.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (UnsupportedOperationException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName()
-										+ ".\nYour platform doesn't allow to open files.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (IOException exception) {
-						JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName()
-								+ ".\nNo defined application to open this file or the application failed to launch.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (SecurityException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName()
-										+ ".\nInsuffisant permission to open this file. ",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
 		}
 	}
 
