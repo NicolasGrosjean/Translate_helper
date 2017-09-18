@@ -98,6 +98,9 @@ public class Parse {
 	 * @return
 	 */
 	private static LinkedList<String> readList(String file) {
+		if (file == null) {
+			return new LinkedList<String>();
+		}
 		LinkedList<String> readList = new LinkedList<String>();
 		FileInputStream f = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -161,8 +164,20 @@ public class Parse {
 		}
 		return filePaths;
 	}
+	
+	public static CK2ParsedFile getAllCk2Lines(String filePath, Language sourceLanguage,
+			Language destinationLanguage)
+	{
+		Parse parseObj = new Parse(new LinkedList<String>(),
+				sourceLanguage, destinationLanguage, null, null);
+		return parseObj.parseAFile(filePath, true);
+	}
 
 	private CK2ParsedFile parseAFile(String filePath) {
+		return parseAFile(filePath, false);
+	}
+
+	private CK2ParsedFile parseAFile(String filePath, boolean returnAllLines) {
 		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath);
 		int lineNumber = 0;
 		int usefulLineNumber = 0;
@@ -230,6 +245,13 @@ public class Parse {
 						i++; // the expression scanner has moved
 					}
 
+					if (returnAllLines)
+					{
+						parsedFile.addLastLineToTranslate(lineNumber, ID, "",
+								sourceExpression, destinationExpression);
+						continue;
+					}
+					
 					// We can now analyze the two expression
 					// Firstly individually
 					String sourceAnalysis = analyzeExpression(sourceExpression);

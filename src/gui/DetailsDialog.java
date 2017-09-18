@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import parsing.IParsedFile;
 import parsing.Language;
 import translator.ITranslator;
 import translator.ITranslatorParsedFile;

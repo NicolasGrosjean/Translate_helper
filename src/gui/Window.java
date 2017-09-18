@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,12 +24,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 
@@ -158,9 +163,8 @@ public class Window extends JFrame {
 		setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
-	
-	public void refreshWorkingSession()
-	{
+
+	public void refreshWorkingSession() {
 		loadWorkingSession(ws);
 	}
 
@@ -196,8 +200,9 @@ public class Window extends JFrame {
 		container.add(wsInformation, BorderLayout.NORTH);
 
 		// Table of the files
-		String columnTitles[] = { "", "File", "Missing source text", "Translated", " "};
-		// WARNING the columnTitles need to be different that's why the last is "  " and not " "
+		String columnTitles[] = { "", "File", "Missing source text", "Translated", " " };
+		// WARNING the columnTitles need to be different that's why the last is " " and
+		// not " "
 		Parse p = new Parse(ws, fakeTranslationFile, acceptedLoanwordFile);
 		DiagnosticTableModel tableModel = new DiagnosticTableModel(p.toArray(), columnTitles);
 		table = new JTable(tableModel) {
@@ -223,11 +228,8 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[2]).setPreferredWidth(90);
 		table.getColumn(columnTitles[3]).setCellRenderer(new Percentage());
 		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
-		table.getColumn(columnTitles[4])
-				.setCellEditor(new DetailsButton(new JCheckBox(),
-												ws.getSourceLanguage(),
-												!ws.getDestinationLanguage().isNone(),
-												ws.getDestinationLanguage(), this));
+		table.getColumn(columnTitles[4]).setCellEditor(new DetailsButton(new JCheckBox(), ws.getSourceLanguage(),
+				!ws.getDestinationLanguage().isNone(), ws.getDestinationLanguage(), this));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
 
 		// The table can be sorted with the column headers
@@ -239,9 +241,12 @@ public class Window extends JFrame {
 			sorter.setComparator(3, Percentage.comparator);
 			table.setRowSorter(sorter);
 		}
-		
+
 		// Open file when click on name
 		table.addMouseListener(new OpenFileListener(ws.getDirectory()));
+
+		// Context menu
+		table.setComponentPopupMenu(createContextMenu());
 
 		// The table is add with a scroll pane (useful if it has many lines)
 		tableSP = new JScrollPane(table);
@@ -271,7 +276,7 @@ public class Window extends JFrame {
 				wsMenuItem.addActionListener(new OpenRecentWorkingSession(ws));
 				wsOpenRecently.add(wsMenuItem);
 			}
-			
+
 		}
 	}
 
@@ -433,6 +438,54 @@ public class Window extends JFrame {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	private JPopupMenu createContextMenu() {
+		JPopupMenu contextMenu = new JPopupMenu();
+		JMenuItem checkLineItem = new JMenuItem("Check all the lines");
+		checkLineItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	int row = table.getSelectedRows()[0];
+            	IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
+            	String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
+            	CK2ParsedFile file = Parse.getAllCk2Lines(directory + f.getName(), ws.getSourceLanguage(),
+            			ws.getDestinationLanguage());
+            	new TranslatorDialog(null, f.getName(), true, file,
+            			ws.getSourceLanguage(), ws.getDestinationLanguage());
+            }
+        });
+        contextMenu.add(checkLineItem);
+        
+        contextMenu.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    	int rowAtPoint = table.rowAtPoint(SwingUtilities.convertPoint(contextMenu, new Point(0, 0), table));
+                        if (rowAtPoint > -1) {
+                            table.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+                        }
+                    }
+                });
+            }
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
+        return contextMenu;
+	}
+
 	public static void setLookAndFeel(String lf) {
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -447,45 +500,47 @@ public class Window extends JFrame {
 		} catch (IllegalAccessException e) {
 		}
 	}
-	
+
 	class OpenFileListener extends java.awt.event.MouseAdapter {
 		private String directory;
 
 		OpenFileListener(String directory) {
 			this.directory = (directory.endsWith("/")) ? directory : directory + "/";
 		}
-		
+
 		@Override
-	    public void mouseClicked(java.awt.event.MouseEvent e) {
-	        int row = table.rowAtPoint(e.getPoint());
-	        int column = table.columnAtPoint(e.getPoint());
-	        if (row >= 0 && column == OPEN_FILE_COLUMN) {
-	        	if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
-	        		IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
-	        		try {
-	        			Desktop.getDesktop().open(new File(directory + f.getName()));
-	        		} catch ( IllegalArgumentException exception) {
-	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
-	        					".\nThe file doesn't exist anymore.",
-	        					"ERROR", JOptionPane.ERROR_MESSAGE);
-	        		} catch ( UnsupportedOperationException  exception) {
-	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
-	        					".\nYour platform doesn't allow to open files.",
-	        					"ERROR", JOptionPane.ERROR_MESSAGE);
-	        		} catch ( IOException exception) {
-	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
-	        					".\nNo defined application to open this file or the application failed to launch.",
-	        					"ERROR", JOptionPane.ERROR_MESSAGE);
-	        		} catch ( SecurityException exception) {
-	        			JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName() +
-	        					".\nInsuffisant permission to open this file. ",
-	        					"ERROR", JOptionPane.ERROR_MESSAGE);
-	        		}
-	        	}
-	        }
-	    }
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+			int row = table.rowAtPoint(e.getPoint());
+			int column = table.columnAtPoint(e.getPoint());
+			if (row >= 0 && column == OPEN_FILE_COLUMN) {
+				if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
+					IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
+					try {
+						Desktop.getDesktop().open(new File(directory + f.getName()));
+					} catch (IllegalArgumentException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName() + ".\nThe file doesn't exist anymore.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (UnsupportedOperationException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName()
+										+ ".\nYour platform doesn't allow to open files.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (IOException exception) {
+						JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName()
+								+ ".\nNo defined application to open this file or the application failed to launch.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					} catch (SecurityException exception) {
+						JOptionPane.showMessageDialog(null,
+								"Impossible to open the file " + f.getName()
+										+ ".\nInsuffisant permission to open this file. ",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}
 	}
-	
+
 	class DialogWorkingSession implements ActionListener {
 		private boolean newWS;
 

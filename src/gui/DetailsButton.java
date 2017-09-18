@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
-import parsing.IParsedFile;
 import parsing.Language;
 import translator.ITranslatorParsedFile;
 
