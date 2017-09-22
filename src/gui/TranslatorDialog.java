@@ -1,9 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,12 +25,14 @@ import org.languagetool.Languages;
 import jlanguagetool.LanguageToolSupport;
 import jlanguagetool.UndoRedoSupport;
 import parsing.Language;
+import translator.GoogleTranslate;
 import translator.ITranslator;
 import translator.TranslatedEntry;
 
 public class TranslatorDialog extends JDialog {
 	private String fileName;
 	private TranslatedEntry entry;
+	private GoogleTranslate google;
 	
 	private JTextArea sourceTextArea;
 	private JTextArea destTextArea;
@@ -41,7 +49,7 @@ public class TranslatorDialog extends JDialog {
 		
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
 		
-		// Lanuguage labels
+		// Language labels
 		JLabel sourceLangLabel = new JLabel(sourceLanguage.getCode());
 		sourceLangLabel.setFont(textFont);
 		JLabel destLangLabel = new JLabel(destinationLanguage.getCode());
@@ -79,6 +87,21 @@ public class TranslatorDialog extends JDialog {
 		textPan.add(sourcePan);
 		textPan.add(destPan);		
 		getContentPane().add(textPan, BorderLayout.CENTER);
+		
+		// Right
+		JPanel right = new JPanel();
+		google = new GoogleTranslate(sourceLanguage.getLocale().toString(),
+				destinationLanguage.getLocale().toString());
+		JButton googleTranslateButton = new JButton();
+		try {
+			ImageIcon img = new ImageIcon("config/googleTranslate.jpg");
+			googleTranslateButton.setIcon(img);
+		} catch (Exception e) { }
+		googleTranslateButton.addActionListener(e -> {
+			callGoogleTranslate();
+		});
+		right.add(googleTranslateButton);
+		getContentPane().add(right, BorderLayout.EAST);
 		
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
@@ -125,5 +148,15 @@ public class TranslatorDialog extends JDialog {
 	{
 		entry.setSource(sourceTextArea.getText());
 		entry.setDestination(destTextArea.getText());
+	}
+	
+	private void callGoogleTranslate()
+	{
+		try {
+			destTextArea.setText(google.translate(sourceTextArea.getText()));
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Impossible to get the translation from google",
+					"ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
