@@ -33,9 +33,11 @@ public class TranslatorDialog extends JDialog {
 	private String fileName;
 	private TranslatedEntry entry;
 	private GoogleTranslate google;
+	private String destinationLanguageCode;
 	
 	private JTextArea sourceTextArea;
 	private JTextArea destTextArea;
+	private JLabel destLangLabel;
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
 			ITranslator file, Language sourceLanguage,
@@ -52,7 +54,8 @@ public class TranslatorDialog extends JDialog {
 		// Language labels
 		JLabel sourceLangLabel = new JLabel(sourceLanguage.getCode());
 		sourceLangLabel.setFont(textFont);
-		JLabel destLangLabel = new JLabel(destinationLanguage.getCode());
+		destinationLanguageCode = destinationLanguage.getCode();
+		destLangLabel = new JLabel(destinationLanguageCode);
 		destLangLabel.setFont(textFont);		
 		
 		// Text areas
@@ -136,6 +139,7 @@ public class TranslatorDialog extends JDialog {
 		if (entry != null) {
 			sourceTextArea.setText(entry.getSource());
 			destTextArea.setText(entry.getDestination());
+			destLangLabel.setText(destinationLanguageCode);
 			setTitle(fileName + " - " + entry.getId());
 		} else {
 			JOptionPane.showMessageDialog(null, "The translation of this file is finished",
@@ -154,6 +158,7 @@ public class TranslatorDialog extends JDialog {
 	{
 		try {
 			destTextArea.setText(google.translate(sourceTextArea.getText()));
+			destLangLabel.setText(destinationLanguageCode + " (GOOGLE TRANSLATION)");
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Impossible to get the translation from google",
 					"ERROR", JOptionPane.ERROR_MESSAGE);
