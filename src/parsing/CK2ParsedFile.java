@@ -219,7 +219,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		try
 		{
 			fw = new FileWriter(filename,true);
-		    fw.write(loanWordEntry.getSource());
+		    fw.write("\n" + loanWordEntry.getSource());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
