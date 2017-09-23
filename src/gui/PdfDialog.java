@@ -54,7 +54,7 @@ public class PdfDialog extends JDialog {
 		filePanel = new JPanel(new BorderLayout());
 		filePanel.add(fileTF, BorderLayout.CENTER);
 		filePanel.add(localisationDirectoryFC, BorderLayout.EAST);
-		filePanel.setBorder(BorderFactory.createTitledBorder("Report file"));
+		filePanel.setBorder(BorderFactory.createTitledBorder("Report file destination"));
 		validCancelPanel = new JPanel();
 		validCancelPanel.add(validate);
 		validCancelPanel.add(cancel);

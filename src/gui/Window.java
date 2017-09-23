@@ -431,6 +431,8 @@ public class Window extends JFrame {
 						fontboldType));
 				document.add(new Paragraph(f.getMissingTranslation(), font));
 			}
+
+			document.newPage();
 		}
 		document.close();
 
