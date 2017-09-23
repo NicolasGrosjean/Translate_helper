@@ -1,4 +1,4 @@
 @echo off 
-echo DO NOT CLOSE THE CONSOLE BEFORE THE JAVA APPLICATION
+echo WARNING : if you close this windows, it will close the java application
 java -jar TranslateHelper.jar
 pause
