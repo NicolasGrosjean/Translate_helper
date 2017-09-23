@@ -30,6 +30,11 @@ public class WorkingSession {
 	 * Definition of the destination language
 	 */
 	private Language destinationLanguage;
+	
+	/**
+	 * Call automatically Google translate when the destination text is empty
+	 */
+	private boolean automaticGoogleCall;
 
 	/**
 	 * The list of the code of available languages for all working sessions
@@ -45,7 +50,7 @@ public class WorkingSession {
 	 * @param destinationLanguage
 	 */
 	public WorkingSession(String name, String directory, Language sourceLanguage,
-			Language destinationLanguage) {
+			Language destinationLanguage, boolean automaticGoogleCall) {
 		if (!isAvailableLanguagesInitialized()) {
 			throw new IllegalArgumentException("The list of available languages was not initialized!");
 		}
@@ -53,10 +58,12 @@ public class WorkingSession {
 		setDirectory(directory);
 		setSourceLanguage(sourceLanguage);
 		setDestinationLanguage(destinationLanguage);
+		setAutomaticGoogleCall(automaticGoogleCall);
 	}
 
-	public WorkingSession(String name, String directory, Language sourceLanguage) {
-		this(name, directory, sourceLanguage, new Language());
+	public WorkingSession(String name, String directory, Language sourceLanguage,
+			boolean automaticGoogleCall) {
+		this(name, directory, sourceLanguage, new Language(), automaticGoogleCall);
 	}
 
 	public String getName() {
@@ -104,6 +111,14 @@ public class WorkingSession {
 			throw new IllegalArgumentException("The destination language " +
 					destinationLanguage + " is not available!");
 		}
+	}
+
+	public boolean isAutomaticGoogleCall() {
+		return automaticGoogleCall;
+	}
+
+	public void setAutomaticGoogleCall(boolean automaticGoogleCall) {
+		this.automaticGoogleCall = automaticGoogleCall;
 	}
 
 	/**

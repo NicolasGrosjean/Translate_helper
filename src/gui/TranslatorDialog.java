@@ -34,6 +34,7 @@ public class TranslatorDialog extends JDialog {
 	private TranslatedEntry entry;
 	private GoogleTranslate google;
 	private String destinationLanguageCode;
+	private boolean automaticGoogleCall;
 	
 	private JTextArea sourceTextArea;
 	private JTextArea destTextArea;
@@ -41,13 +42,16 @@ public class TranslatorDialog extends JDialog {
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
 			ITranslator file, Language sourceLanguage,
-			Language destinationLanguage) {		
+			Language destinationLanguage, boolean automaticGoogleCall) {		
 		// Create the JDialog
 		super(parent, "", modal);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		
 		this.fileName = fileName;
+		this.automaticGoogleCall = automaticGoogleCall;
+		google = new GoogleTranslate(sourceLanguage.getLocale().toString(),
+				destinationLanguage.getLocale().toString());
 		
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
 		
@@ -93,8 +97,6 @@ public class TranslatorDialog extends JDialog {
 		
 		// Right
 		JPanel right = new JPanel();
-		google = new GoogleTranslate(sourceLanguage.getLocale().toString(),
-				destinationLanguage.getLocale().toString());
 		JButton googleTranslateButton = new JButton();
 		try {
 			ImageIcon img = new ImageIcon("config/googleTranslate.jpg");
@@ -141,6 +143,9 @@ public class TranslatorDialog extends JDialog {
 			destTextArea.setText(entry.getDestination());
 			destLangLabel.setText(destinationLanguageCode);
 			setTitle(fileName + " - " + entry.getId());
+			if (automaticGoogleCall && destTextArea.getText().equals("")) {
+				callGoogleTranslate();
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "The translation of this file is finished",
 					"File translation end", JOptionPane.INFORMATION_MESSAGE);

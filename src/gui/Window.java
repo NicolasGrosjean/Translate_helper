@@ -229,7 +229,10 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[3]).setCellRenderer(new Percentage());
 		table.getColumn(columnTitles[4]).setCellRenderer(new ButtonRenderer());
 		table.getColumn(columnTitles[4]).setCellEditor(new DetailsButton(new JCheckBox(), ws.getSourceLanguage(),
-				!ws.getDestinationLanguage().isNone(), ws.getDestinationLanguage(), this));
+				!ws.getDestinationLanguage().isNone(),
+				ws.getDestinationLanguage(),
+				ws.isAutomaticGoogleCall(),
+				this));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
 
 		// The table can be sorted with the column headers
@@ -448,7 +451,8 @@ public class Window extends JFrame {
             	CK2ParsedFile file = Parse.getAllCk2Lines(directory + f.getName(), ws.getSourceLanguage(),
             			ws.getDestinationLanguage());
             	new TranslatorDialog(null, f.getName(), true, file,
-            			ws.getSourceLanguage(), ws.getDestinationLanguage());
+            			ws.getSourceLanguage(), ws.getDestinationLanguage(),
+            			ws.isAutomaticGoogleCall());
             }
         });
         contextMenu.add(checkLineItem);
@@ -503,16 +507,10 @@ public class Window extends JFrame {
             }
 
 			@Override
-			public void popupMenuCanceled(PopupMenuEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void popupMenuCanceled(PopupMenuEvent arg0) { }
 
 			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) { }
         });
         return contextMenu;
 	}

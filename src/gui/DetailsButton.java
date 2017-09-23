@@ -19,11 +19,12 @@ public class DetailsButton extends DefaultCellEditor {
 
 	public DetailsButton(JCheckBox checkBox, Language sourceLanguage, 
 			boolean hasDestinationLanguage, Language destinationLanguage,
-			Window window) {
+			boolean automaticGoogleCall, Window window) {
 		super(checkBox);
 		button = new JButton();
 		button.setOpaque(true);
-		bListener = new ButtonListener(sourceLanguage, hasDestinationLanguage, destinationLanguage, window);
+		bListener = new ButtonListener(sourceLanguage, hasDestinationLanguage,
+				destinationLanguage, automaticGoogleCall, window);
 		button.addActionListener(bListener);
 	}
 
@@ -52,13 +53,17 @@ public class DetailsButton extends DefaultCellEditor {
 		private Language sourceLanguage;
 		private boolean hasDestinationLanguage;
 		private Language destinationLanguage;
+		private boolean automaticGoogleCall;
 		private Window window;
 
 		ButtonListener(Language sourceLanguage, boolean hasDestinationLanguage,
-				Language destinationLanguage, Window window) {
+				Language destinationLanguage,
+				boolean automaticGoogleCall,
+				Window window) {
 			this.sourceLanguage = sourceLanguage;
 			this.hasDestinationLanguage = hasDestinationLanguage;
 			this.destinationLanguage = destinationLanguage;
+			this.automaticGoogleCall = automaticGoogleCall;
 			this.window = window;
 		}
 
@@ -71,7 +76,8 @@ public class DetailsButton extends DefaultCellEditor {
 			if (table.getValueAt(row, column-3) instanceof ITranslatorParsedFile) {
 				ITranslatorParsedFile f = (ITranslatorParsedFile)table.getValueAt(row, column-3);
 				new DetailsDialog(null, f.getName(), true, f, sourceLanguage,
-						hasDestinationLanguage, destinationLanguage, window);
+						hasDestinationLanguage, destinationLanguage,
+						automaticGoogleCall, window);
 			}
 		}
 	}

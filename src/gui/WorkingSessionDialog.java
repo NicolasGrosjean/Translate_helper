@@ -8,6 +8,7 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -32,6 +33,7 @@ public class WorkingSessionDialog extends JDialog {
 	private JTextField localisationDirectoryTF;
 	private JComboBox<Language> sourceLanguageSourceComboBox;
 	private JComboBox<Language> destinationLanguageComboBox;
+	private JCheckBox automaticGoogleCall;
 	private JPanel container;
 	private JPanel wsNamePanel;
 	private JPanel localisationDirPanel;
@@ -55,10 +57,11 @@ public class WorkingSessionDialog extends JDialog {
 	 * @param destinationLanguage
 	 */
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal, String name,
-			String directory, Language sourceLanguage, Language destinationLanguage) {
+			String directory, Language sourceLanguage, Language destinationLanguage,
+			boolean automaticGoogleTranslate) {
 		// Create the JDialog
 		super(parent, title, modal);
-		setSize(500, 350);
+		setSize(500, 400);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -81,6 +84,9 @@ public class WorkingSessionDialog extends JDialog {
 		sourceLanguageSourceComboBox.setSelectedItem(sourceLanguage);
 		destinationLanguageComboBox = new JComboBox<Language>(avalaibleDestinationLanguages);
 		destinationLanguageComboBox.setSelectedItem(destinationLanguage);
+		
+		automaticGoogleCall = new JCheckBox("Call automatically Google Translate when destination text is empty");
+		automaticGoogleCall.setSelected(automaticGoogleTranslate);
 
 		// Create all necessary components
 		JButton localisationDirectoryFC = new JButton("...");
@@ -103,17 +109,21 @@ public class WorkingSessionDialog extends JDialog {
 		languagePanel.add(destinationLanguageLabel);
 		languagePanel.add(destinationLanguageComboBox);
 		languagePanel.setBorder(BorderFactory.createTitledBorder("Translation"));
+		JPanel googlePanel = new JPanel();
+		googlePanel.setBorder(BorderFactory.createTitledBorder("Google translate"));
+		googlePanel.add(automaticGoogleCall);
 		validCancelPanel = new JPanel();
 		validCancelPanel.add(validate);
 		validCancelPanel.add(cancel);
 
 		// Add to the container
 		container = new JPanel();
-		container.setLayout(new GridLayout(4, 1, 5, 5));
+		container.setLayout(new GridLayout(5, 1, 5, 5));
 		container.add(wsNamePanel);
-		container.add(localisationDirPanel);		
+		container.add(localisationDirPanel);
 		container.add(languagePanel);
-		container.add(validCancelPanel);		
+		container.add(googlePanel);
+		container.add(validCancelPanel);
 		setContentPane(container);
 
 		// Add FileExplorer actions
@@ -125,13 +135,14 @@ public class WorkingSessionDialog extends JDialog {
 	}
 
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal) {
-		this(parent, title, modal, "", "", new Language(), new Language());
+		this(parent, title, modal, "", "", new Language(), new Language(), false);
 	}
 
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal,
 			WorkingSession ws) {
 		this(parent, title, modal, ws.getName(), ws.getDirectory(),
-				ws.getSourceLanguage(), ws.getDestinationLanguage());
+				ws.getSourceLanguage(), ws.getDestinationLanguage(),
+				ws.isAutomaticGoogleCall());
 	}
 
 	public WorkingSession getWorkingSession() {
@@ -145,7 +156,8 @@ public class WorkingSessionDialog extends JDialog {
 		// Use X.getItemAt(X.getSelectedIndex()) to avoid to do a cast
 		return new WorkingSession(wsName.getText(), localisationDirectoryTF.getText(),
 				sourceLanguageSourceComboBox.getItemAt(sourceLanguageSourceComboBox.getSelectedIndex()),
-				destinationLanguageComboBox.getItemAt(destinationLanguageComboBox.getSelectedIndex()));
+				destinationLanguageComboBox.getItemAt(destinationLanguageComboBox.getSelectedIndex()),
+				automaticGoogleCall.isSelected());
 	}
 
 	class FileExplorer implements ActionListener {

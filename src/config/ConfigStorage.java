@@ -22,6 +22,7 @@ public class ConfigStorage {
 	private static final String wsDirectoryAttribute = "directory";
 	private static final String wsSourceLanguageAttribute = "source";
 	private static final String wsDestinationLanguageAttribute = "destination";
+	private static final String wsAutomaticGoogleAttribute = "automaticGoogle";
 
 	/**
 	 * List of working sessions
@@ -52,15 +53,12 @@ public class ConfigStorage {
 		Iterator<Element> it = workingSessionsElem.iterator();
 		while (it.hasNext()) {
 			Element wsElem = it.next();
-			//			List<Element> modDirectoriesElem = wsElem.getChildren();
-			//			LinkedList<String> modDirectories = new LinkedList<String>();
-			//			for (Element modDirElem : modDirectoriesElem) {
-			//				modDirectories.addFirst(modDirElem.getText());
-			//			}
+			String automaticGoogleTranslate = wsElem.getAttributeValue(wsAutomaticGoogleAttribute);
 			workingSessions.addLast(new WorkingSession(wsElem.getAttributeValue(wsNameAttribute),
 					wsElem.getAttributeValue(wsDirectoryAttribute),
 					WorkingSession.getLanguage(wsElem.getAttributeValue(wsSourceLanguageAttribute)),
-					WorkingSession.getLanguage(wsElem.getAttributeValue(wsDestinationLanguageAttribute))));
+					WorkingSession.getLanguage(wsElem.getAttributeValue(wsDestinationLanguageAttribute)),
+					(automaticGoogleTranslate != null) ? Boolean.valueOf(automaticGoogleTranslate) : false));
 		}
 	}
 
@@ -75,6 +73,7 @@ public class ConfigStorage {
 		workingSessionElem.setAttribute(new Attribute(wsDirectoryAttribute, ws.getDirectory()));
 		workingSessionElem.setAttribute(new Attribute(wsSourceLanguageAttribute, ws.getSourceLanguage().getCode()));
 		workingSessionElem.setAttribute(new Attribute(wsDestinationLanguageAttribute, ws.getDestinationLanguage().getCode()));
+		workingSessionElem.setAttribute(new Attribute(wsAutomaticGoogleAttribute, Boolean.toString(ws.isAutomaticGoogleCall())));
 		return workingSessionElem;
 	}
 
