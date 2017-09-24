@@ -111,6 +111,8 @@ public class TranslatorDialog extends JDialog {
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
 		loanWordBtn.addActionListener(e -> {
+			entry.setSource(entry.getSource().replaceAll("\\p{javaSpaceChar}"," "));
+			entry.setDestination(entry.getDestination().replaceAll("\\p{javaSpaceChar}"," "));
 			entry = file.getNextEntryToTranslateAndSetLoanWord(entry);
 			updateTextAreaAndTitle();
 		});
@@ -124,6 +126,8 @@ public class TranslatorDialog extends JDialog {
 		JButton nextSaveBtn = new JButton("Save this translation and go to next entry");
 		nextSaveBtn.addActionListener(e -> {
 			updateEntry();
+			entry.setSource(entry.getSource().replaceAll("\\p{javaSpaceChar}"," "));
+			entry.setDestination(entry.getDestination().replaceAll("\\p{javaSpaceChar}"," "));
 			entry = file.getNextEntryToTranslateAndSave(entry, sourceLanguage, destinationLanguage);
 			updateTextAreaAndTitle();
 		});
