@@ -1,3 +1,10 @@
+AppVersion=1.4
+- Add an action ask a translation from Google
+- Add a configuration option to automatically call Google for empty destination 
+- Add an action to check all the lines of the files
+- Fix bug with "set source as loan words" action
+- Fix bug with non-breaking whitespaces
+
 AppVersion=1.3
 - Add grammar and spell check to source text
 

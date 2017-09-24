@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class OnlineVersionChecker {
 	private static String URL_APP_INFO_TXT = "https://raw.githubusercontent.com/NicolasGrosjean/Translate_helper/master/AppInfo.txt";
-	private static String VERSION = "1.3";
+	private static String VERSION = "1.4";
 	private static String TOOL_URL = "https://forum.paradoxplaza.com/forum/index.php?threads/tool-translate-helper.1043308/";
 	
 	private String onlineVersion;
