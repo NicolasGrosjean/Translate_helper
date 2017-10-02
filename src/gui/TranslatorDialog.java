@@ -84,6 +84,7 @@ public class TranslatorDialog extends JDialog {
 		new LanguageToolSupport(destTextPane, 
 	        		new UndoRedoSupport(destTextPane, JLanguageTool.getMessageBundle()),
 	        		Languages.getLanguageForLocale(destinationLanguage.getLocale()));
+		destTextPane.getDocument().addDocumentListener(new TpDocumentListener(destTextPane));
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextAreaAndTitle();
