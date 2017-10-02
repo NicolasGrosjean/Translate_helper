@@ -113,6 +113,13 @@ public class TranslatorDialog extends JDialog {
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
 		loanWordBtn.addActionListener(e -> {
+			if (!sourceTextArea.getText().equals(destTextArea.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "Source and destination texts are different.\n" +
+						"Loan words define same source and destination texts which form a correct translation",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			entry.setSource(entry.getSource().replaceAll("\\p{javaSpaceChar}"," "));
 			entry.setDestination(entry.getDestination().replaceAll("\\p{javaSpaceChar}"," "));
 			entry = file.getNextEntryToTranslateAndSetLoanWord(entry);
