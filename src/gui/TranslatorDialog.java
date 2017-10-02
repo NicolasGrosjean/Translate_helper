@@ -1,14 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,7 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.languagetool.JLanguageTool;
 import org.languagetool.Languages;
@@ -38,9 +41,12 @@ public class TranslatorDialog extends JDialog {
 	private String oldSourceText;
 	private String oldDestinationText;
 	
-	private JTextArea sourceTextArea;
-	private JTextArea destTextArea;
+	private JTextPane sourceTextPane;
+	private JTextPane destTextPane;
 	private JLabel destLangLabel;
+	
+	private static final int STRING_NOT_FOUND = -1;
+	private static final char[] CK2_COLOR_CODES = {'B', 'C', 'F', 'G', 'K', 'M', 'P', 'R', 'Y', 'Z'};
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
 			ITranslator file, Language sourceLanguage,
@@ -65,20 +71,18 @@ public class TranslatorDialog extends JDialog {
 		destLangLabel.setFont(textFont);		
 		
 		// Text areas
-		sourceTextArea = new JTextArea();
-		sourceTextArea.setLineWrap(true);
-		sourceTextArea.setWrapStyleWord(true);
-		sourceTextArea.setFont(textFont);
-		 new LanguageToolSupport(sourceTextArea, 
-	        		new UndoRedoSupport(sourceTextArea, JLanguageTool.getMessageBundle()),
+		sourceTextPane = new JTextPane();
+		sourceTextPane.setFont(textFont);
+		new LanguageToolSupport(sourceTextPane, 
+	        		new UndoRedoSupport(sourceTextPane, JLanguageTool.getMessageBundle()),
 	        		Languages.getLanguageForLocale(sourceLanguage.getLocale()));
+		sourceTextPane.getDocument().addDocumentListener(new TpDocumentListener(sourceTextPane));
+		
 		// Destination
-		destTextArea = new JTextArea();
-		destTextArea.setLineWrap(true);
-		destTextArea.setWrapStyleWord(true);
-		destTextArea.setFont(textFont);
-		 new LanguageToolSupport(destTextArea, 
-	        		new UndoRedoSupport(destTextArea, JLanguageTool.getMessageBundle()),
+		destTextPane = new JTextPane();
+		destTextPane.setFont(textFont);
+		new LanguageToolSupport(destTextPane, 
+	        		new UndoRedoSupport(destTextPane, JLanguageTool.getMessageBundle()),
 	        		Languages.getLanguageForLocale(destinationLanguage.getLocale()));
 		
 		entry = file.getFirstEntryToTranslate();
@@ -86,11 +90,11 @@ public class TranslatorDialog extends JDialog {
 		
 		JPanel sourcePan = new JPanel(new BorderLayout());
 		sourcePan.add(sourceLangLabel, BorderLayout.NORTH);
-		sourcePan.add(new JScrollPane(sourceTextArea), BorderLayout.CENTER);
+		sourcePan.add(new JScrollPane(sourceTextPane), BorderLayout.CENTER);
 		
 		JPanel destPan = new JPanel(new BorderLayout());
 		destPan.add(destLangLabel, BorderLayout.NORTH);
-		destPan.add(new JScrollPane(destTextArea), BorderLayout.CENTER);
+		destPan.add(new JScrollPane(destTextPane), BorderLayout.CENTER);
 		
 		JPanel textPan = new JPanel(new GridLayout(1, 2, 5, 5));
 		textPan.add(sourcePan);
@@ -113,7 +117,7 @@ public class TranslatorDialog extends JDialog {
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
 		loanWordBtn.addActionListener(e -> {
-			if (!sourceTextArea.getText().equals(destTextArea.getText()))
+			if (!sourceTextPane.getText().equals(destTextPane.getText()))
 			{
 				JOptionPane.showMessageDialog(null, "Source and destination texts are different.\n" +
 						"Loan words define same source and destination texts which form a correct translation",
@@ -165,13 +169,13 @@ public class TranslatorDialog extends JDialog {
 	
 	private void updateTextAreaAndTitle() {
 		if (entry != null) {
-			sourceTextArea.setText(entry.getSource());
-			destTextArea.setText(entry.getDestination());
+			sourceTextPane.setText(entry.getSource());
+			destTextPane.setText(entry.getDestination());
 			destLangLabel.setText(destinationLanguageCode);
 			setTitle(fileName + " - " + entry.getId());
 			oldSourceText = entry.getSource();
 			oldDestinationText = entry.getDestination();
-			if (automaticGoogleCall && destTextArea.getText().equals("")) {
+			if (automaticGoogleCall && destTextPane.getText().equals("")) {
 				callGoogleTranslate();
 			}
 		} else {
@@ -183,14 +187,14 @@ public class TranslatorDialog extends JDialog {
 	
 	private void updateEntry()
 	{
-		entry.setSource(sourceTextArea.getText());
-		entry.setDestination(destTextArea.getText());
+		entry.setSource(sourceTextPane.getText());
+		entry.setDestination(destTextPane.getText());
 	}
 	
 	private void callGoogleTranslate()
 	{
 		try {
-			destTextArea.setText(google.translate(sourceTextArea.getText()));
+			destTextPane.setText(google.translate(sourceTextPane.getText()));
 			destLangLabel.setText(destinationLanguageCode + " (GOOGLE TRANSLATION)");
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Impossible to get the translation from google",
@@ -200,7 +204,132 @@ public class TranslatorDialog extends JDialog {
 	
 	private boolean hasChangedText()
 	{
-		return (!sourceTextArea.getText().equals(oldSourceText) ||
-				!destTextArea.getText().equals(oldDestinationText));
+		return (!sourceTextPane.getText().equals(oldSourceText) ||
+				!destTextPane.getText().equals(oldDestinationText));
+	}
+	
+	// TODO Adapt this to other Paradox games
+	private static void ck2TextColoration(JTextPane textPane)
+	{
+		// Erase all the colorations
+		changeColor(textPane, Color.BLACK, 0, textPane.getText().length(), false);
+		
+		// Coloration
+		// §Y...§!
+		for (char color : CK2_COLOR_CODES)
+		{
+			colorCodes(textPane, color);
+		}
+		
+		// \n
+		int lineBreak = textPane.getText().indexOf("\\n");
+		while (lineBreak != STRING_NOT_FOUND)
+		{
+			changeColor(textPane, Color.RED, lineBreak, 2, true);
+			lineBreak = textPane.getText().indexOf("\\n", lineBreak + 1);
+		}
+		
+		// ¤
+		int wealth = textPane.getText().indexOf("¤");
+		while (wealth != STRING_NOT_FOUND)
+		{
+			changeColor(textPane, Color.RED, wealth, 1, true);
+			wealth = textPane.getText().indexOf("¤", wealth + 1);
+		}
+		
+		// [...]
+		int bracketBegin = textPane.getText().indexOf("[");
+		while (bracketBegin != STRING_NOT_FOUND)
+		{
+			int bracketEnd = textPane.getText().indexOf("]", bracketBegin);
+			if (bracketEnd == STRING_NOT_FOUND)
+			{
+				break;
+			}
+			changeColor(textPane, Color.BLUE, bracketBegin, bracketEnd - bracketBegin + 1, false);
+			bracketBegin = textPane.getText().indexOf("[", bracketEnd);
+		}
+		
+		// $...$
+		int dollardBegin = textPane.getText().indexOf("$");
+		while (dollardBegin != STRING_NOT_FOUND)
+		{
+			int dollardEnd = textPane.getText().indexOf("$", dollardBegin + 1);
+			if (dollardEnd == STRING_NOT_FOUND)
+			{
+				break;
+			}
+			changeColor(textPane, Color.BLUE, dollardBegin, dollardEnd - dollardBegin + 1, false);
+			dollardBegin = textPane.getText().indexOf("$", dollardEnd + 1);
+		}
+	}
+	
+	/**
+	 * Color the color code of a textPane. EX : §Y...§!
+	 * 
+	 * @param textPane
+	 * @param color : letter of the color code (in the example, Y)
+	 */
+	private static void colorCodes(JTextPane textPane, char color)
+	{
+		int colorBegin = textPane.getText().indexOf('§' + String.valueOf(color));
+		while (colorBegin != STRING_NOT_FOUND)
+		{
+			int colorEnd = textPane.getText().indexOf("§!", colorBegin);
+			if (colorEnd == STRING_NOT_FOUND)
+			{
+				break;
+			}
+			changeColor(textPane, Color.RED, colorBegin, 2, true);
+			changeColor(textPane, Color.RED, colorEnd, 2, true);
+			colorBegin = textPane.getText().indexOf('§' + String.valueOf(color), colorEnd);
+		}
+	}
+	
+	private static void changeColor(JTextPane tp, Color c, int beginIndex, int length, boolean bold) {
+        SimpleAttributeSet aset = new SimpleAttributeSet();
+        StyleConstants.setForeground(aset, c);
+        StyleConstants.setBold(aset, bold);
+        StyledDocument doc = (StyledDocument)tp.getDocument();
+        doc.setCharacterAttributes(beginIndex, length, aset, false);
+    }
+	
+	/**
+	 * Class to color text when we modify a JTextPane
+	 * 
+	 * @author Nicolas
+	 *
+	 */
+	private class TpDocumentListener implements DocumentListener {
+		private JTextPane tp;
+		
+	    public TpDocumentListener(JTextPane tp) {
+			this.tp = tp;
+		}
+	    
+	    @Override
+		public void insertUpdate(DocumentEvent e) {
+	    	SwingUtilities.invokeLater(new Runnable()
+	        {
+	            public void run()
+	            {
+	            	ck2TextColoration(tp);
+	            }
+	        });
+	    }
+		
+		@Override
+	    public void removeUpdate(DocumentEvent e) {
+	    	SwingUtilities.invokeLater(new Runnable()
+	        {
+	            public void run()
+	            {
+	            	ck2TextColoration(tp);
+	            }
+	        });
+	    }
+
+		@Override
+		public void changedUpdate(DocumentEvent arg0) { }
 	}
 }
