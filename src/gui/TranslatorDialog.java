@@ -35,6 +35,8 @@ public class TranslatorDialog extends JDialog {
 	private GoogleTranslate google;
 	private String destinationLanguageCode;
 	private boolean automaticGoogleCall;
+	private String oldSourceText;
+	private String oldDestinationText;
 	
 	private JTextArea sourceTextArea;
 	private JTextArea destTextArea;
@@ -119,6 +121,19 @@ public class TranslatorDialog extends JDialog {
 		
 		JButton nextBtn = new JButton("Next entry without saving");
 		nextBtn.addActionListener(e ->{ 
+			if (hasChangedText()) {
+				int option = JOptionPane.showConfirmDialog(null,
+						"You have changed at least one text.\n" +
+								"Do you want to cancel your changes?",
+								"Changed texts",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if(option == JOptionPane.NO_OPTION ||
+						option == JOptionPane.CANCEL_OPTION ||
+						option == JOptionPane.CLOSED_OPTION){
+					// We don't move to the next entry
+					return;
+				}
+			}
 			entry = file.getNextEntryToTranslate();
 			updateTextAreaAndTitle();
 		});
@@ -147,6 +162,8 @@ public class TranslatorDialog extends JDialog {
 			destTextArea.setText(entry.getDestination());
 			destLangLabel.setText(destinationLanguageCode);
 			setTitle(fileName + " - " + entry.getId());
+			oldSourceText = entry.getSource();
+			oldDestinationText = entry.getDestination();
 			if (automaticGoogleCall && destTextArea.getText().equals("")) {
 				callGoogleTranslate();
 			}
@@ -172,5 +189,11 @@ public class TranslatorDialog extends JDialog {
 			JOptionPane.showMessageDialog(null, "Impossible to get the translation from google",
 					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	private boolean hasChangedText()
+	{
+		return (!sourceTextArea.getText().equals(oldSourceText) ||
+				!destTextArea.getText().equals(oldDestinationText));
 	}
 }
