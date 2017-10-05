@@ -1,3 +1,9 @@
+AppVersion=1.5
+- Add Ck2 syntax highlighting
+- Add character number for each language
+- Add an error Dialog when set loan word for different source/destination
+- Add a warning when change texts and don't save them
+
 AppVersion=1.4
 - Add an action ask a translation from Google
 - Add a configuration option to automatically call Google for empty destination 
