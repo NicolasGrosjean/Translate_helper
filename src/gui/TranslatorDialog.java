@@ -43,6 +43,7 @@ public class TranslatorDialog extends JDialog {
 	
 	private JTextPane sourceTextPane;
 	private JTextPane destTextPane;
+	private JLabel sourceLangLabel;
 	private JLabel destLangLabel;
 	
 	private static final int STRING_NOT_FOUND = -1;
@@ -64,7 +65,7 @@ public class TranslatorDialog extends JDialog {
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
 		
 		// Language labels
-		JLabel sourceLangLabel = new JLabel(sourceLanguage.getCode());
+		sourceLangLabel = new JLabel(sourceLanguage.getCode());
 		sourceLangLabel.setFont(textFont);
 		destinationLanguageCode = destinationLanguage.getCode();
 		destLangLabel = new JLabel(destinationLanguageCode);
@@ -295,6 +296,12 @@ public class TranslatorDialog extends JDialog {
         doc.setCharacterAttributes(beginIndex, length, aset, false);
     }
 	
+	private static void setCharNb(JLabel label, int nbChar)
+	{
+			label.setText(label.getText().split(" - ")[0] + " - (" + nbChar +" char" + 
+							((nbChar != 1) ? "s" : "") + ")");
+	}
+	
 	/**
 	 * Class to color text when we modify a JTextPane
 	 * 
@@ -315,6 +322,8 @@ public class TranslatorDialog extends JDialog {
 	            public void run()
 	            {
 	            	ck2TextColoration(tp);
+	            	setCharNb(sourceLangLabel, sourceTextPane.getText().length());
+	            	setCharNb(destLangLabel, destTextPane.getText().length());
 	            }
 	        });
 	    }
@@ -326,6 +335,8 @@ public class TranslatorDialog extends JDialog {
 	            public void run()
 	            {
 	            	ck2TextColoration(tp);
+	            	setCharNb(sourceLangLabel, sourceTextPane.getText().length());
+	            	setCharNb(destLangLabel, destTextPane.getText().length());
 	            }
 	        });
 	    }
