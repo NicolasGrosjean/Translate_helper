@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Shape;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -18,9 +19,19 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BoxView;
+import javax.swing.text.ComponentView;
+import javax.swing.text.Element;
+import javax.swing.text.IconView;
+import javax.swing.text.LabelView;
+import javax.swing.text.ParagraphView;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledEditorKit;
+import javax.swing.text.View;
+import javax.swing.text.ViewFactory;
 
 import org.languagetool.JLanguageTool;
 import org.languagetool.Languages;
@@ -74,6 +85,7 @@ public class TranslatorDialog extends JDialog {
 		// Text areas
 		sourceTextPane = new JTextPane();
 		sourceTextPane.setFont(textFont);
+		sourceTextPane.setEditorKit(new MyStyledEditorKit());
 		new LanguageToolSupport(sourceTextPane, 
 	        		new UndoRedoSupport(sourceTextPane, JLanguageTool.getMessageBundle()),
 	        		Languages.getLanguageForLocale(sourceLanguage.getLocale()));
@@ -82,6 +94,7 @@ public class TranslatorDialog extends JDialog {
 		// Destination
 		destTextPane = new JTextPane();
 		destTextPane.setFont(textFont);
+		destTextPane.setEditorKit(new MyStyledEditorKit());
 		new LanguageToolSupport(destTextPane, 
 	        		new UndoRedoSupport(destTextPane, JLanguageTool.getMessageBundle()),
 	        		Languages.getLanguageForLocale(destinationLanguage.getLocale()));
@@ -343,5 +356,105 @@ public class TranslatorDialog extends JDialog {
 
 		@Override
 		public void changedUpdate(DocumentEvent arg0) { }
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Correct the JTextPane wrapping with DocumentListener
+	 * @author StanislavL (https://stackoverflow.com/a/14230668)
+	 *
+	 */
+	
+	class MyStyledEditorKit extends StyledEditorKit {
+	    private MyFactory factory;
+
+	    public ViewFactory getViewFactory() {
+	        if (factory == null) {
+	            factory = new MyFactory();
+	        }
+	        return factory;
+	    }
+	}
+
+	class MyFactory implements ViewFactory {
+	    public View create(Element elem) {
+	        String kind = elem.getName();
+	        if (kind != null) {
+	            if (kind.equals(AbstractDocument.ContentElementName)) {
+	                return new MyLabelView(elem);
+	            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+	                return new MyParagraphView(elem);
+	            } else if (kind.equals(AbstractDocument.SectionElementName)) {
+	                return new BoxView(elem, View.Y_AXIS);
+	            } else if (kind.equals(StyleConstants.ComponentElementName)) {
+	                return new ComponentView(elem);
+	            } else if (kind.equals(StyleConstants.IconElementName)) {
+	                return new IconView(elem);
+	            }
+	        }
+
+	        // default to text display
+	        return new LabelView(elem);
+	    }
+	}
+
+	class MyParagraphView extends ParagraphView {
+
+	    public MyParagraphView(Element elem) {
+	        super(elem);
+	    }
+	public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+	    super.removeUpdate(e, a, f);
+	    resetBreakSpots();
+	}
+	public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+	    super.insertUpdate(e, a, f);
+	    resetBreakSpots();
+	}
+
+	private void resetBreakSpots() {
+	    for (int i=0; i<layoutPool.getViewCount(); i++) {
+	        View v=layoutPool.getView(i);
+	        if (v instanceof MyLabelView) {
+	            ((MyLabelView)v).resetBreakSpots();
+	        }
+	    }
+	}
+
+	}
+
+	class MyLabelView extends LabelView {
+
+	    boolean isResetBreakSpots=false;
+
+	    public MyLabelView(Element elem) {
+	        super(elem);
+	    }
+	    public View breakView(int axis, int p0, float pos, float len) {
+	        if (axis == View.X_AXIS) {
+	            resetBreakSpots();
+	        }
+	        return super.breakView(axis, p0, pos, len);
+	    }
+
+	    public void resetBreakSpots() {
+	        isResetBreakSpots=true;
+	        removeUpdate(null, null, null);
+	        isResetBreakSpots=false;
+	   }
+
+	    public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+	        super.removeUpdate(e, a, f);
+	    }
+
+	    public void preferenceChanged(View child, boolean width, boolean height) {
+	        if (!isResetBreakSpots) {
+	            super.preferenceChanged(child, width, height);
+	        }
+	    }
 	}
 }
