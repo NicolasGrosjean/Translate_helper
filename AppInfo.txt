@@ -1,3 +1,6 @@
+AppVersion=1.6
+- Fix line wrapping
+
 AppVersion=1.5
 - Add Ck2 syntax highlighting
 - Add character number for each language
