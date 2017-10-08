@@ -13,6 +13,12 @@ public interface ITranslator {
 	 * Get the next entry to translate or null if there is no one
 	 * @return null if no more entry to translate
 	 */
+	public TranslatedEntry getPreviousEntryToTranslate();
+	
+	/**
+	 * Get the next entry to translate or null if there is no one
+	 * @return null if no more entry to translate
+	 */
 	public TranslatedEntry getNextEntryToTranslate();
 	
 	/**

@@ -145,6 +145,32 @@ public class TranslatorDialog extends JDialog {
 			updateTextAreaAndTitle();
 		});
 		
+		JButton prevBtn = new JButton("Previous entry without saving");
+		prevBtn.addActionListener(e ->{ 
+			if (hasChangedText()) {
+				int option = JOptionPane.showConfirmDialog(null,
+						"You have changed at least one text.\n" +
+								"Do you want to cancel your changes?",
+								"Changed texts",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if(option == JOptionPane.NO_OPTION ||
+						option == JOptionPane.CANCEL_OPTION ||
+						option == JOptionPane.CLOSED_OPTION){
+					// We don't move to the next entry
+					return;
+				}
+			}
+			TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
+			if (prevEntry == null) {
+				JOptionPane.showMessageDialog(null, "No previous entry!",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				entry = prevEntry;
+				updateTextAreaAndTitle();
+			}
+		});
+		
 		JButton nextBtn = new JButton("Next entry without saving");
 		nextBtn.addActionListener(e ->{ 
 			if (hasChangedText()) {
@@ -173,8 +199,9 @@ public class TranslatorDialog extends JDialog {
 			updateTextAreaAndTitle();
 		});
 		
-		JPanel btnPan = new JPanel(new GridLayout(1, 3, 5, 5));
+		JPanel btnPan = new JPanel(new GridLayout(1, 4, 5, 5));
 		btnPan.add(loanWordBtn);
+		btnPan.add(prevBtn);
 		btnPan.add(nextBtn);
 		btnPan.add(nextSaveBtn);
 		getContentPane().add(btnPan, BorderLayout.SOUTH);
