@@ -1,5 +1,7 @@
 package parsing;
 
+import translator.TranslatedEntry;
+
 public class ParsedEntry {
 	// The different type of text problems
 	public static String missingText = "No text";
@@ -39,6 +41,12 @@ public class ParsedEntry {
 
 	public String getDestinationText() {
 		return destinationText;
+	}
+	
+	public void saveEntry(TranslatedEntry entry)
+	{
+		sourceText = entry.getSource();
+		destinationText = entry.getDestination();
 	}
 
 	@Override

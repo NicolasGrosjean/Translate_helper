@@ -174,7 +174,12 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave,
 			Language sourceLanguage, Language destinationLanguage) {
+		// Save in memory
+		linesToTranslate.get(lineToTranslateIndex).saveEntry(entryToSave);
+		
 		TranslatedEntry nextEntry = getNextEntryToTranslate();
+		
+		// Save in file
 		BufferedReader file = null;
 		String lines = "";
 		try {
