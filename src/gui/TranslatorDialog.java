@@ -214,7 +214,7 @@ public class TranslatorDialog extends JDialog {
 			sourceTextPane.setText(entry.getSource());
 			destTextPane.setText(entry.getDestination());
 			destLangLabel.setText(destinationLanguageCode);
-			setTitle(fileName + " - " + entry.getId());
+			setTitle(fileName + " - " + entry.getId() + " (line " + entry.getDestLineNumber() + ")");
 			oldSourceText = entry.getSource();
 			oldDestinationText = entry.getDestination();
 			if (automaticGoogleCall && destTextPane.getText().equals("")) {
