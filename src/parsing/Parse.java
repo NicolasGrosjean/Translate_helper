@@ -208,7 +208,7 @@ public class Parse {
 				if ((ID.equals("")) || (ID.charAt(0) == '#')) {
 					// The line is not used => nothing to do
 				} else if (ID.equals("CODE")) {
-					//TODO : change the integers
+					//TODO : change the integers ?
 				} else {
 					usefulLineNumber++;
 					int i = 1;
@@ -291,9 +291,11 @@ public class Parse {
 	}
 
 	private String analyzeExpression(String expression) {
-		if (expression.equals("")) {
+		// Remove end line code
+		String expr = expression.replace("\r", "").replace("\n", "");
+		if (expr.equals("")) {
 			return ParsedEntry.missingText;
-		} else if (fakeTranslation.contains(expression)) {
+		} else if (fakeTranslation.contains(expr) || expr.contains("#")) {
 			return ParsedEntry.fakeText;
 		} else {
 			return "";
