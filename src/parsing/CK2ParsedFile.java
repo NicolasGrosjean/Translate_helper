@@ -181,7 +181,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		
 		// Save in file
 		BufferedReader file = null;
-		String lines = "";
+		StringBuilder builder = new StringBuilder();
 		try {
 			file = new BufferedReader(new FileReader(filePath));
 			String line;
@@ -201,7 +201,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		    		// Add the line without the last semicolon
 		    		line = line.substring(0, line.length() - 1);
 		    	}
-		        lines += line + System.lineSeparator();
+		    	builder.append(line + System.lineSeparator());
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -217,7 +217,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		try {
 			writer = new PrintWriter(new OutputStreamWriter(
 					new FileOutputStream(filePath), "windows-1252"), true);
-		    writer.print(lines);
+		    writer.print(builder.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
