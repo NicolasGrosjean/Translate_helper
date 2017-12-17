@@ -194,7 +194,7 @@ public class Parse {
 				lineNumber++;
 				String sLine = line.next();
 				// If the line is empty, skip the line
-				if (sLine.equals("")) {
+				if (sLine.equals("") || sLine.equals("\r")) {
 					continue;
 				}
 				// Otherwise parse it
