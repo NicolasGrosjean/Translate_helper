@@ -39,7 +39,7 @@ public class TestSaving {
 	@Test
 	public void testSaveInCK2LocalisationFile() throws IOException {
 		// Create data
-		String filePath = "./test_localisation_files/save_file.csv";
+		String filePath = "./test_localisation_files/ck2/save_file.csv";
 		CK2ParsedFile file = new CK2ParsedFile(filePath);
 		file.setLineNumber(5);
 		file.addLastLineToTranslate(2, "TRADE.0005A", "", "OK", "J'en prends note");
@@ -88,7 +88,7 @@ public class TestSaving {
 	@Test
 	public void testSaveInCK2LocalisationFileSpecialChar() throws IOException {
 		// Create data
-		String filePath = "./test_localisation_files/save_file2.csv";
+		String filePath = "./test_localisation_files/ck2/save_file2.csv";
 		CK2ParsedFile file = new CK2ParsedFile(filePath);
 		file.setLineNumber(2);
 		file.addLastLineToTranslate(2, "TRADE.0005A", "", "§YReligious head suitability: $SCORE$§!", "");
@@ -126,7 +126,7 @@ public class TestSaving {
 	@Test
 	public void testSaveInCK2LocalisationFileAccents() throws IOException {
 		// Create data
-		String filePath = "./test_localisation_files/save_file2.csv";
+		String filePath = "./test_localisation_files/ck2/save_file2.csv";
 		CK2ParsedFile file = new CK2ParsedFile(filePath);
 		file.setLineNumber(2);
 		String source = "Send a letter to our religious head in the hope of getting our sins forgiven and increasing our piety.";
@@ -167,7 +167,7 @@ public class TestSaving {
 	@AfterClass
 	public static void AfterCLass()
 	{
-		new File("./test_localisation_files/save_file.csv").delete();
-		new File("./test_localisation_files/save_file2.csv").delete();
+		new File("./test_localisation_files/ck2/save_file.csv").delete();
+		new File("./test_localisation_files/ck2/save_file2.csv").delete();
 	}
 }

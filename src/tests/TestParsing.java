@@ -25,35 +25,36 @@ public class TestParsing {
 
 	@BeforeClass
 	public static void SetUp() {
-		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files"),
+		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/ck2"),
 				new Language("FRENCH", 2, "fr"), new Language("ENGLISH", 1, "en"),
 				"config/fake_translations.txt", "config/accepted_loanwords.txt");
 	}
 
 	@Test
 	public void testListDirectoryFiles() {
-		LinkedList<String> filePaths = Parse.listDirectoryFiles("./test_localisation_files");
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/accepted_copy.csv",
+		String dir = "./test_localisation_files/ck2/";
+		LinkedList<String> filePaths = Parse.listDirectoryFiles(dir);
+		Assert.assertEquals("Incorrect file found!", dir + "accepted_copy.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/accepted_copy_with_accents.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "accepted_copy_with_accents.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/code_line.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "code_line.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/code_line_to_translate.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "code_line_to_translate.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/comment_line.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "comment_line.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/fake_translation.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "fake_translation.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/missing_source.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "missing_source.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/missing_translation.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "missing_translation.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/nothing_to_translate.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "nothing_to_translate.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/refused_copy.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "refused_copy.csv",
 				filePaths.removeFirst().replace("\\", "/"));
-		Assert.assertEquals("Incorrect file found!", "./test_localisation_files/several_lines_to_end.csv",
+		Assert.assertEquals("Incorrect file found!", dir + "several_lines_to_end.csv",
 				filePaths.removeFirst().replace("\\", "/"));
 	}
 
