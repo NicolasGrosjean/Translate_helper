@@ -20,7 +20,7 @@ import parsing.CK2ParsedFile;
  * @author Nicolas Grosjean
  *
  */
-public class TestParsing {
+public class TestParsingCK2 {
 	private static Parse parsedFiles;
 
 	@BeforeClass

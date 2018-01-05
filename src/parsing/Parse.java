@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Set;
 
 import config.WorkingSession;
 
@@ -50,8 +52,18 @@ public class Parse {
 		files = new LinkedList<IParsedFile>();
 		fakeTranslation = readList(fakeTranslationFile);
 		acceptedLoanword = readList(acceptedLoanwordFile);
+		Set<String> parsedTroncatedFiles = new HashSet<>();
 		for (String filePath : filePaths) {
-			files.addLast(parseAFile(filePath));
+			if (filePath.endsWith(".csv")) {
+				files.addLast(parseAcsvFile(filePath));
+			} else if (filePath.endsWith(".yml")){
+				String troncated = getFilePathWithoutLanguage(filePath);
+				if (!parsedTroncatedFiles.contains(troncated))
+				{
+					files.addLast(parseAymlFile(troncated));
+					parsedTroncatedFiles.add(troncated);
+				}
+			}
 		}
 	}
 
@@ -170,14 +182,14 @@ public class Parse {
 	{
 		Parse parseObj = new Parse(new LinkedList<String>(),
 				sourceLanguage, destinationLanguage, null, null);
-		return parseObj.parseAFile(filePath, true);
+		return parseObj.parseAcsvFile(filePath, true);
 	}
 
-	private CK2ParsedFile parseAFile(String filePath) {
-		return parseAFile(filePath, false);
+	private CK2ParsedFile parseAcsvFile(String filePath) {
+		return parseAcsvFile(filePath, false);
 	}
 
-	private CK2ParsedFile parseAFile(String filePath, boolean returnAllLines) {
+	private CK2ParsedFile parseAcsvFile(String filePath, boolean returnAllLines) {
 		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath);
 		int lineNumber = 0;
 		int usefulLineNumber = 0;
@@ -290,6 +302,14 @@ public class Parse {
 		return null;
 	}
 
+	private HoI4IParsedFile parseAymlFile(String troncatedFilePath) {
+		return parseAymlFile(troncatedFilePath, false);
+	}
+
+	private HoI4IParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
+		throw new RuntimeException("Not yet implemented");
+	}
+
 	private String analyzeExpression(String expression) {
 		// Remove end line code
 		String expr = expression.replace("\r", "").replace("\n", "");
@@ -300,5 +320,23 @@ public class Parse {
 		} else {
 			return "";
 		}
+	}
+	
+	/**
+	 * Remove the language form filepath.
+	 * EX : dir/blabla_l_english.yml => dir/blabla_l
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	private String getFilePathWithoutLanguage(String filePath) {
+		String[] split = filePath.split("_");
+		// Concatenate all except the last one
+		String res = "";
+		for (int i = 0; i < split.length - 1; i++)
+		{
+			res.concat(split[i]);
+		}
+		return res;
 	}
 }
