@@ -106,10 +106,12 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		missingSourceLines.addLast(new ParsedEntry(lineNumber, id, reason, sourceText, destinationText));
 	}
 
+	@Override
 	public Iterator<ParsedEntry> getDescendingIteratorLineToTranslate() {
 		return linesToTranslate.descendingIterator();
 	}
-
+	
+	@Override
 	public Iterator<ParsedEntry> getDescendingIteratorMissingSourceLines() {
 		return missingSourceLines.descendingIterator();
 	}
