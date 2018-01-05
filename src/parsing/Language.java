@@ -44,6 +44,11 @@ public class Language {
 	public Locale getLocale() {
 		return locale;
 	}
+	
+	public String getLanguageParameter()
+	{
+		return "l_" + code.toLowerCase();
+	}
 
 	/**
 	 * Return if it is the "NONE" language (=no language)

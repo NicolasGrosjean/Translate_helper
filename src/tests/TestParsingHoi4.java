@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import parsing.HoI4IParsedFile;
+import parsing.HoI4ParsedFile;
 import parsing.HoI4ParsedEntry;
 import parsing.Language;
 import parsing.Parse;
@@ -60,7 +60,7 @@ public class TestParsingHoi4 {
 
 	@Test
 	public void acceptedCopy() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("accepted_copy_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("accepted_copy_l");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -71,7 +71,7 @@ public class TestParsingHoi4 {
 
 	@Test
 	public void acceptedCopyWithAccents() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("accepted_copy_with_accent_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("accepted_copy_with_accent_l");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -83,7 +83,7 @@ public class TestParsingHoi4 {
 
 	@Test
 	public void badCopy() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("bad_copy_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("bad_copy_l");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -101,7 +101,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void fakeTranslation() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("fake_translation_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("fake_translation_l");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -119,7 +119,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textComment() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_comment_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_comment_l");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -130,7 +130,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textDisorderedNotTranslated_l() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_disordered_not_translated_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_disordered_not_translated_l");
 		if (f != null) {
 			Assert.assertEquals("It should have 2 lines to translate", 2, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -153,7 +153,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textDisorderedTranslated_l() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_disordered_translated_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_disordered_translated_l");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -164,7 +164,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void text() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_l");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -175,7 +175,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textOnlyInEnglish() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_only_in_english_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_only_in_english_l");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -193,7 +193,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textOnlyInFrench() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_only_in_french_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_only_in_french_l");
 		if (f != null) {
 			Assert.assertEquals("It should have no line to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have 1 missing source text", 1, f.getNumberMissingSourceLines());
@@ -211,7 +211,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textWithoutEnglish() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_without_english_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_without_english_l");
 		if (f != null) {
 			Assert.assertEquals("It should have no line to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have 1 missing source text", 1, f.getNumberMissingSourceLines());
@@ -229,7 +229,7 @@ public class TestParsingHoi4 {
 	
 	@Test
 	public void textWithoutFrench() {
-		HoI4IParsedFile f = (HoI4IParsedFile) parsedFiles.getFile("text_without_french_l");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_without_french_l");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());

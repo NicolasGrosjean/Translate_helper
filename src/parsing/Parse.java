@@ -302,12 +302,103 @@ public class Parse {
 		return null;
 	}
 
-	private HoI4IParsedFile parseAymlFile(String troncatedFilePath) {
+	private HoI4ParsedFile parseAymlFile(String troncatedFilePath) {
 		return parseAymlFile(troncatedFilePath, false);
 	}
 
-	private HoI4IParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
-		throw new RuntimeException("Not yet implemented");
+	private HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
+		HoI4ParsedFile parsedFile = new HoI4ParsedFile(troncatedFilePath);
+		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();
+		int destinationLanguageColumn = destinationLanguage.getDefaultColumn();
+		File sourceFile = new File(troncatedFilePath + sourceLanguage.getLanguageParameter() + ".yml");
+		File destinationFile = new File(troncatedFilePath + destinationLanguage.getLanguageParameter() + ".yml");
+		if (!sourceFile.exists() && !destinationFile.exists()) {
+			// TODO Manage better this error
+			throw new RuntimeException(troncatedFilePath + sourceLanguage.getLanguageParameter() + ".yml" +
+					"and " + troncatedFilePath + destinationLanguage.getLanguageParameter() + ".yml"
+					+ "don't exist");
+		} else if (sourceFile.exists() && !destinationFile.exists()) {
+			FileInputStream sourceFIS = null;
+			try {
+				sourceFIS = new FileInputStream(sourceFile);
+				Scanner line = new Scanner(sourceFIS);
+				Scanner expression = null;
+				line.useDelimiter("\n");
+				int lineNumber = 0;
+				int usefulLineNumber = 0;				
+				while (line.hasNext()) {
+					lineNumber++;
+					String sLine = line.next();
+					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
+					{
+						// The first line which define the language doesn't interest us, like comments or empty line
+						continue;
+					}
+					usefulLineNumber++;
+					String[] splitted = sLine.split(":");
+					String id = splitted[0].trim();
+					String text = splitted[1];
+					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
+							ParsedEntry.missingText, text, "");
+				}
+				line.close();
+				parsedFile.setUsefulLineNumber(usefulLineNumber);
+				return parsedFile;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (sourceFIS != null)
+						sourceFIS.close();
+				} catch (IOException e) {
+					throw new IllegalArgumentException(e.getMessage());
+				}
+			}
+			
+		} else if (!sourceFile.exists() && destinationFile.exists()) {
+			FileInputStream destinationFIS = null;
+			try {
+				destinationFIS = new FileInputStream(destinationFile);
+				Scanner line = new Scanner(destinationFIS);
+				Scanner expression = null;
+				line.useDelimiter("\n");
+				int lineNumber = 0;
+				int usefulLineNumber = 0;				
+				while (line.hasNext()) {
+					lineNumber++;
+					String sLine = line.next();
+					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
+					{
+						// The first line which define the language doesn't interest us, like comments or empty line
+						continue;
+					}
+					usefulLineNumber++;
+					String[] splitted = sLine.split(":");
+					String id = splitted[0].trim();
+					String text = splitted[1];
+					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
+							ParsedEntry.missingText, "", text);
+				}
+				line.close();
+				parsedFile.setUsefulLineNumber(usefulLineNumber);
+				return parsedFile;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (destinationFIS != null)
+						destinationFIS.close();
+				} catch (IOException e) {
+					throw new IllegalArgumentException(e.getMessage());
+				}
+			}
+		} else {
+			FileInputStream destinationFIS = null;			
+			// TODO Map all the destination text on the IDs
+			// TODO For all source ID, get the source and destination texts and analyse them
+		}
 	}
 
 	private String analyzeExpression(String expression) {

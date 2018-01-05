@@ -125,19 +125,19 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 	}
 
 	public String getMissingSourceText() {
-		String res = "";
+		StringBuilder builder = new StringBuilder();
 		for (ParsedEntry e : missingSourceLines) {
-			res += e + "\n";
+			builder.append(e + System.lineSeparator());
 		}
-		return res;
+		return builder.toString();
 	}
 
 	public String getMissingTranslation() {
-		String res = "";
+		StringBuilder builder = new StringBuilder();
 		for (ParsedEntry e : linesToTranslate) {
-			res += e + "\n";
+			builder.append(e + System.lineSeparator());
 		}
-		return res;
+		return builder.toString();
 	}
 
 	@Override

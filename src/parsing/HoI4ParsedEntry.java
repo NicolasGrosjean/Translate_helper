@@ -2,7 +2,7 @@ package parsing;
 
 public class HoI4ParsedEntry extends ParsedEntry {
 	public static int MISSING_ENTRY = -1;
-	
+
 	int sourceLineNumber = MISSING_ENTRY;
 	int destinationLineNumber = MISSING_ENTRY;
 
@@ -28,10 +28,23 @@ public class HoI4ParsedEntry extends ParsedEntry {
 
 	@Override
 	public String toString() {
+		return entryToString(sourceLineNumber);
+	}
+
+	public String getSourceToString() {
+		return entryToString(sourceLineNumber);
+	}
+
+	public String getDestinationToString() {
+		return entryToString(destinationLineNumber);
+	}
+
+	private String entryToString(int lineNumber) {
 		if (getReason().equals(missingText)) {
-			return sourceLineNumber + " : " + getID();
+			return lineNumber + " : " + getID();
 		} else {
-			return sourceLineNumber + " : " + getID() + " (" + getReason() + ")";
+			return lineNumber + " : " + getID() + " (" + getReason() + ")";
 		}
 	}
+
 }
