@@ -106,7 +106,7 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 	@Override
 	public String getMissingSourceText() {
 		StringBuilder builder = new StringBuilder();
-		for (HoI4ParsedEntry e : linesToTranslate) {
+		for (HoI4ParsedEntry e : missingSourceLines) {
 			builder.append(e.getSourceToString() + System.lineSeparator());
 		}
 		return builder.toString();
