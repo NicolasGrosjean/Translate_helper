@@ -43,6 +43,7 @@ public class Diagnostic {
 				} else {
 					JOptionPane.showMessageDialog(window, "An error has occured", "ERROR: ", JOptionPane.ERROR_MESSAGE);
 				}
+				e.printStackTrace();
 				// Close application
 				if (window != null) {
 					window.dispose();
