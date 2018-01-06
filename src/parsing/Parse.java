@@ -60,6 +60,11 @@ public class Parse {
 				files.addLast(parseAcsvFile(filePath));
 			} else if (filePath.endsWith(".yml")){
 				String troncated = getFilePathWithoutLanguage(filePath);
+				if (troncated.equals(""))
+				{
+					System.err.println(filePath + " was bad named. It doesn't respect format : dir/name_l_language.yml");
+					continue;
+				}
 				if (!parsedTroncatedFiles.contains(troncated))
 				{
 					HoI4ParsedFile parsedFile = parseAymlFile(troncated);
