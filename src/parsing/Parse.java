@@ -439,7 +439,7 @@ public class Parse {
 				Scanner line = new Scanner(sourceFIS, "UTF-8");
 				line.useDelimiter("\n");
 				int sourceLineNumber = 0;
-				int usefulLineNumber = 0;				
+				int sourceUsefulLineNumber = 0;				
 				while (line.hasNext()) {
 					sourceLineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
@@ -448,7 +448,7 @@ public class Parse {
 						// The first line which define the language doesn't interest us, like comments or empty line
 						continue;
 					}
-					usefulLineNumber++;
+					sourceUsefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
 					String sourceText = splitted[1];
@@ -473,7 +473,7 @@ public class Parse {
 					}
 				}
 				line.close();
-				parsedFile.setUsefulLineNumber(usefulLineNumber);				
+				parsedFile.setUsefulLineNumber(Math.max(sourceUsefulLineNumber, destUsefulLineNumber));				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} finally {
