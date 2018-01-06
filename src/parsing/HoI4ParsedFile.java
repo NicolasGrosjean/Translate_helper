@@ -153,4 +153,9 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText));
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }
