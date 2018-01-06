@@ -518,6 +518,11 @@ public class Parse {
 				res = res.concat("_");
 			}
 			res = res.concat(split[i]);
+			if (split[i].equals("l"))
+			{
+				// The beginning of language is found
+				return res;
+			}
 		}
 		return res;
 	}
