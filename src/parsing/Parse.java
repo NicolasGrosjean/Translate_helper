@@ -340,7 +340,13 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = splitted[1];
+					String text = "";
+					for (int i = 1; i < splitted.length; i++) {
+						if (i > 1) {
+							text = text.concat(":");
+						}
+						text = text.concat(splitted[i]);
+					}
 					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
 							ParsedEntry.missingText, text, "");
@@ -377,7 +383,13 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = splitted[1];
+					String text = "";
+					for (int i = 1; i < splitted.length; i++) {
+						if (i > 1) {
+							text = text.concat(":");
+						}
+						text = text.concat(splitted[i]);
+					}
 					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
 							ParsedEntry.missingText, "", text);
@@ -416,7 +428,13 @@ public class Parse {
 					destUsefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = splitted[1];
+					String text = "";
+					for (int i = 1; i < splitted.length; i++) {
+						if (i > 1) {
+							text = text.concat(":");
+						}
+						text = text.concat(splitted[i]);
+					}
 					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					destTexts.put(id, new TextAndLineNumber(text, lineNumber));
 				}
@@ -451,7 +469,13 @@ public class Parse {
 					sourceUsefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String sourceText = splitted[1];
+					String sourceText = "";
+					for (int i = 1; i < splitted.length; i++) {
+						if (i > 1) {
+							sourceText = sourceText.concat(":");
+						}
+						sourceText = sourceText.concat(splitted[i]);
+					}
 					sourceText = sourceText.substring(sourceText.indexOf("\"") + 1, sourceText.lastIndexOf("\""));
 					// We can now analyze the two expressions
 					// Firstly individually

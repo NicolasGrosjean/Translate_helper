@@ -50,7 +50,9 @@ public class TestParsingHoi4 {
 				"text_without_english_l_english",
 				"text_without_english_l_french",
 				"text_without_french_l_english",
-				"text_without_french_l_french"
+				"text_without_french_l_french",
+				"text_with_2_points_l_english",
+				"text_with_2_points_l_french"
 		};
 		Assert.assertEquals("Incorrect number of file", expected.length, filePaths.size());
 		for (int i = 0; i < expected.length; i++) {
@@ -205,6 +207,17 @@ public class TestParsingHoi4 {
 			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
+		} else {
+			Assert.fail("File not parsed");
+		}
+	}
+	
+	@Test
+	public void textWith2Points() {
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_with_2_points");
+		if (f != null) {
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 		} else {
 			Assert.fail("File not parsed");
 		}
