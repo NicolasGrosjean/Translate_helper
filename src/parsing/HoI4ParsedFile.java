@@ -35,7 +35,7 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 	public HoI4ParsedFile(String filePath)
 	{
 		this.filePath = filePath;
-		this.name = filePath.substring(filePath.lastIndexOf("\\") - 1);
+		this.name = filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length() - 2);
 		this.usefulLineNumber = -1;
 		this.linesToTranslate = new LinkedList<>();
 		this.missingSourceLines = new LinkedList<>();
