@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -267,7 +269,7 @@ public class Parse {
 						continue;
 					}
 					
-					// We can now analyze the two expression
+					// We can now analyze the two expressions
 					// Firstly individually
 					String sourceAnalysis = analyzeExpression(sourceExpression);
 					if (!sourceAnalysis.equals("")) {
@@ -394,10 +396,95 @@ public class Parse {
 			}
 			return parsedFile;
 		} else {
-			FileInputStream destinationFIS = null;			
-			// TODO Map all the destination text on the IDs
-			// TODO For all source ID, get the source and destination texts and analyse them
-			return null;
+			// Map destination texts
+			Map<String, TextAndLineNumber> destTexts = new HashMap<>();
+			int destUsefulLineNumber = 0;				
+			FileInputStream destinationFIS = null;
+			try {
+				destinationFIS = new FileInputStream(destinationFile);
+				Scanner line = new Scanner(destinationFIS, "UTF-8");
+				line.useDelimiter("\n");
+				int lineNumber = 0;
+				while (line.hasNext()) {
+					lineNumber++;
+					String sLine = line.next().replace("\uFEFF", "");
+					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
+					{
+						// The first line which define the language doesn't interest us, like comments or empty line
+						continue;
+					}
+					destUsefulLineNumber++;
+					String[] splitted = sLine.split(":");
+					String id = splitted[0].trim();
+					String text = splitted[1];
+					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					destTexts.put(id, new TextAndLineNumber(text, lineNumber));
+				}
+				line.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (destinationFIS != null)
+						destinationFIS.close();
+				} catch (IOException e) {
+					throw new IllegalArgumentException(e.getMessage());
+				}
+			}
+			
+			// Get then analyze source texts
+			FileInputStream sourceFIS = null;
+			try {
+				sourceFIS = new FileInputStream(sourceFile);
+				Scanner line = new Scanner(sourceFIS, "UTF-8");
+				line.useDelimiter("\n");
+				int sourceLineNumber = 0;
+				int usefulLineNumber = 0;				
+				while (line.hasNext()) {
+					sourceLineNumber++;
+					String sLine = line.next().replace("\uFEFF", "");
+					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
+					{
+						// The first line which define the language doesn't interest us, like comments or empty line
+						continue;
+					}
+					usefulLineNumber++;
+					String[] splitted = sLine.split(":");
+					String id = splitted[0].trim();
+					String sourceText = splitted[1];
+					sourceText = sourceText.substring(sourceText.indexOf("\"") + 1, sourceText.lastIndexOf("\""));
+					// We can now analyze the two expressions
+					// Firstly individually
+					String sourceAnalysis = analyzeExpression(sourceText);
+					if (!sourceAnalysis.equals("")) {
+						parsedFile.addLastMissingSourceLine(sourceLineNumber, destTexts.get(id).lineNumber, id,
+								sourceAnalysis, sourceText, destTexts.get(id).text);
+					}
+					String destinationAnalysis = analyzeExpression(destTexts.get(id).text);
+					if (!destinationAnalysis.equals("")) {
+						parsedFile.addLastLineToTranslate(sourceLineNumber, destTexts.get(id).lineNumber, id,
+								destinationAnalysis, sourceText, destTexts.get(id).text);
+					} else {
+						if (sourceText.equals(destTexts.get(id).text)
+								&& !acceptedLoanword.contains(destTexts.get(id).text)) {
+							parsedFile.addLastLineToTranslate(sourceLineNumber, destTexts.get(id).lineNumber, id,
+									ParsedEntry.copyText, sourceText, destTexts.get(id).text);
+						}
+					}
+				}
+				line.close();
+				parsedFile.setUsefulLineNumber(usefulLineNumber);				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (sourceFIS != null)
+						sourceFIS.close();
+				} catch (IOException e) {
+					throw new IllegalArgumentException(e.getMessage());
+				}
+			}
+			return parsedFile;
 		}
 	}
 
@@ -433,5 +520,15 @@ public class Parse {
 			res = res.concat(split[i]);
 		}
 		return res;
+	}
+	
+	private class TextAndLineNumber {
+		String text;
+		int lineNumber;
+		
+		public TextAndLineNumber(String text, int lineNumber) {
+			this.text = text;
+			this.lineNumber = lineNumber;
+		}
 	}
 }
