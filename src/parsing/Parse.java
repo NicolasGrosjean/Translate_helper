@@ -591,7 +591,7 @@ public class Parse {
 		int start = text.indexOf("\"") + 1;
 		int end = text.lastIndexOf("\"");
 		if (start > end) {
-			System.err.println("Incorrect localisation text in " + filePath + " line " + lineNumber);
+			System.err.println("Incorrect localisation text (ex: missing double quote at the end) in " + filePath + " line " + lineNumber);
 			return null;
 		}
 		return text.substring(start, end);
