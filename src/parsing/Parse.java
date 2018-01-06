@@ -548,6 +548,8 @@ public class Parse {
 	 * Remove the language form filepath.
 	 * EX : dir/blabla_l_english.yml => dir/blabla_l
 	 * 
+	 * Return "" in case of bad format
+	 * 
 	 * @param filePath
 	 * @return
 	 */
@@ -568,7 +570,8 @@ public class Parse {
 				return res;
 			}
 		}
-		return res;
+		// Language prefix l_ not found
+		return "";
 	}
 	
 	/**
