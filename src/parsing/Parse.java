@@ -323,8 +323,8 @@ public class Parse {
 		if (!sourceFile.exists() && !destinationFile.exists()) {
 			// TODO Manage better this error
 			System.err.println(troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml" +
-					"and " + troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml"
-					+ "don't exist");
+					" and " + troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml"
+					+ " don't exist");
 			return null;
 		} else if (sourceFile.exists() && !destinationFile.exists()) {
 			FileInputStream sourceFIS = null;
