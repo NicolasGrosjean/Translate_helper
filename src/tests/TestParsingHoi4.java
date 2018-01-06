@@ -130,7 +130,7 @@ public class TestParsingHoi4 {
 	}
 	
 	@Test
-	public void textDisorderedNotTranslated_l() {
+	public void textDisorderedNotTranslated() {
 		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_disordered_not_translated");
 		if (f != null) {
 			Assert.assertEquals("It should have 2 lines to translate", 2, f.getNumberLineToTranslate());
@@ -138,13 +138,13 @@ public class TestParsingHoi4 {
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 1, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 3, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT1", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 			e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 1, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid source line number", 3, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT2", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 		} else {
