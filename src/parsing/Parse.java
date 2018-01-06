@@ -378,7 +378,7 @@ public class Parse {
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
 					String text = splitted[1];
-					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
 							ParsedEntry.missingText, "", text);
 				}
@@ -417,7 +417,7 @@ public class Parse {
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
 					String text = splitted[1];
-					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					destTexts.put(id, new TextAndLineNumber(text, lineNumber));
 				}
 				line.close();
