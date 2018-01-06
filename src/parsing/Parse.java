@@ -337,13 +337,18 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
-					{
-						// The first line which define the language doesn't interest us, like comments or empty line
+					String[] splittedComments = sLine.split("#");
+					if (splittedComments.length == 0) {
+						continue;
+					}
+					String unCommented = splittedComments[0];
+					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
+						// The first line which define the language doesn't interest us, like comments
+						// or empty line
 						continue;
 					}
 					usefulLineNumber++;
-					String[] splitted = sLine.split(":");
+					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
@@ -378,13 +383,18 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
-					{
-						// The first line which define the language doesn't interest us, like comments or empty line
+					String[] splittedComments = sLine.split("#");
+					if (splittedComments.length == 0) {
+						continue;
+					}
+					String unCommented = splittedComments[0];
+					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
+						// The first line which define the language doesn't interest us, like comments
+						// or empty line
 						continue;
 					}
 					usefulLineNumber++;
-					String[] splitted = sLine.split(":");
+					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
@@ -421,13 +431,18 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
-					{
-						// The first line which define the language doesn't interest us, like comments or empty line
+					String[] splittedComments = sLine.split("#");
+					if (splittedComments.length == 0) {
+						continue;
+					}
+					String unCommented = splittedComments[0];
+					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
+						// The first line which define the language doesn't interest us, like comments
+						// or empty line
 						continue;
 					}
 					destUsefulLineNumber++;
-					String[] splitted = sLine.split(":");
+					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
@@ -460,13 +475,18 @@ public class Parse {
 				while (line.hasNext()) {
 					sourceLineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
-					{
-						// The first line which define the language doesn't interest us, like comments or empty line
+					String[] splittedComments = sLine.split("#");
+					if (splittedComments.length == 0) {
+						continue;
+					}
+					String unCommented = splittedComments[0];
+					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
+						// The first line which define the language doesn't interest us, like comments
+						// or empty line
 						continue;
 					}
 					sourceUsefulLineNumber++;
-					String[] splitted = sLine.split(":");
+					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
 					String sourceText = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
