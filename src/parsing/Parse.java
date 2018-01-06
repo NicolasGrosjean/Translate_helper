@@ -347,7 +347,7 @@ public class Parse {
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
-							usefulLineNumber);
+							lineNumber);
 					if (text == null) {
 						continue;
 					}
@@ -388,7 +388,7 @@ public class Parse {
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
-							usefulLineNumber);
+							lineNumber);
 					if (text == null) {
 						continue;
 					}
@@ -431,7 +431,7 @@ public class Parse {
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
-							destUsefulLineNumber);
+							lineNumber);
 					if (text == null) {
 						continue;
 					}
@@ -470,7 +470,7 @@ public class Parse {
 					String id = splitted[0].trim();
 					String sourceText = getTextFromSplitted(splitted,
 							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
-							sourceUsefulLineNumber);
+							sourceLineNumber);
 					if (sourceText == null) {
 						continue;
 					}
