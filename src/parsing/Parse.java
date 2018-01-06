@@ -60,7 +60,10 @@ public class Parse {
 				String troncated = getFilePathWithoutLanguage(filePath);
 				if (!parsedTroncatedFiles.contains(troncated))
 				{
-					files.addLast(parseAymlFile(troncated));
+					HoI4ParsedFile parsedFile = parseAymlFile(troncated);
+					if (parsedFile != null) {
+						files.addLast(parsedFile);
+					}
 					parsedTroncatedFiles.add(troncated);
 				}
 			}
@@ -308,27 +311,25 @@ public class Parse {
 
 	private HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
 		HoI4ParsedFile parsedFile = new HoI4ParsedFile(troncatedFilePath);
-		int sourceLanguageColumn = sourceLanguage.getDefaultColumn();
-		int destinationLanguageColumn = destinationLanguage.getDefaultColumn();
-		File sourceFile = new File(troncatedFilePath + sourceLanguage.getLanguageParameter() + ".yml");
-		File destinationFile = new File(troncatedFilePath + destinationLanguage.getLanguageParameter() + ".yml");
+		File sourceFile = new File(troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml");
+		File destinationFile = new File(troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml");
 		if (!sourceFile.exists() && !destinationFile.exists()) {
 			// TODO Manage better this error
-			throw new RuntimeException(troncatedFilePath + sourceLanguage.getLanguageParameter() + ".yml" +
-					"and " + troncatedFilePath + destinationLanguage.getLanguageParameter() + ".yml"
+			System.err.println(troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml" +
+					"and " + troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml"
 					+ "don't exist");
+			return null;
 		} else if (sourceFile.exists() && !destinationFile.exists()) {
 			FileInputStream sourceFIS = null;
 			try {
 				sourceFIS = new FileInputStream(sourceFile);
-				Scanner line = new Scanner(sourceFIS);
-				Scanner expression = null;
+				Scanner line = new Scanner(sourceFIS, "UTF-8");
 				line.useDelimiter("\n");
 				int lineNumber = 0;
 				int usefulLineNumber = 0;				
 				while (line.hasNext()) {
 					lineNumber++;
-					String sLine = line.next();
+					String sLine = line.next().replace("\uFEFF", "");
 					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
 					{
 						// The first line which define the language doesn't interest us, like comments or empty line
@@ -338,13 +339,12 @@ public class Parse {
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
 					String text = splitted[1];
-					text = text.substring(text.indexOf("\""), text.lastIndexOf("\""));
+					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
 							ParsedEntry.missingText, text, "");
 				}
 				line.close();
-				parsedFile.setUsefulLineNumber(usefulLineNumber);
-				return parsedFile;
+				parsedFile.setUsefulLineNumber(usefulLineNumber);				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} finally {
@@ -355,19 +355,18 @@ public class Parse {
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
-			
+			return parsedFile;
 		} else if (!sourceFile.exists() && destinationFile.exists()) {
 			FileInputStream destinationFIS = null;
 			try {
 				destinationFIS = new FileInputStream(destinationFile);
-				Scanner line = new Scanner(destinationFIS);
-				Scanner expression = null;
+				Scanner line = new Scanner(destinationFIS, "UTF-8");
 				line.useDelimiter("\n");
 				int lineNumber = 0;
 				int usefulLineNumber = 0;				
 				while (line.hasNext()) {
 					lineNumber++;
-					String sLine = line.next();
+					String sLine = line.next().replace("\uFEFF", "");
 					if (sLine.startsWith("l_") || sLine.startsWith("#") || !sLine.contains(":"))
 					{
 						// The first line which define the language doesn't interest us, like comments or empty line
@@ -383,7 +382,6 @@ public class Parse {
 				}
 				line.close();
 				parsedFile.setUsefulLineNumber(usefulLineNumber);
-				return parsedFile;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} finally {
@@ -394,10 +392,12 @@ public class Parse {
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
+			return parsedFile;
 		} else {
 			FileInputStream destinationFIS = null;			
 			// TODO Map all the destination text on the IDs
 			// TODO For all source ID, get the source and destination texts and analyse them
+			return null;
 		}
 	}
 
@@ -426,7 +426,11 @@ public class Parse {
 		String res = "";
 		for (int i = 0; i < split.length - 1; i++)
 		{
-			res.concat(split[i]);
+			if( i > 0)
+			{
+				res = res.concat("_");
+			}
+			res = res.concat(split[i]);
 		}
 		return res;
 	}
