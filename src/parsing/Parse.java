@@ -345,14 +345,12 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = "";
-					for (int i = 1; i < splitted.length; i++) {
-						if (i > 1) {
-							text = text.concat(":");
-						}
-						text = text.concat(splitted[i]);
+					String text = getTextFromSplitted(splitted,
+							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
+							usefulLineNumber);
+					if (text == null) {
+						continue;
 					}
-					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
 							ParsedEntry.missingText, text, "");
 				}
@@ -388,14 +386,12 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = "";
-					for (int i = 1; i < splitted.length; i++) {
-						if (i > 1) {
-							text = text.concat(":");
-						}
-						text = text.concat(splitted[i]);
+					String text = getTextFromSplitted(splitted,
+							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
+							usefulLineNumber);
+					if (text == null) {
+						continue;
 					}
-					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
 							ParsedEntry.missingText, "", text);
 				}
@@ -433,14 +429,12 @@ public class Parse {
 					destUsefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String text = "";
-					for (int i = 1; i < splitted.length; i++) {
-						if (i > 1) {
-							text = text.concat(":");
-						}
-						text = text.concat(splitted[i]);
+					String text = getTextFromSplitted(splitted,
+							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
+							destUsefulLineNumber);
+					if (text == null) {
+						continue;
 					}
-					text = text.substring(text.indexOf("\"") + 1, text.lastIndexOf("\""));
 					destTexts.put(id, new TextAndLineNumber(text, lineNumber));
 				}
 				line.close();
@@ -474,30 +468,31 @@ public class Parse {
 					sourceUsefulLineNumber++;
 					String[] splitted = sLine.split(":");
 					String id = splitted[0].trim();
-					String sourceText = "";
-					for (int i = 1; i < splitted.length; i++) {
-						if (i > 1) {
-							sourceText = sourceText.concat(":");
-						}
-						sourceText = sourceText.concat(splitted[i]);
+					String sourceText = getTextFromSplitted(splitted,
+							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
+							sourceUsefulLineNumber);
+					if (sourceText == null) {
+						continue;
 					}
-					sourceText = sourceText.substring(sourceText.indexOf("\"") + 1, sourceText.lastIndexOf("\""));
+					int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
+					String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+					
 					// We can now analyze the two expressions
 					// Firstly individually
 					String sourceAnalysis = analyzeExpression(sourceText);
 					if (!sourceAnalysis.equals("")) {
-						parsedFile.addLastMissingSourceLine(sourceLineNumber, destTexts.get(id).lineNumber, id,
-								sourceAnalysis, sourceText, destTexts.get(id).text);
+						parsedFile.addLastMissingSourceLine(sourceLineNumber, destLineNumber, id,
+								sourceAnalysis, sourceText, destText);
 					}
-					String destinationAnalysis = analyzeExpression(destTexts.get(id).text);
+					String destinationAnalysis = analyzeExpression(destText);
 					if (!destinationAnalysis.equals("")) {
-						parsedFile.addLastLineToTranslate(sourceLineNumber, destTexts.get(id).lineNumber, id,
-								destinationAnalysis, sourceText, destTexts.get(id).text);
+						parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
+								destinationAnalysis, sourceText, destText);
 					} else {
-						if (sourceText.equals(destTexts.get(id).text)
-								&& !acceptedLoanword.contains(destTexts.get(id).text)) {
-							parsedFile.addLastLineToTranslate(sourceLineNumber, destTexts.get(id).lineNumber, id,
-									ParsedEntry.copyText, sourceText, destTexts.get(id).text);
+						if (sourceText.equals(destText)
+								&& !acceptedLoanword.contains(destText)) {
+							parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
+									ParsedEntry.copyText, sourceText, destText);
 						}
 					}
 				}
@@ -555,6 +550,33 @@ public class Parse {
 		}
 		return res;
 	}
+	
+	/**
+	 * Extract the text from the splitted line. Return null if not possible to
+	 * extract.
+	 * 
+	 * @param splitted
+	 * @param filePath
+	 * @param lineNumber
+	 * @return
+	 */
+	private String getTextFromSplitted(String[] splitted, String filePath, int lineNumber) {
+		String text = "";
+		for (int i = 1; i < splitted.length; i++) {
+			if (i > 1) {
+				text = text.concat(":");
+			}
+			text = text.concat(splitted[i]);
+		}
+		int start = text.indexOf("\"") + 1;
+		int end = text.lastIndexOf("\"");
+		if (start > end) {
+			System.err.println("Incorrect localisation text in " + filePath + " line " + lineNumber);
+			return null;
+		}
+		return text.substring(start, end);
+	}
+	
 	
 	private class TextAndLineNumber {
 		String text;
