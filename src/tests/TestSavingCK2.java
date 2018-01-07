@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,13 +17,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.itextpdf.text.pdf.ArrayBasedStringTokenizer;
-
 import parsing.CK2ParsedFile;
 import parsing.Language;
 import translator.TranslatedEntry;
 
-public class TestSaving {
+public class TestSavingCK2 {
 	private static TranslatedEntry entryToSave;
 	private static Language sourceLanguage;
 	private static Language destinationLanguage;
