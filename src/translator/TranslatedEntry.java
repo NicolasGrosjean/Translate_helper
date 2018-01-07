@@ -1,5 +1,6 @@
 package translator;
 
+import parsing.HoI4ParsedEntry;
 import parsing.ParsedEntry;
 
 public class TranslatedEntry {
@@ -11,17 +12,25 @@ public class TranslatedEntry {
 	 * Line number in the destination file corresponding to this entry
 	 */
 	private int destLineNumber;
+	
+	/**
+	 * Line number in the destination file corresponding to this entry
+	 */
+	private int sourceLineNumber;
 
-	public TranslatedEntry(String source, String destination, int destLineNumber, String id) {
+	public TranslatedEntry(String source, String destination, int destLineNumber,
+			int sourceLineNumber, String id) {
 		this.source = source;
 		this.destination = destination;
 		this.destLineNumber = destLineNumber;
+		this.sourceLineNumber = sourceLineNumber;
 		this.id = id;
 	}
 
 	public TranslatedEntry(ParsedEntry entry) {
 		this(entry.getSourceText(), entry.getDestinationText(),
-				entry.getLineNumber(), entry.getID());
+				entry.getDestinationLineNumber(), entry.getSourceLineNumber(),
+				entry.getID());
 	}
 
 	public String getSource() {
@@ -42,6 +51,10 @@ public class TranslatedEntry {
 
 	public int getDestLineNumber() {
 		return destLineNumber;
+	}
+
+	public int getSourceLineNumber() {
+		return sourceLineNumber;
 	}
 
 	public String getId() {

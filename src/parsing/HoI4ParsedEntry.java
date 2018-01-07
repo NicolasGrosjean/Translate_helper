@@ -13,15 +13,12 @@ public class HoI4ParsedEntry extends ParsedEntry {
 		this.destinationLineNumber = destinationLineNumber;
 	}
 
-	public int getLineNumber() {
-		throw new RuntimeException(
-				"For an HoI4ParsedEntry, lineNumber has no meaning. Use sourceLineNumber or destinationLineNumber");
-	}
-
+	@Override
 	public int getSourceLineNumber() {
 		return sourceLineNumber;
 	}
 
+	@Override
 	public int getDestinationLineNumber() {
 		return destinationLineNumber;
 	}

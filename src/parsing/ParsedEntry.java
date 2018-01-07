@@ -23,10 +23,13 @@ public class ParsedEntry {
 		this.destinationText = destinationText;
 	}
 
-	public int getLineNumber() {
+	public int getSourceLineNumber() {
 		return lineNumber;
 	}
 
+	public int getDestinationLineNumber() {
+		return lineNumber;
+	}
 	public String getID() {
 		return id;
 	}

@@ -103,7 +103,7 @@ public class TestParsingCK2 {
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -120,7 +120,7 @@ public class TestParsingCK2 {
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -139,25 +139,25 @@ public class TestParsingCK2 {
 			// First line to translate
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 			// Second line to translate
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 1, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 1, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 			// First missing source text
 			Assert.assertEquals("Nothing in the iterator", true, missingSourceLinesIterator.hasNext());
 			e = missingSourceLinesIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getSourceLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005B", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 			// Second missing source text
 			Assert.assertEquals("Nothing in the iterator", true, missingSourceLinesIterator.hasNext());
 			e = missingSourceLinesIterator.next();
-			Assert.assertEquals("Invalid line number", 1, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 1, e.getSourceLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -196,7 +196,7 @@ public class TestParsingCK2 {
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.fakeText, e.getReason());
 		} else {
@@ -213,7 +213,7 @@ public class TestParsingCK2 {
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
 			ParsedEntry e = lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid line number", 2, e.getLineNumber());
+			Assert.assertEquals("Invalid line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TRADE.0005A", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 		} else {

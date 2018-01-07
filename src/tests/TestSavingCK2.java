@@ -28,7 +28,7 @@ public class TestSavingCK2 {
 
 	@BeforeClass
 	public static void SetUp() {
-		entryToSave = new TranslatedEntry("Toto", "Tata", 3, "toto");
+		entryToSave = new TranslatedEntry("Toto", "Tata", 3, 3, "toto");
 		sourceLanguage = new Language("ENGLISH", 1, "en");
 		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
@@ -100,7 +100,7 @@ public class TestSavingCK2 {
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
 		TranslatedEntry entryToSave2 = new TranslatedEntry("§YReligious head suitability: $SCORE$§!",
-				"Tata", 2, "TRADE.0005A");
+				"Tata", 2, 2, "TRADE.0005A");
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
@@ -140,7 +140,7 @@ public class TestSavingCK2 {
 		
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
-		TranslatedEntry entryToSave2 = new TranslatedEntry(source, dest, 2,
+		TranslatedEntry entryToSave2 = new TranslatedEntry(source, dest, 2, 2,
 				"buy_indulgence_for_sins_desc");
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
