@@ -10,7 +10,7 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 	/**
 	 * Path of the file
 	 */
-	private String filePath;
+	private String troncatedFilePath;
 	
 	/**
 	 * Name of the file (without language specification)
@@ -32,16 +32,16 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 	 */
 	private LinkedList<HoI4ParsedEntry> missingSourceLines;
 	
-	public HoI4ParsedFile(String filePath)
+	public HoI4ParsedFile(String troncatedFilePath)
 	{
-		this.filePath = filePath;
-		int start = filePath.lastIndexOf("\\") + 1;
-		int end = filePath.length() - 2;
+		this.troncatedFilePath = troncatedFilePath;
+		int start = troncatedFilePath.lastIndexOf("\\") + 1;
+		int end = troncatedFilePath.length() - 2;
 		if (start > end)
 		{
 			this.name = "";
 		} else {
-			this.name = filePath.substring(start, end);
+			this.name = troncatedFilePath.substring(start, end);
 		}
 		this.usefulLineNumber = -1;
 		this.linesToTranslate = new LinkedList<>();
