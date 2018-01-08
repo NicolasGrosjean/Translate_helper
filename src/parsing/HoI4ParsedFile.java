@@ -70,16 +70,16 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 		boolean sourceMissingEntry = (entryToSave.getSourceLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
 		saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
 				sourceMissingEntry ? entryToSave.getDestLineNumber() : entryToSave.getSourceLineNumber(),
-				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource());
+				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource(), true);
 		boolean destMissingEntry = (entryToSave.getDestLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
 		saveEntryInfile(getFilePath(destinationLanguage), destinationLanguage.getCode(),
 				destMissingEntry ? entryToSave.getSourceLineNumber() : entryToSave.getDestLineNumber(),
-				destMissingEntry, entryToSave.getId(), entryToSave.getDestination());
+				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(), false);
 		return nextEntry;
 	}
 	
 	private void saveEntryInfile(String filePath, String languageName, int lineNumber,
-			boolean missingEntry, String id, String text) {
+			boolean missingEntry, String id, String text, boolean source) {
 
 		BufferedReader file = null;
 		StringBuilder builder = new StringBuilder();
@@ -100,7 +100,6 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 					} else {
 						line = newLine;
 					}
-					// TODO Save shift
 				}
 				builder.append(line + "\n");
 			}
@@ -121,14 +120,51 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filePath),
 					StandardCharsets.UTF_8), true);
 			writer.print(builder.toString());
+			if (missingEntry) {
+				if (source) {
+					updateSourceLineNumber(lineNumber);
+				} else {
+					updateDestinationLineNumber(lineNumber);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			if (writer != null)
 				writer.close();
 		}
-	}	
-
+	}
+	
+	private void updateSourceLineNumber(int newLineNumber) {
+		for (HoI4ParsedEntry entry: missingSourceLines) {
+			if (entry.getSourceLineNumber() >= newLineNumber)
+			{
+				entry.setSourceLineNumber(entry.getSourceLineNumber() + 1);
+			}
+		}
+		for (HoI4ParsedEntry entry: linesToTranslate) {
+			if (entry.getSourceLineNumber() >= newLineNumber)
+			{
+				entry.setSourceLineNumber(entry.getSourceLineNumber() + 1);
+			}
+		}
+	}
+	
+	private void updateDestinationLineNumber(int newLineNumber) {
+		for (HoI4ParsedEntry entry: missingSourceLines) {
+			if (entry.getDestinationLineNumber() >= newLineNumber)
+			{
+				entry.setDestinationLineNumber(entry.getDestinationLineNumber() + 1);
+			}
+		}
+		for (HoI4ParsedEntry entry: linesToTranslate) {
+			if (entry.getDestinationLineNumber() >= newLineNumber)
+			{
+				entry.setDestinationLineNumber(entry.getDestinationLineNumber() + 1);
+			}
+		}
+	}
+	
 	public void setUsefulLineNumber(int usefulLineNumber) {
 		this.usefulLineNumber = usefulLineNumber;
 	}

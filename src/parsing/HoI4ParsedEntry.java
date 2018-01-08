@@ -23,6 +23,14 @@ public class HoI4ParsedEntry extends ParsedEntry {
 		return destinationLineNumber;
 	}
 
+	public void setSourceLineNumber(int sourceLineNumber) {
+		this.sourceLineNumber = sourceLineNumber;
+	}
+
+	public void setDestinationLineNumber(int destinationLineNumber) {
+		this.destinationLineNumber = destinationLineNumber;
+	}
+
 	@Override
 	public String toString() {
 		return entryToString(sourceLineNumber);
