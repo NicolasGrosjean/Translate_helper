@@ -10,7 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
 import parsing.Language;
-import translator.ITranslatorParsedFile;
+import translator.TranslatorParsedFile;
 
 public class DetailsButton extends DefaultCellEditor {
 
@@ -73,8 +73,8 @@ public class DetailsButton extends DefaultCellEditor {
 		public JButton getButton(){return this.button;}
 
 		public void actionPerformed(ActionEvent event) {
-			if (table.getValueAt(row, column-3) instanceof ITranslatorParsedFile) {
-				ITranslatorParsedFile f = (ITranslatorParsedFile)table.getValueAt(row, column-3);
+			if (table.getValueAt(row, column-3) instanceof TranslatorParsedFile) {
+				TranslatorParsedFile f = (TranslatorParsedFile)table.getValueAt(row, column-3);
 				new DetailsDialog(null, f.getName(), true, f, sourceLanguage,
 						hasDestinationLanguage, destinationLanguage,
 						automaticGoogleCall, window);

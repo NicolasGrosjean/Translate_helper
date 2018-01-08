@@ -3,37 +3,24 @@ package parsing;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import mains.Diagnostic;
-import translator.ITranslatorParsedFile;
+import translator.TranslatorParsedFile;
 import translator.TranslatedEntry;
 
-public class CK2ParsedFile implements ITranslatorParsedFile {
+public class CK2ParsedFile extends TranslatorParsedFile {
 	/**
 	 * Path of the file
 	 */
 	private String filePath;
-	
-	/**
-	 * Name of the file
-	 */
-	private String name;
-
 	/**
 	 * The total number of the lines of the file (translated + no-translated + commented)
 	 */
 	private int lineNumber;
-
-	/**
-	 * The total number of useful lines (translated + no-translated)
-	 */
-	private int usefulLineNumber;
 
 	/**
 	 * List of the lines to translate
@@ -55,9 +42,15 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		linesToTranslate = new LinkedList<ParsedEntry>();
 		missingSourceLines = new LinkedList<ParsedEntry>();
 	}
+	
+	@Override
+	protected LinkedList<ParsedEntry> getLinesToTranslate() {
+		return linesToTranslate;
+	}
 
-	public String getName() {
-		return name;
+	@Override
+	protected LinkedList<ParsedEntry> getMissingSourceLines() {
+		return missingSourceLines;
 	}
 
 	public int getLineNumber() {
@@ -116,14 +109,7 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		return missingSourceLines.descendingIterator();
 	}
 
-	public int getNumberLineToTranslate() {
-		return linesToTranslate.size();
-	}
-
-	public int getNumberMissingSourceLines() {
-		return missingSourceLines.size();
-	}
-
+	@Override
 	public String getMissingSourceText() {
 		StringBuilder builder = new StringBuilder();
 		for (ParsedEntry e : missingSourceLines) {
@@ -132,45 +118,13 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 		return builder.toString();
 	}
 
+	@Override
 	public String getMissingTranslation() {
 		StringBuilder builder = new StringBuilder();
 		for (ParsedEntry e : linesToTranslate) {
 			builder.append(e + System.lineSeparator());
 		}
 		return builder.toString();
-	}
-
-	@Override
-	public String toString() {
-		return name;
-	}
-
-	@Override
-	public TranslatedEntry getFirstEntryToTranslate() {
-		lineToTranslateIndex = 0;
-		if (linesToTranslate.size() > 0) {
-			return new TranslatedEntry(linesToTranslate.getFirst());
-		}
-		return null;
-	}
-
-	@Override
-	public TranslatedEntry getPreviousEntryToTranslate() {
-		if (lineToTranslateIndex == 0)
-		{
-			return null;
-		}
-		lineToTranslateIndex--;
-		return new TranslatedEntry(linesToTranslate.get(lineToTranslateIndex));
-	}
-
-	@Override
-	public TranslatedEntry getNextEntryToTranslate() {
-		lineToTranslateIndex++;
-		if (lineToTranslateIndex < linesToTranslate.size()) {
-			return new TranslatedEntry(linesToTranslate.get(lineToTranslateIndex));
-		}
-		return null;
 	}
 
 	@Override
@@ -227,26 +181,5 @@ public class CK2ParsedFile implements ITranslatorParsedFile {
 				writer.close();
 		}
 		return nextEntry;
-	}
-
-	@Override
-	public TranslatedEntry getNextEntryToTranslateAndSetLoanWord(TranslatedEntry loanWordEntry) {
-		String filename= Diagnostic.acceptedLoanwordFile;
-		FileWriter fw = null;
-		try
-		{
-			fw = new FileWriter(filename,true);
-		    fw.write("\n" + loanWordEntry.getSource());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (fw != null)
-					fw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return getNextEntryToTranslate();
 	}
 }

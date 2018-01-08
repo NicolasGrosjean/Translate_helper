@@ -12,11 +12,11 @@ import javax.swing.JTextArea;
 
 import parsing.Language;
 import translator.ITranslator;
-import translator.ITranslatorParsedFile;
+import translator.TranslatorParsedFile;
 
 public class DetailsDialog extends JDialog {
 	public DetailsDialog(JFrame parent, String title, boolean modal,
-			ITranslatorParsedFile file, 
+			TranslatorParsedFile file, 
 			Language sourceLanguage,
 			boolean hasDestinationLanguage,
 			Language destinationLanguage,

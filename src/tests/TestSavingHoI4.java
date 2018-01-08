@@ -29,7 +29,7 @@ public class TestSavingHoI4 {
 
 	@BeforeClass
 	public static void SetUp() {
-		entryToSave = new TranslatedEntry("Toto", "Tata", 3, 3, "toto");
+		entryToSave = new TranslatedEntry("ID_2", "Tata", 3, 3, "toto");
 		sourceLanguage = new Language("ENGLISH", 1, "en");
 		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
@@ -77,6 +77,7 @@ public class TestSavingHoI4 {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
 		String sourceText1 = "OK";
+		String sourceText2 = "What?";
 		String sourceText3 = "What?";
 		String sourceText4 = "Okay";
 		String destText1 = "J'en prends note";
@@ -106,15 +107,23 @@ public class TestSavingHoI4 {
 		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3);
 		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4);
 		
-		// Create a file corresponding to these data
-		String[] data = { "\uFEFFl_french:\n" +
+		// Create files corresponding to these data
+		String[] sourceData = { "\uFEFFl_english:\n" +
+				" ID_1:0 \"" + sourceText1 + "\"\n" +
+				" ID_2:0 \"" + oldSource + "\"\n" +
+				" ID_3:0 \"" + sourceText3 + "\"\n" +
+				" ID_4:0 \"" + sourceText4 + "\"",};
+		List<String> sourceLines = Arrays.asList(sourceData);
+		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
+		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
+		String[] destData = { "\uFEFFl_french:\n" +
 				" ID_1:0 \"" + destText1 + "\"\n" +
 				oldLine +
 				" ID_3:0 \"" + destText3 + "\"\n" +
-				" ID_4:0 \"" + destText4 + "\"\n",};
-		List<String> lines = Arrays.asList(data);
-		Path filetoWtrite = Paths.get(troncatedFilePath + "_french.yml");
-		Files.write(filetoWtrite, lines, StandardCharsets.UTF_8);
+				" ID_4:0 \"" + destText4 + "\"",};
+		List<String> destLines = Arrays.asList(destData);
+		Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
+		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
 		
 		// Skip first line to translate
 		file.getFirstEntryToTranslate();
@@ -130,36 +139,38 @@ public class TestSavingHoI4 {
 		// Check that is what we expect
 		String[] expected = { "\uFEFFl_french:",
 				" ID_1:0 \"" + destText1 + "\"",
-				" ID_2:0 \"" + entryToSave.getDestination() + "\"",
+				" " + entryToSave.getId() + ":0 \"" + entryToSave.getDestination() + "\"",
 				" ID_3:0 \"" + destText3 + "\"",
-				" ID_4:0 \"" + destText4 + "\"",};
+				" ID_4:0 \"" + destText4 + "\""};
 		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertEquals("Incorrect line!", expected[i], line);
 				i++;
+				Assert.assertTrue("Incorrect line number!", expected.length >= i);
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
 		} finally {
 			br.close();
 		}
 		// Check also the source
-		String[] expectedSource = { "\uFEFFl_french:",
+		String[] expectedSource = { "\uFEFFl_english:",
 				" ID_1:0 \"" + sourceText1 + "\"",
-				" ID_2:0 \"" + entryToSave.getSource() + "\"",
+				" " + entryToSave.getId() + ":0 \"" + entryToSave.getSource() + "\"",
 				" ID_3:0 \"" + sourceText3 + "\"",
-				" ID_4:0 \"" + sourceText4 + "\"",};
+				" ID_4:0 \"" + sourceText4 + "\""};
 		fis = new FileInputStream(troncatedFilePath + "_english.yml");
-		br = new BufferedReader(new InputStreamReader(fis));
+		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertEquals("Incorrect line!", expectedSource[i], line);
 				i++;
+				Assert.assertTrue("Incorrect line number!", expectedSource.length >= i);
 			}
 			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
 		} finally {
@@ -190,7 +201,7 @@ public class TestSavingHoI4 {
 		String expected[] = {"\uFEFFl_french:",
 				" ID_1:0 \"" + destinationText + "\"",};
 		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
 			int i = 0;
@@ -203,10 +214,10 @@ public class TestSavingHoI4 {
 			br.close();
 		}
 		// Check also source
-		String sourceExpected[] = {"\uFEFFl_french:",
+		String sourceExpected[] = {"\uFEFFl_english:",
 				" ID_1:0 \"" + entryToSave.getSource() + "\"",};
 		fis = new FileInputStream(troncatedFilePath + "_english.yml");
-		br = new BufferedReader(new InputStreamReader(fis));
+		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
 			int i = 0;

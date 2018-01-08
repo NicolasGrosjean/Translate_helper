@@ -1,26 +1,24 @@
 package parsing;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import translator.ITranslatorParsedFile;
+import translator.TranslatorParsedFile;
 import translator.TranslatedEntry;
 
-public class HoI4ParsedFile implements ITranslatorParsedFile {
+public class HoI4ParsedFile extends TranslatorParsedFile {
 	/**
 	 * Path of the file
 	 */
 	private String troncatedFilePath;
-	
-	/**
-	 * Name of the file (without language specification)
-	 */
-	private String name;
-
-	/**
-	 * The total number of useful lines (translated + no-translated)
-	 */
-	private int usefulLineNumber;
 
 	/**
 	 * List of the lines to translate
@@ -48,56 +46,80 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 		this.missingSourceLines = new LinkedList<>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public TranslatedEntry getFirstEntryToTranslate() {
-		throw new RuntimeException("Not yet implemented");
-		// TODO Auto-generated method stub
+	protected LinkedList<HoI4ParsedEntry> getLinesToTranslate() {
+		return linesToTranslate;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public TranslatedEntry getPreviousEntryToTranslate() {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not yet implemented");
-	}
-
-	@Override
-	public TranslatedEntry getNextEntryToTranslate() {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not yet implemented");
+	protected LinkedList<HoI4ParsedEntry> getMissingSourceLines() {
+		return missingSourceLines;
 	}
 
 	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave, Language sourceLanguage,
 			Language destinationLanguage) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not yet implemented");
-	}
+		// Save in memory
+		linesToTranslate.get(lineToTranslateIndex).saveEntry(entryToSave);
 
-	@Override
-	public TranslatedEntry getNextEntryToTranslateAndSetLoanWord(TranslatedEntry loanWordEntry) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not yet implemented");
-	}
+		TranslatedEntry nextEntry = getNextEntryToTranslate();
 
-	@Override
-	public String getName() {
-		return name;
+		// Save in files
+		saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(), 
+				entryToSave.getSourceLineNumber(), entryToSave.getId(), entryToSave.getSource());
+		saveEntryInfile(getFilePath(destinationLanguage), destinationLanguage.getCode(),
+				entryToSave.getDestLineNumber(), entryToSave.getId(), entryToSave.getDestination());
+		return nextEntry;
 	}
+	
+	private void saveEntryInfile(String filePath, String languageName, int lineNumber, String id, String text) {
 
-	@Override
-	public int getNumberMissingSourceLines() {
-		return missingSourceLines.size();
-	}
-
-	@Override
-	public int getNumberLineToTranslate() {
-		return linesToTranslate.size();
-	}
-
-	@Override
-	public int getUsefulLineNumber() {
-		return usefulLineNumber;
-	}
+		BufferedReader file = null;
+		StringBuilder builder = new StringBuilder();
+		try {
+			// TODO check the file exists or create it
+			file = new BufferedReader(new FileReader(filePath));
+			String line;
+			int i = 0;
+			while ((line = file.readLine()) != null) {
+				i++;
+				if (i == 1)
+				{
+					line = "\uFEFFl_" + languageName.toLowerCase() + ":";
+				}
+				if (i == lineNumber) {
+					// Add the line without the last semicolon
+					line = " " + id + ":0 \"" + text + "\"";
+				}
+				// TODO : Manage missing line number
+				builder.append(line + "\n");
+			}
+		} catch (FileNotFoundException e) {
+			builder.append("\uFEFFl_" + languageName.toLowerCase() + ":\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (file != null)
+					file.close();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filePath),
+					StandardCharsets.UTF_8), true);
+			writer.print(builder.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null)
+				writer.close();
+		}
+	}	
 
 	public void setUsefulLineNumber(int usefulLineNumber) {
 		this.usefulLineNumber = usefulLineNumber;
@@ -152,10 +174,9 @@ public class HoI4ParsedFile implements ITranslatorParsedFile {
 		this.missingSourceLines.addLast(
 				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText));
 	}
-
-	@Override
-	public String toString() {
-		return name;
+	
+	public String getFilePath(Language language)
+	{
+		return troncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
 	}
-
 }

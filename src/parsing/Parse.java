@@ -318,12 +318,12 @@ public class Parse {
 
 	private HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
 		HoI4ParsedFile parsedFile = new HoI4ParsedFile(troncatedFilePath);
-		File sourceFile = new File(troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml");
-		File destinationFile = new File(troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml");
+		File sourceFile = new File(parsedFile.getFilePath(sourceLanguage));
+		File destinationFile = new File(parsedFile.getFilePath(destinationLanguage));
 		if (!sourceFile.exists() && !destinationFile.exists()) {
 			// TODO Manage better this error
-			System.err.println(troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml" +
-					" and " + troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml"
+			System.err.println(parsedFile.getFilePath(sourceLanguage) +
+					" and " + parsedFile.getFilePath(destinationLanguage)
 					+ " don't exist");
 			return null;
 		} else if (sourceFile.exists() && !destinationFile.exists()) {
@@ -350,9 +350,7 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted,
-							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
-							lineNumber);
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage), lineNumber);
 					if (text == null) {
 						continue;
 					}
@@ -396,8 +394,7 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted,
-							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
 							lineNumber);
 					if (text == null) {
 						continue;
@@ -444,8 +441,7 @@ public class Parse {
 					destUsefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted,
-							troncatedFilePath + "_" + destinationLanguage.getCode().toLowerCase() + ".yml",
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
 							lineNumber);
 					if (text == null) {
 						continue;
@@ -488,8 +484,7 @@ public class Parse {
 					sourceUsefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String sourceText = getTextFromSplitted(splitted,
-							troncatedFilePath + "_" + sourceLanguage.getCode().toLowerCase() + ".yml",
+					String sourceText = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage),
 							sourceLineNumber);
 					if (sourceText == null) {
 						continue;
