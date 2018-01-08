@@ -77,7 +77,6 @@ public class TestSavingHoI4 {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
 		String sourceText1 = "OK";
-		String sourceText2 = "What?";
 		String sourceText3 = "What?";
 		String sourceText4 = "Okay";
 		String destText1 = "J'en prends note";
@@ -85,24 +84,28 @@ public class TestSavingHoI4 {
 		String destText3 = "Quoi?";
 		String destText4 = "D'ac";
 		file.addLastLineToTranslate(2, 2, "ID_1", "", sourceText1, destText1);
-		String oldLine = "";
+		String oldSourceLine = "";
+		String oldDestLine = "";
 		String oldSource = "";
 		String oldDest = "";
 		if (missingSource) {
 			oldSource = "";
 			oldDest = destText2;
 			file.addLastLineToTranslate(HoI4ParsedEntry.MISSING_ENTRY, 3, "ID_2", "", oldSource, oldDest);
-			oldLine = " ID_2:0 \"" + destText2 + "\"\n";
+			oldSourceLine = "";
+			oldDestLine = " ID_2:0 \"" + destText2 + "\"\n";
 		} else if (missingDest) { // missingSource == true == missingDest has no meaning
 			oldSource = "Toto";
 			oldDest = "";
 			file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest);
-			oldLine = "";
+			oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
+			oldDestLine = "";
 		} else {
 			oldSource = "Toto";
 			oldDest = destText2;
 			file.addLastLineToTranslate(3, 3, "ID_2", "", oldSource, oldDest);
-			oldLine = " ID_2:0 \"" + destText2 + "\"\n";
+			oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
+			oldDestLine = " ID_2:0 \"" + destText2 + "\"\n";
 		}
 		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3);
 		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4);
@@ -110,7 +113,7 @@ public class TestSavingHoI4 {
 		// Create files corresponding to these data
 		String[] sourceData = { "\uFEFFl_english:\n" +
 				" ID_1:0 \"" + sourceText1 + "\"\n" +
-				" ID_2:0 \"" + oldSource + "\"\n" +
+				oldSourceLine +
 				" ID_3:0 \"" + sourceText3 + "\"\n" +
 				" ID_4:0 \"" + sourceText4 + "\"",};
 		List<String> sourceLines = Arrays.asList(sourceData);
@@ -118,7 +121,7 @@ public class TestSavingHoI4 {
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		String[] destData = { "\uFEFFl_french:\n" +
 				" ID_1:0 \"" + destText1 + "\"\n" +
-				oldLine +
+				oldDestLine +
 				" ID_3:0 \"" + destText3 + "\"\n" +
 				" ID_4:0 \"" + destText4 + "\"",};
 		List<String> destLines = Arrays.asList(destData);
@@ -148,9 +151,9 @@ public class TestSavingHoI4 {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expected.length > i);
 				Assert.assertEquals("Incorrect line!", expected[i], line);
 				i++;
-				Assert.assertTrue("Incorrect line number!", expected.length >= i);
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
 		} finally {
@@ -168,9 +171,9 @@ public class TestSavingHoI4 {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expectedSource.length > i);
 				Assert.assertEquals("Incorrect line!", expectedSource[i], line);
 				i++;
-				Assert.assertTrue("Incorrect line number!", expectedSource.length >= i);
 			}
 			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
 		} finally {
@@ -185,11 +188,15 @@ public class TestSavingHoI4 {
 		entryToSave.setDestination(destinationText);
 		file.addLastLineToTranslate(2, 2, id, "", sourceText, oldDestText);
 		
-		// Create a file corresponding to these data
-		String[] data = { "\uFEFFl_french:\n" + " ID_1:0 \"" + oldDestText + "\"\n" };
-		List<String> lines = Arrays.asList(data);
-		Path filetoWtrite = Paths.get(troncatedFilePath + "_french.yml");
-		Files.write(filetoWtrite, lines, StandardCharsets.UTF_8);
+		// Create files corresponding to these data
+		String[] sourceData = { "\uFEFFl_english:\n" + " ID_1:0 \"" + entryToSave.getSource() + "\"" };
+		List<String> sourceLines = Arrays.asList(sourceData);
+		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
+		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
+		String[] destData = { "\uFEFFl_french:\n" + " ID_1:0 \"" + oldDestText + "\"" };
+		List<String> destLines = Arrays.asList(destData);
+		Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
+		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
 		
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
@@ -206,6 +213,7 @@ public class TestSavingHoI4 {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expected.length > i);
 				Assert.assertEquals("Incorrect line!", expected[i], line);
 				i++;
 			}
@@ -222,6 +230,7 @@ public class TestSavingHoI4 {
 			String line = null;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", sourceExpected.length > i);
 				Assert.assertEquals("Incorrect line!", sourceExpected[i], line);
 				i++;
 			}
