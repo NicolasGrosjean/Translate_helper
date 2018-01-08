@@ -29,7 +29,7 @@ public class TestSavingHoI4 {
 
 	@BeforeClass
 	public static void SetUp() {
-		entryToSave = new TranslatedEntry("ID_2", "Tata", 3, 3, "toto");
+		entryToSave = new TranslatedEntry("Toto", "Tata", 3, 3, "ID_2");
 		sourceLanguage = new Language("ENGLISH", 1, "en");
 		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
@@ -37,7 +37,10 @@ public class TestSavingHoI4 {
 	@Test
 	public void testSaveWithSameLineNumber() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file_l";
-		testSaveSeveralLines(troncatedFilePath, false, false);
+		testSaveSeveralLines(troncatedFilePath, false, false,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), entryToSave.getSourceLineNumber(),
+						entryToSave.getDestLineNumber(), entryToSave.getId()));
 	}
 
 	@Test
@@ -57,13 +60,19 @@ public class TestSavingHoI4 {
 	@Test
 	public void testSaveUnknownSourceLineNumber() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file4_l";
-		testSaveSeveralLines(troncatedFilePath, true, false);		
+		testSaveSeveralLines(troncatedFilePath, true, false,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), entryToSave.getDestLineNumber(),
+						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()));		
 	}
 
 	@Test
 	public void testSaveUnknownDestLineNumber() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file5_l";
-		testSaveSeveralLines(troncatedFilePath, false, true);		
+		testSaveSeveralLines(troncatedFilePath, false, true,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), HoI4ParsedEntry.MISSING_ENTRY,
+						entryToSave.getSourceLineNumber(), entryToSave.getId()));		
 	}
 
 	@Test
@@ -72,7 +81,8 @@ public class TestSavingHoI4 {
 		testSaveOneLine(troncatedFilePath, "", "Changed source text");
 	}
 	
-	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource, boolean missingDest)
+	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
+			boolean missingDest, TranslatedEntry entryToSave)
 			throws IOException {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);

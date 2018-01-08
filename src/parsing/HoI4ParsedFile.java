@@ -67,19 +67,23 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 		TranslatedEntry nextEntry = getNextEntryToTranslate();
 
 		// Save in files
-		saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(), 
-				entryToSave.getSourceLineNumber(), entryToSave.getId(), entryToSave.getSource());
+		boolean sourceMissingEntry = (entryToSave.getSourceLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
+		saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
+				sourceMissingEntry ? entryToSave.getDestLineNumber() : entryToSave.getSourceLineNumber(),
+				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource());
+		boolean destMissingEntry = (entryToSave.getDestLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
 		saveEntryInfile(getFilePath(destinationLanguage), destinationLanguage.getCode(),
-				entryToSave.getDestLineNumber(), entryToSave.getId(), entryToSave.getDestination());
+				destMissingEntry ? entryToSave.getSourceLineNumber() : entryToSave.getDestLineNumber(),
+				destMissingEntry, entryToSave.getId(), entryToSave.getDestination());
 		return nextEntry;
 	}
 	
-	private void saveEntryInfile(String filePath, String languageName, int lineNumber, String id, String text) {
+	private void saveEntryInfile(String filePath, String languageName, int lineNumber,
+			boolean missingEntry, String id, String text) {
 
 		BufferedReader file = null;
 		StringBuilder builder = new StringBuilder();
 		try {
-			// TODO check the file exists or create it
 			file = new BufferedReader(new FileReader(filePath));
 			String line;
 			int i = 0;
@@ -90,10 +94,14 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 					line = "\uFEFFl_" + languageName.toLowerCase() + ":";
 				}
 				if (i == lineNumber) {
-					// Add the line without the last semicolon
-					line = " " + id + ":0 \"" + text + "\"";
+					String newLine = " " + id + ":0 \"" + text + "\"";
+					if (missingEntry) {
+						line = newLine + "\n" + line;
+					} else {
+						line = newLine;
+					}
+					// TODO Save shift
 				}
-				// TODO : Manage missing line number
 				builder.append(line + "\n");
 			}
 		} catch (FileNotFoundException e) {
