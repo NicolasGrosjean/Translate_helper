@@ -2,6 +2,8 @@ package parsing;
 
 import java.util.Iterator;
 
+import translator.ITranslator;
+
 public interface IParsedFile {
 	public String getName();
 	
@@ -22,6 +24,8 @@ public interface IParsedFile {
 	 * @return
 	 */
 	public String getMissingTranslation();
+	
+	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage);
 	
 	/** ---------------- FOR TESTING -------------------------------**/
 	public Iterator<ParsedEntry> getDescendingIteratorLineToTranslate();

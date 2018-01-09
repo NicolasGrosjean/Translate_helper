@@ -14,6 +14,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import config.WorkingSession;
+import translator.ITranslator;
 
 public class Parse {
 	/**
@@ -186,20 +187,12 @@ public class Parse {
 		}
 		return filePaths;
 	}
-	
-	public static CK2ParsedFile getAllCk2Lines(String filePath, Language sourceLanguage,
-			Language destinationLanguage)
-	{
-		Parse parseObj = new Parse(new LinkedList<String>(),
-				sourceLanguage, destinationLanguage, null, null);
-		return parseObj.parseAcsvFile(filePath, true);
-	}
 
 	private CK2ParsedFile parseAcsvFile(String filePath) {
 		return parseAcsvFile(filePath, false);
 	}
 
-	private CK2ParsedFile parseAcsvFile(String filePath, boolean returnAllLines) {
+	public CK2ParsedFile parseAcsvFile(String filePath, boolean returnAllLines) {
 		CK2ParsedFile parsedFile = new CK2ParsedFile(filePath);
 		int lineNumber = 0;
 		int usefulLineNumber = 0;
@@ -316,7 +309,7 @@ public class Parse {
 		return parseAymlFile(troncatedFilePath, false);
 	}
 
-	private HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
+	public HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
 		HoI4ParsedFile parsedFile = new HoI4ParsedFile(troncatedFilePath);
 		File sourceFile = new File(parsedFile.getFilePath(sourceLanguage));
 		File destinationFile = new File(parsedFile.getFilePath(destinationLanguage));
@@ -548,7 +541,7 @@ public class Parse {
 	 * @param filePath
 	 * @return
 	 */
-	private String getFilePathWithoutLanguage(String filePath) {
+	private static String getFilePathWithoutLanguage(String filePath) {
 		String[] split = filePath.split("_");
 		// Concatenate all except the last one
 		String res = "";

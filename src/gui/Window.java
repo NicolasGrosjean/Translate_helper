@@ -50,14 +50,15 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import parsing.Parse;
+import config.ConfigStorage;
+import config.WorkingSession;
 import parsing.CK2ParsedFile;
 import parsing.IParsedFile;
+import parsing.Parse;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
 import renderer.Percentage;
-import config.ConfigStorage;
-import config.WorkingSession;
+import translator.ITranslator;
 
 public class Window extends JFrame {
 	private static int FILE_COLUMN = 1;
@@ -450,8 +451,7 @@ public class Window extends JFrame {
             	int row = table.getSelectedRows()[0];
             	IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
             	String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
-            	CK2ParsedFile file = Parse.getAllCk2Lines(directory + f.getName(), ws.getSourceLanguage(),
-            			ws.getDestinationLanguage());
+            	ITranslator file = f.createAllLines(ws.getSourceLanguage(), ws.getDestinationLanguage());
             	new TranslatorDialog(null, f.getName(), true, file,
             			ws.getSourceLanguage(), ws.getDestinationLanguage(),
             			ws.isAutomaticGoogleCall());

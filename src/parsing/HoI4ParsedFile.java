@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import translator.TranslatorParsedFile;
+import translator.ITranslator;
 import translator.TranslatedEntry;
 
 public class HoI4ParsedFile extends TranslatorParsedFile {
@@ -224,5 +225,11 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 	public String getFilePath(Language language)
 	{
 		return troncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
+	}
+
+	@Override
+	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage) {
+		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null);
+		return parseObj.parseAymlFile(troncatedFilePath, true);
 	}
 }

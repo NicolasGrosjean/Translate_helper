@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import translator.TranslatorParsedFile;
+import translator.ITranslator;
 import translator.TranslatedEntry;
 
 public class CK2ParsedFile extends TranslatorParsedFile {
@@ -181,5 +182,11 @@ public class CK2ParsedFile extends TranslatorParsedFile {
 				writer.close();
 		}
 		return nextEntry;
+	}
+
+	@Override
+	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage) {
+		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null);
+		return parseObj.parseAcsvFile(filePath, true);
 	}
 }
