@@ -1,3 +1,6 @@
+AppVersion=2.0
+- Add HoI4 compatibility
+
 AppVersion=1.7
 - [PERF] Optimize the saving
 - Add a previous entry button
