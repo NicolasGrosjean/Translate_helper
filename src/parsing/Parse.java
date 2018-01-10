@@ -484,6 +484,12 @@ public class Parse {
 					}
 					int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
 					String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+
+					if (returnAllLines) {
+						parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id, "", sourceText,
+								destText);
+						continue;
+					}
 					
 					// We can now analyze the two expressions
 					// Firstly individually
