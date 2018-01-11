@@ -106,6 +106,11 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 				}
 				builder.append(line + "\n");
 			}
+			// Add the line at the end if the line in the other file is too big
+			if (lineNumber > i)
+			{
+				builder.append(" " + id + ":0 \"" + text + "\"\n");
+			}
 		} catch (FileNotFoundException e) {
 			builder.append("\uFEFFl_" + languageName.toLowerCase() + ":\n");
 		} catch (IOException e) {
