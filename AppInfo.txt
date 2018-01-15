@@ -1,5 +1,10 @@
+AppVersion=2.1
+- Fix check all lines action for EUIV/HoI4/Stellaris
+- Fix missing saving for EUIV/HoI4/Stellaris
+- Do not count a line without source as not translated
+
 AppVersion=2.0
-- Add HoI4 compatibility
+- Add EUIV/HoI4/Stellaris compatibility
 
 AppVersion=1.7
 - [PERF] Optimize the saving
