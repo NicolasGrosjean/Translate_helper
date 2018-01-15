@@ -497,6 +497,7 @@ public class Parse {
 					if (!sourceAnalysis.equals("")) {
 						parsedFile.addLastMissingSourceLine(sourceLineNumber, destLineNumber, id,
 								sourceAnalysis, sourceText, destText);
+						continue;
 					}
 					String destinationAnalysis = analyzeExpression(destText);
 					if (!destinationAnalysis.equals("")) {
