@@ -36,10 +36,13 @@ public class WorkingSession {
 	 */
 	private boolean automaticGoogleCall;
 
+	private String errorMessage;
+	
 	/**
 	 * The list of the code of available languages for all working sessions
 	 */
 	private static LinkedList<Language> availableLanguages = null;
+	
 
 	/**
 	 * Create a working session.
@@ -54,11 +57,29 @@ public class WorkingSession {
 		if (!isAvailableLanguagesInitialized()) {
 			throw new IllegalArgumentException("The list of available languages was not initialized!");
 		}
+		StringBuilder errorMessage = new StringBuilder();
 		setName(name);
-		setDirectory(directory);
-		setSourceLanguage(sourceLanguage);
-		setDestinationLanguage(destinationLanguage);
+		try {
+			setDirectory(directory);
+		} catch (RuntimeException e) {
+			this.directory = directory;
+			errorMessage.append(e.getMessage() + System.lineSeparator());
+		}
+		try {
+			setSourceLanguage(sourceLanguage);
+		} catch (RuntimeException e) {
+			errorMessage.append(e.getMessage() + System.lineSeparator());
+		}
+		try {
+			setDestinationLanguage(destinationLanguage);
+		} catch (
+
+		RuntimeException e) {
+			errorMessage.append(e.getMessage() + System.lineSeparator());
+		}
 		setAutomaticGoogleCall(automaticGoogleCall);
+		
+		this.errorMessage = errorMessage.toString();
 	}
 
 	public WorkingSession(String name, String directory, Language sourceLanguage,
@@ -119,6 +140,10 @@ public class WorkingSession {
 
 	public void setAutomaticGoogleCall(boolean automaticGoogleCall) {
 		this.automaticGoogleCall = automaticGoogleCall;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 
 	/**
