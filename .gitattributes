@@ -2,7 +2,7 @@
 * text=auto
 
 # Set the repository language to Java
-*.rb linguist-language=Java
+*.html linguist-language=Java
 
 # Custom for Visual Studio
 *.cs     diff=csharp
