@@ -254,8 +254,7 @@ public class Window extends JFrame {
 		container.add(tableSP, BorderLayout.CENTER);
 
 		// Refresh the window
-		pack();
-		repaint();
+		refresh();
 	}
 
 	/**
@@ -516,6 +515,11 @@ public class Window extends JFrame {
         });
         return contextMenu;
 	}
+	
+	public void refresh() {
+		pack();
+		repaint();
+	}
 
 	public static void setLookAndFeel(String lf) {
 		try {
@@ -572,6 +576,7 @@ public class Window extends JFrame {
 				}
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+				Window.this.refresh();
 			}
 		}
 	}
@@ -593,6 +598,7 @@ public class Window extends JFrame {
 				updateOpenRecentlyMenu();
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
+				Window.this.refresh();
 			}
 		}
 	}
