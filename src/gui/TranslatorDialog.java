@@ -65,7 +65,7 @@ public class TranslatorDialog extends JDialog {
 			Language destinationLanguage, boolean automaticGoogleCall) {		
 		// Create the JDialog
 		super(parent, "", modal);
-		setSize(1000, 600);
+		setSize(1100, 620);
 		setLocationRelativeTo(null);
 		
 		this.fileName = fileName;

@@ -27,14 +27,17 @@ public class Diagnostic {
 			ConfigStorage configuration = new ConfigStorage(configurationFile);
 
 			// Create the window
+			int width = 850;
+			int height = 450;
+			int tableRowHeight = 30;
 			if (configuration.hasWorkingSession()) {
 				// Try to create a window with the first working session
 				WorkingSession ws;
 				ws = configuration.getFirst();
-				window = new Window("Translate helper", 800, 450, ws, 30, configuration, fakeTranslationFile, acceptedLoanwordFile);
+				window = new Window("Translate helper", width, height, ws, tableRowHeight, configuration, fakeTranslationFile, acceptedLoanwordFile);
 			} else {
 				// Create an empty window
-				window = new Window("Translate helper", 800, 450, null, 30, configuration, fakeTranslationFile, acceptedLoanwordFile);
+				window = new Window("Translate helper", width, height, null, tableRowHeight, configuration, fakeTranslationFile, acceptedLoanwordFile);
 			}
 		} catch (Exception e) {
 			try {
