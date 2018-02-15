@@ -1,3 +1,8 @@
+AppVersion=2.2
+- Give GitHub Download link to update instead of Ck2 forum link
+- Increase window width
+- Fix issue when localisation directory is deleted
+
 AppVersion=2.1
 - Fix check all lines action for EUIV/HoI4/Stellaris
 - Fix missing saving for EUIV/HoI4/Stellaris
