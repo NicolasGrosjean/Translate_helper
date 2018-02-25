@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import parsing.ParsedEntry;
@@ -91,11 +92,9 @@ public class TestParsingCK2 {
 		}
 	}
 
-	@Test
+	@Ignore @Test
 	public void codeLineToTranslate() {
-		/**
-		 * @Warning: This code corresponding to this test is not yet implemented
-		 */
+		// TODO Check that this test is true
 		CK2ParsedFile f = (CK2ParsedFile) parsedFiles.getFile("code_line_to_translate.csv");
 		if (f != null) {
 			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
