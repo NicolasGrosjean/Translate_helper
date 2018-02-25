@@ -47,14 +47,14 @@ public class TestSavingHoI4 {
 	public void testSaveWithSpecialChar() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file2_l";
 		String destinationText = "§YReligious head suitability: $SCORE$§!";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource());
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false);
 	}
 
 	@Test
 	public void testSaveWithAccent() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file3_l";
 		String destinationText = "Gagné ou perdu ?";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource());
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false);
 	}
 
 	@Test
@@ -78,7 +78,14 @@ public class TestSavingHoI4 {
 	@Test
 	public void testSaveSource() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file6_l";
-		testSaveOneLine(troncatedFilePath, "", "Changed source text");
+		testSaveOneLine(troncatedFilePath, "", "Changed source text", false);
+	}
+
+	@Test
+	public void testWithoutDestFile() throws IOException {
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file7_l";
+		String destinationText = "Fichier créé avec succès";
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true);
 	}
 	
 	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
@@ -200,7 +207,8 @@ public class TestSavingHoI4 {
 			br.close();
 		}
 	}
-	private void testSaveOneLine(String troncatedFilePath, String destinationText, String sourceText) throws IOException {
+	private void testSaveOneLine(String troncatedFilePath, String destinationText,
+			String sourceText, boolean missingDest) throws IOException {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
 		String oldDestText = "TOTO";
@@ -213,10 +221,12 @@ public class TestSavingHoI4 {
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
-		String[] destData = { "\uFEFFl_french:\n" + " ID_1:0 \"" + oldDestText + "\"" };
-		List<String> destLines = Arrays.asList(destData);
-		Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
-		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
+		if (!missingDest) {
+			String[] destData = { "\uFEFFl_french:\n" + " ID_1:0 \"" + oldDestText + "\"" };
+			List<String> destLines = Arrays.asList(destData);
+			Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
+			Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
+		}
 		
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
@@ -275,5 +285,7 @@ public class TestSavingHoI4 {
 		new File("./test_localisation_files/hoi4/save_file5_l_french.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file6_l_english.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file6_l_french.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file7_l_english.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file7_l_french.yml").delete();
 	}
 }
