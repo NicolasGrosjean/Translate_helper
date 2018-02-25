@@ -63,26 +63,35 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave, Language sourceLanguage,
 			Language destinationLanguage) {
-		// Save in memory
-		linesToTranslate.get(lineToTranslateIndex).saveEntry(entryToSave);
+		// Save text in memory
+		HoI4ParsedEntry entryInMemory = linesToTranslate.get(lineToTranslateIndex);
+		entryInMemory.saveEntry(entryToSave);
 
 		TranslatedEntry nextEntry = getNextEntryToTranslate();
 
 		// Save in files
 		boolean sourceMissingEntry = (entryToSave.getSourceLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
-		saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
+		int sourceSaveLineNumber = saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
 				sourceMissingEntry ? entryToSave.getDestLineNumber() : entryToSave.getSourceLineNumber(),
 				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource(), true);
 		boolean destMissingEntry = (entryToSave.getDestLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
-		saveEntryInfile(getFilePath(destinationLanguage), destinationLanguage.getCode(),
+		int destSaveLineNumber = saveEntryInfile(getFilePath(destinationLanguage),
+				destinationLanguage.getCode(),
 				destMissingEntry ? entryToSave.getSourceLineNumber() : entryToSave.getDestLineNumber(),
 				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(), false);
+
+		// Update line number in memory
+		if (sourceMissingEntry) {
+			entryInMemory.setSourceLineNumber(sourceSaveLineNumber);
+		} else if (destMissingEntry) {
+			entryInMemory.setDestinationLineNumber(destSaveLineNumber);
+		}
 		return nextEntry;
 	}
 	
-	private void saveEntryInfile(String filePath, String languageName, int lineNumber,
+	private int saveEntryInfile(String filePath, String languageName, int lineNumber,
 			boolean missingEntry, String id, String text, boolean source) {
-
+		int saveLineNumber = lineNumber;
 		BufferedReader file = null;
 		StringBuilder builder = new StringBuilder();
 		try {
@@ -110,6 +119,7 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			if (lineNumber > i)
 			{
 				builder.append(" " + id + ":0 \"" + text + "\"\n");
+				saveLineNumber = i;
 			}
 		} catch (FileNotFoundException e) {
 			builder.append("\uFEFFl_" + languageName.toLowerCase() + ":\n");
@@ -130,9 +140,9 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			writer.print(builder.toString());
 			if (missingEntry) {
 				if (source) {
-					updateSourceLineNumber(lineNumber);
+					updateSourceLineNumber(saveLineNumber);
 				} else {
-					updateDestinationLineNumber(lineNumber);
+					updateDestinationLineNumber(saveLineNumber);
 				}
 			}
 		} catch (IOException e) {
@@ -141,6 +151,7 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			if (writer != null)
 				writer.close();
 		}
+		return saveLineNumber;
 	}
 	
 	private void updateSourceLineNumber(int newLineNumber) {
