@@ -149,6 +149,16 @@ public class TestSavingHoI4 {
 		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
 		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
 		
+		// Go back to the previous entry
+		TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
+		Assert.assertEquals("Incorrect next entry!", entryToSave.getSource(), prevEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", entryToSave.getDestination(), prevEntry.getDestination());
+		
+		// Save it again
+		nextEntry = file.getNextEntryToTranslateAndSave(prevEntry, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
+		
 		// Check that is what we expect
 		String[] expected = { "\uFEFFl_french:",
 				" ID_1:0 \"" + destText1 + "\"",
