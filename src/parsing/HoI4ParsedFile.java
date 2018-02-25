@@ -123,6 +123,7 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			}
 		} catch (FileNotFoundException e) {
 			builder.append("\uFEFFl_" + languageName.toLowerCase() + ":\n");
+			builder.append(" " + id + ":0 \"" + text + "\"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

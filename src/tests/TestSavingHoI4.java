@@ -231,7 +231,7 @@ public class TestSavingHoI4 {
 		file.getFirstEntryToTranslate();
 		// Modify and save the file
 		TranslatedEntry entryToSave2 = new TranslatedEntry(entryToSave.getSource(),
-				destinationText, 2, 2, id);
+				destinationText, missingDest ? -1 : 2, 2, id);
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
