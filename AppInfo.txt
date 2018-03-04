@@ -1,3 +1,10 @@
+AppVersion=2.3
+- Add a copy translation button
+- Add keyboard shortcuts for translation actions
+- Fix the refresh action which opened the first working session
+- Fix text duplicates when saving several times missing text
+- Fix translation lost when creating a file with the tool
+
 AppVersion=2.2
 - Give GitHub Download link to update instead of Ck2 forum link
 - Increase window width
