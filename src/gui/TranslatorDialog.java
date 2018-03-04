@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Shape;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
@@ -118,7 +121,7 @@ public class TranslatorDialog extends JDialog {
 		getContentPane().add(textPan, BorderLayout.CENTER);
 		
 		// Right
-		JPanel right = new JPanel();
+		JPanel right = new JPanel(new GridLayout(13, 1, 5, 0));
 		JButton googleTranslateButton = new JButton();
 		try {
 			ImageIcon img = new ImageIcon("config/googleTranslate.jpg");
@@ -128,11 +131,23 @@ public class TranslatorDialog extends JDialog {
 			callGoogleTranslate();
 		});
 		right.add(googleTranslateButton);
+		
+		JButton copyBtn = new JButton();
+		try {
+			ImageIcon img = new ImageIcon("config/copyButton.png");
+			copyBtn.setIcon(img);
+		} catch (Exception e) { }
+		copyBtn.addActionListener(e -> {
+			StringSelection selection = new StringSelection(destTextPane.getText());
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(selection, selection);
+		});
+		right.add(copyBtn);
 		getContentPane().add(right, BorderLayout.EAST);
 		
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
-		loanWordBtn.setMnemonic(KeyEvent.VK_N);
+		loanWordBtn.setMnemonic(KeyEvent.VK_L);
 		loanWordBtn.addActionListener(e -> {
 			if (!sourceTextPane.getText().equals(destTextPane.getText()))
 			{
