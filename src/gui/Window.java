@@ -62,7 +62,6 @@ import translator.ITranslator;
 
 public class Window extends JFrame {
 	private static int FILE_COLUMN = 1;
-	private static int OPEN_FILE_COLUMN = 3;
 
 	// Object container
 	private JPanel container = new JPanel();
@@ -140,7 +139,7 @@ public class Window extends JFrame {
 		// Refresh current working session
 		JMenuItem wsRefresh = new JMenuItem("Refresh");
 		wsRefresh.setEnabled(configuration.hasWorkingSession());
-		wsRefresh.addActionListener(new RefreshWorkingSession(ws));
+		wsRefresh.addActionListener(new RefreshWorkingSession());
 		wsRefresh.setAccelerator(KeyStroke.getKeyStroke("F5"));
 		wsMenu.add(wsRefresh);
 		windowMenuBar.add(wsMenu);
@@ -604,15 +603,9 @@ public class Window extends JFrame {
 	}
 
 	class RefreshWorkingSession implements ActionListener {
-		private WorkingSession ws;
-
-		RefreshWorkingSession(WorkingSession ws) {
-			this.ws = ws;
-		}
-
 		public void actionPerformed(ActionEvent arg0) {
 			try {
-				loadWorkingSession(ws);
+				loadWorkingSession(Window.this.ws);
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR: ", JOptionPane.ERROR_MESSAGE);
 			}
