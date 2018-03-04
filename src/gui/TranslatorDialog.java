@@ -123,6 +123,7 @@ public class TranslatorDialog extends JDialog {
 		// Right
 		JPanel right = new JPanel(new GridLayout(13, 1, 5, 0));
 		JButton googleTranslateButton = new JButton();
+		googleTranslateButton.setToolTipText("Replace the translation text by the google translation");
 		try {
 			ImageIcon img = new ImageIcon("config/googleTranslate.jpg");
 			googleTranslateButton.setIcon(img);
@@ -133,6 +134,7 @@ public class TranslatorDialog extends JDialog {
 		right.add(googleTranslateButton);
 		
 		JButton copyBtn = new JButton();
+		copyBtn.setToolTipText("Copy the translation text into your clipboard");
 		try {
 			ImageIcon img = new ImageIcon("config/copyButton.png");
 			copyBtn.setIcon(img);
