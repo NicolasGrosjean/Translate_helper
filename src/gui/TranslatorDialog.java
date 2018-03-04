@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Shape;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -131,6 +132,7 @@ public class TranslatorDialog extends JDialog {
 		
 		// Bottom
 		JButton loanWordBtn = new JButton("Set source as loan words");
+		loanWordBtn.setMnemonic(KeyEvent.VK_N);
 		loanWordBtn.addActionListener(e -> {
 			if (!sourceTextPane.getText().equals(destTextPane.getText()))
 			{
@@ -146,6 +148,7 @@ public class TranslatorDialog extends JDialog {
 		});
 		
 		JButton prevBtn = new JButton("Previous entry without saving");
+		prevBtn.setMnemonic(KeyEvent.VK_P);
 		prevBtn.addActionListener(e ->{ 
 			if (hasChangedText()) {
 				int option = JOptionPane.showConfirmDialog(null,
@@ -172,6 +175,7 @@ public class TranslatorDialog extends JDialog {
 		});
 		
 		JButton nextBtn = new JButton("Next entry without saving");
+		nextBtn.setMnemonic(KeyEvent.VK_N);
 		nextBtn.addActionListener(e ->{ 
 			if (hasChangedText()) {
 				int option = JOptionPane.showConfirmDialog(null,
@@ -191,6 +195,7 @@ public class TranslatorDialog extends JDialog {
 		});
 		
 		JButton nextSaveBtn = new JButton("Save this translation and go to next entry");
+		nextSaveBtn.setMnemonic(KeyEvent.VK_S);
 		nextSaveBtn.addActionListener(e -> {
 			updateEntry();
 			entry.setSource(entry.getSource().replaceAll("\\p{javaSpaceChar}"," "));
