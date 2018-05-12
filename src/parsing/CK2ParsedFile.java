@@ -9,9 +9,9 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import translator.TranslatorParsedFile;
 import translator.ITranslator;
 import translator.TranslatedEntry;
+import translator.TranslatorParsedFile;
 
 public class CK2ParsedFile extends TranslatorParsedFile {
 	/**
@@ -32,8 +32,6 @@ public class CK2ParsedFile extends TranslatorParsedFile {
 	 * List of the line where the "localisation" is missing for the source language
 	 */
 	private LinkedList<ParsedEntry> missingSourceLines;
-	
-	private int lineToTranslateIndex = 0;
 
 	public CK2ParsedFile(String filePath) {
 		this.filePath = filePath;
