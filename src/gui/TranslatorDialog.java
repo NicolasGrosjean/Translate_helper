@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -267,6 +269,28 @@ public class TranslatorDialog extends JDialog {
 		btnPan.add(nextBtn);
 		btnPan.add(nextSaveBtn);
 		getContentPane().add(btnPan, BorderLayout.SOUTH);
+		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent we)
+		    { 
+		    	if (hasChangedText()) {
+			    	int option = JOptionPane.showConfirmDialog(null,
+							"You have changed at least one text.\n" +
+									"Do you want to cancel your changes?",
+									"Changed texts",
+									JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+					if(option == JOptionPane.NO_OPTION ||
+							option == JOptionPane.CANCEL_OPTION ||
+							option == JOptionPane.CLOSED_OPTION){
+						// We don't move to the next entry
+						return;
+					}
+		    	}
+				dispose();
+		    }
+		});
 		
 		setVisible(true);
 	}
