@@ -1,3 +1,10 @@
+AppVersion=2.4
+- Add buttons to restore the original source or destination text
+- Add a button to copy source text into destination
+- Fix error when using Previous button with CK2 files
+- Refresh the diagnostic after checking a file
+- Ask to save before leaving the Translate Helper
+
 AppVersion=2.3
 - Add a copy translation button
 - Add keyboard shortcuts for translation actions
