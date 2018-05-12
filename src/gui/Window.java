@@ -448,11 +448,13 @@ public class Window extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	int row = table.getSelectedRows()[0];
             	IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
-            	String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
             	ITranslator file = f.createAllLines(ws.getSourceLanguage(), ws.getDestinationLanguage());
             	new TranslatorDialog(null, f.getName(), true, file,
             			ws.getSourceLanguage(), ws.getDestinationLanguage(),
             			ws.isAutomaticGoogleCall());
+
+				// Refresh working session
+				refreshWorkingSession();
             }
         });
         contextMenu.add(checkLineItem);
