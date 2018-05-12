@@ -160,11 +160,115 @@ public class TestSavingCK2 {
 			br.close();
 		}
 	}
+
+	@Test
+	public void testNavigationAndSave() throws IOException {
+		// Create data
+		String filePath = "./test_localisation_files/ck2/save_file3.csv";
+		CK2ParsedFile file = new CK2ParsedFile(filePath);
+		file.setLineNumber(4);
+		String code2 = "LINE2";
+		String engText2 = "Line 2";
+		String modEngText2 = engText2 + " modified";
+		String frText2 = "Ligne 2";
+		String modFrText2 = frText2 + " modifiée";
+		String code3 = "LINE3";
+		String engText3 = "Line 3";
+		String modEngText3 = "Modified " + engText3.toLowerCase();
+		String frText3 = "Ligne 3";
+		String modFrText3 = frText3 + " a été modifiée";
+		String code4 = "LINE4";
+		String engText4 = "Line 4";
+		String frText4 = "Ligne 4";
+		file.addLastLineToTranslate(2, code2, "", engText2, frText2);
+		file.addLastLineToTranslate(3, code3, "", engText3, frText3);
+		file.addLastLineToTranslate(4, code4, "", engText4, frText4);
+		
+		// Create a file corresponding to these data
+		String[] expected = { "CODE;ENGLISH;FRENCH;;;;;;;;;;;;x",
+						code2 + ";" + modEngText2 + ";" + modFrText2 + ";;;;;;;;;;;;x",
+						code3 + ";" + modEngText3 + ";" + modFrText3 + ";;;;;;;;;;;;x",
+						code4 + ";" + engText4 + ";" + frText4 + ";;;;;;;;;;;;x"};
+		List<String> lines = Arrays.asList(expected);
+		Path filetoWtrite = Paths.get(filePath);
+		Files.write(filetoWtrite, lines, Charset.forName("Cp1252"));
+		
+		TranslatedEntry firstEntry = file.getFirstEntryToTranslate();
+		Assert.assertEquals("Incorrect entry at start", 2, firstEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 2, firstEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry at start", code2, firstEntry.getId());
+		Assert.assertEquals("Incorrect entry at start", engText2, firstEntry.getSource());
+		Assert.assertEquals("Incorrect entry at start", frText2, firstEntry.getDestination());
+		
+		TranslatedEntry nextEntry = file.getNextEntryToTranslate();
+		Assert.assertEquals("Incorrect entry at start", 3, nextEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 3, nextEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry after next", code3, nextEntry.getId());
+		Assert.assertEquals("Incorrect entry after next", engText3, nextEntry.getSource());
+		Assert.assertEquals("Incorrect entry after next", frText3, nextEntry.getDestination());
+		
+		TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
+		Assert.assertEquals("Incorrect entry at start", 2, prevEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 2, prevEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry at start", code2, prevEntry.getId());
+		Assert.assertEquals("Incorrect entry at start", engText2, prevEntry.getSource());
+		Assert.assertEquals("Incorrect entry at start", frText2, prevEntry.getDestination());
+						
+		// Modify and save the file
+		TranslatedEntry entryToSave2 = new TranslatedEntry(modEngText2,
+				modFrText2, 2, 2, "LINE2");
+		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect entry at start", 3, nextEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 3, nextEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry after next", code3, nextEntry.getId());
+		Assert.assertEquals("Incorrect entry after next", engText3, nextEntry.getSource());
+		Assert.assertEquals("Incorrect entry after next", frText3, nextEntry.getDestination());
+		
+		TranslatedEntry entryToSave3 = new TranslatedEntry(modEngText3,
+				modFrText3, 3, 3, "LINE3");
+		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave3, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect entry at start", 4, nextEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 4, nextEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry after next", code4, nextEntry.getId());
+		Assert.assertEquals("Incorrect entry after next", engText4, nextEntry.getSource());
+		Assert.assertEquals("Incorrect entry after next", frText4, nextEntry.getDestination());
+		
+		// Go back
+		prevEntry = file.getPreviousEntryToTranslate();
+		Assert.assertEquals("Incorrect entry at start", 3, prevEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 3, prevEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry at start", code3, prevEntry.getId());
+		Assert.assertEquals("Incorrect entry at start", modEngText3, prevEntry.getSource());
+		Assert.assertEquals("Incorrect entry at start", modFrText3, prevEntry.getDestination());
+		
+		prevEntry = file.getPreviousEntryToTranslate();
+		Assert.assertEquals("Incorrect entry at start", 2, prevEntry.getSourceLineNumber());
+		Assert.assertEquals("Incorrect entry at start", 2, prevEntry.getDestLineNumber());
+		Assert.assertEquals("Incorrect entry at start", code2, prevEntry.getId());
+		Assert.assertEquals("Incorrect entry at start", modEngText2, prevEntry.getSource());
+		Assert.assertEquals("Incorrect entry at start", modFrText2, prevEntry.getDestination());
+		
+		// Check that is what we expect
+		FileInputStream fis = new FileInputStream(filePath);
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
+		}
+	}
 	
 	@AfterClass
 	public static void AfterCLass()
 	{
 		new File("./test_localisation_files/ck2/save_file.csv").delete();
 		new File("./test_localisation_files/ck2/save_file2.csv").delete();
+		new File("./test_localisation_files/ck2/save_file3.csv").delete();
 	}
 }
