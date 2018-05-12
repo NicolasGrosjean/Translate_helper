@@ -107,15 +107,12 @@ public class TranslatorDialog extends JDialog {
 		entry = file.getFirstEntryToTranslate();
 		updateTextAreaAndTitle();
 
-		JPanel sourceLangAndButtonPan = new JPanel(new BorderLayout());
-		sourceLangAndButtonPan.add(sourceLangLabel);
 		JButton sourceCopyBtn = new JButton();
 		sourceCopyBtn.setToolTipText("Copy the source text into destination");
 		try {
 			ImageIcon img = new ImageIcon("config/copySourceButton.png");
 			sourceCopyBtn.setIcon(img);
 		} catch (Exception e) { }
-		sourceLangAndButtonPan.add(sourceCopyBtn, BorderLayout.EAST);
 		sourceCopyBtn.addActionListener(e -> {
 			int option = JOptionPane.showConfirmDialog(null,
 					"Are you sure to want erase the destination text by copying the source text ?\n"
@@ -130,7 +127,18 @@ public class TranslatorDialog extends JDialog {
 			}
 			destTextPane.setText(sourceTextPane.getText());
 		});
+		JButton sourceResetBtn = new JButton("Reset");
+		sourceResetBtn.setToolTipText("Reset the source text");
+		sourceResetBtn.addActionListener(e -> {
+			sourceTextPane.setText(entry.getSource());
+		});
 		
+		JPanel sourceButtonPan = new JPanel(new BorderLayout());
+		sourceButtonPan.add(sourceResetBtn, BorderLayout.WEST);
+		sourceButtonPan.add(sourceCopyBtn, BorderLayout.EAST);		
+		JPanel sourceLangAndButtonPan = new JPanel(new BorderLayout());
+		sourceLangAndButtonPan.add(sourceLangLabel);
+		sourceLangAndButtonPan.add(sourceButtonPan, BorderLayout.EAST);
 		JPanel sourcePan = new JPanel(new BorderLayout());
 		sourcePan.add(sourceLangAndButtonPan, BorderLayout.NORTH);
 		sourcePan.add(new JScrollPane(sourceTextPane), BorderLayout.CENTER);		
@@ -169,6 +177,14 @@ public class TranslatorDialog extends JDialog {
 			clipboard.setContents(selection, selection);
 		});
 		right.add(copyBtn);
+		
+
+		JButton destResetBtn = new JButton("Reset");
+		destResetBtn.setToolTipText("Reset the translation text");
+		destResetBtn.addActionListener(e -> {
+			destTextPane.setText(entry.getDestination());
+		});
+		right.add(destResetBtn);
 		getContentPane().add(right, BorderLayout.EAST);
 		
 		// Bottom
