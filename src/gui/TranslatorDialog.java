@@ -106,10 +106,34 @@ public class TranslatorDialog extends JDialog {
 		
 		entry = file.getFirstEntryToTranslate();
 		updateTextAreaAndTitle();
+
+		JPanel sourceLangAndButtonPan = new JPanel(new BorderLayout());
+		sourceLangAndButtonPan.add(sourceLangLabel);
+		JButton sourceCopyBtn = new JButton();
+		sourceCopyBtn.setToolTipText("Copy the source text into destination");
+		try {
+			ImageIcon img = new ImageIcon("config/copySourceButton.png");
+			sourceCopyBtn.setIcon(img);
+		} catch (Exception e) { }
+		sourceLangAndButtonPan.add(sourceCopyBtn, BorderLayout.EAST);
+		sourceCopyBtn.addActionListener(e -> {
+			int option = JOptionPane.showConfirmDialog(null,
+					"Are you sure to want erase the destination text by copying the source text ?\n"
+					+ "If you don't want change the destination text after, set source as loan words,\n"
+					+ "to tell the sotware that the translation is correct",
+					"Copy source text",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (option == JOptionPane.NO_OPTION ||
+					option == JOptionPane.CANCEL_OPTION ||
+					option == JOptionPane.CLOSED_OPTION){
+				return;
+			}
+			destTextPane.setText(sourceTextPane.getText());
+		});
 		
 		JPanel sourcePan = new JPanel(new BorderLayout());
-		sourcePan.add(sourceLangLabel, BorderLayout.NORTH);
-		sourcePan.add(new JScrollPane(sourceTextPane), BorderLayout.CENTER);
+		sourcePan.add(sourceLangAndButtonPan, BorderLayout.NORTH);
+		sourcePan.add(new JScrollPane(sourceTextPane), BorderLayout.CENTER);		
 		
 		JPanel destPan = new JPanel(new BorderLayout());
 		destPan.add(destLangLabel, BorderLayout.NORTH);
