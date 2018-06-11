@@ -51,7 +51,7 @@ public class DetailsDialog extends JDialog {
 		
 		// Translate action
 		if (hasDestinationLanguage) {
-			JButton translateBtn = new JButton("Translate");
+			JButton translateBtn = new JButton("Translate...");
 			translateBtn.addActionListener(new TranslateListener(title, file, sourceLanguage,
 					destinationLanguage, automaticGoogleCall, window));
 			getContentPane().add(translateBtn, BorderLayout.SOUTH);
