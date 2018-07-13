@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import parsing.HoI4ParsedFile;
 import parsing.HoI4ParsedEntry;
+import parsing.HoI4ParsedFile;
 import parsing.Language;
 import parsing.Parse;
 import parsing.ParsedEntry;
@@ -37,6 +37,8 @@ public class TestParsingHoi4 {
 				"bad_copy_l_french",
 				"fake_translation_l_english",
 				"fake_translation_l_french",
+				"non_updated_destination_l_english",
+				"non_updated_destination_l_french",
 				"text_comment_l_english",
 				"text_comment_l_french",
 				"text_disordered_not_translated_l_english",
@@ -254,6 +256,24 @@ public class TestParsingHoi4 {
 			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
+		} else {
+			Assert.fail("File not parsed");
+		}
+	}
+	
+	@Test
+	public void nonUpdatedDestination() {
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("non_updated_destination");
+		if (f != null) {
+			Assert.assertEquals("It should have 1 line to translate", 1, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			Assert.assertEquals("Invalid reason", ParsedEntry.nonUpdated, e.getReason());
 		} else {
 			Assert.fail("File not parsed");
 		}

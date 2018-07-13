@@ -7,6 +7,7 @@ public class ParsedEntry {
 	public static String missingText = "No text";
 	public static String fakeText = "Fake translation";
 	public static String copyText = "Copy of source text";
+	public static String nonUpdated = "Not updated to source changes";
 
 	private int lineNumber;
 	private String id;

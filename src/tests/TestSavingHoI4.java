@@ -47,14 +47,14 @@ public class TestSavingHoI4 {
 	public void testSaveWithSpecialChar() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file2_l";
 		String destinationText = "§YReligious head suitability: $SCORE$§!";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 0, 0);
 	}
 
 	@Test
 	public void testSaveWithAccent() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file3_l";
 		String destinationText = "Gagné ou perdu ?";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 1, 0);
 	}
 
 	@Test
@@ -78,14 +78,14 @@ public class TestSavingHoI4 {
 	@Test
 	public void testSaveSource() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file6_l";
-		testSaveOneLine(troncatedFilePath, "", "Changed source text", false);
+		testSaveOneLine(troncatedFilePath, "", "Changed source text", false, 0, 1);
 	}
 
 	@Test
 	public void testWithoutDestFile() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file7_l";
 		String destinationText = "Fichier créé avec succès";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true, 3, 0);
 	}
 	
 	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
@@ -100,7 +100,7 @@ public class TestSavingHoI4 {
 		String destText2 = "Titi et grosminet";
 		String destText3 = "Quoi?";
 		String destText4 = "D'ac";
-		file.addLastLineToTranslate(2, 2, "ID_1", "", sourceText1, destText1);
+		file.addLastLineToTranslate(2, 2, "ID_1", "", sourceText1, destText1, 0, 0);
 		String oldSourceLine = "";
 		String oldDestLine = "";
 		String oldSource = "";
@@ -108,24 +108,24 @@ public class TestSavingHoI4 {
 		if (missingSource) {
 			oldSource = "";
 			oldDest = destText2;
-			file.addLastLineToTranslate(HoI4ParsedEntry.MISSING_ENTRY, 3, "ID_2", "", oldSource, oldDest);
+			file.addLastLineToTranslate(HoI4ParsedEntry.MISSING_ENTRY, 3, "ID_2", "", oldSource, oldDest, 0, 0);
 			oldSourceLine = "";
 			oldDestLine = " ID_2:0 \"" + destText2 + "\"\n";
 		} else if (missingDest) { // missingSource == true == missingDest has no meaning
 			oldSource = "Toto";
 			oldDest = "";
-			file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest);
+			file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest, 0, 0);
 			oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
 			oldDestLine = "";
 		} else {
 			oldSource = "Toto";
 			oldDest = destText2;
-			file.addLastLineToTranslate(3, 3, "ID_2", "", oldSource, oldDest);
+			file.addLastLineToTranslate(3, 3, "ID_2", "", oldSource, oldDest, 0, 0);
 			oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
 			oldDestLine = " ID_2:0 \"" + destText2 + "\"\n";
 		}
-		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3);
-		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4);
+		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3, 0, 0);
+		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4, 0, 0);
 		
 		// Create files corresponding to these data
 		String[] sourceData = { "\uFEFFl_english:\n" +
@@ -208,21 +208,22 @@ public class TestSavingHoI4 {
 		}
 	}
 	private void testSaveOneLine(String troncatedFilePath, String destinationText,
-			String sourceText, boolean missingDest) throws IOException {
+			String sourceText, boolean missingDest, int sourceVersionNumber,
+			int destinationVersionNumber) throws IOException {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
 		String oldDestText = "TOTO";
 		String id = "ID_1";
 		entryToSave.setDestination(destinationText);
-		file.addLastLineToTranslate(2, 2, id, "", sourceText, oldDestText);
+		file.addLastLineToTranslate(2, 2, id, "", sourceText, oldDestText, sourceVersionNumber, destinationVersionNumber);
 		
 		// Create files corresponding to these data
-		String[] sourceData = { "\uFEFFl_english:\n" + " ID_1:0 \"" + entryToSave.getSource() + "\"" };
+		String[] sourceData = { "\uFEFFl_english:\n" + " ID_1:" + sourceVersionNumber + "\"" + entryToSave.getSource() + "\"" };
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		if (!missingDest) {
-			String[] destData = { "\uFEFFl_french:\n" + " ID_1:0 \"" + oldDestText + "\"" };
+			String[] destData = { "\uFEFFl_french:\n" + " ID_1:" + destinationVersionNumber + " \"" + oldDestText + "\"" };
 			List<String> destLines = Arrays.asList(destData);
 			Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
 			Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
@@ -235,8 +236,9 @@ public class TestSavingHoI4 {
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
+		int maxVersionNumber = Math.max(sourceVersionNumber, destinationVersionNumber);
 		String expected[] = {"\uFEFFl_french:",
-				" ID_1:0 \"" + destinationText + "\"",};
+				" ID_1:" + maxVersionNumber + " \"" + destinationText + "\"",};
 		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -253,7 +255,7 @@ public class TestSavingHoI4 {
 		}
 		// Check also source
 		String sourceExpected[] = {"\uFEFFl_english:",
-				" ID_1:0 \"" + entryToSave.getSource() + "\"",};
+				" ID_1:" + maxVersionNumber + " \"" + entryToSave.getSource() + "\"",};
 		fis = new FileInputStream(troncatedFilePath + "_english.yml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {

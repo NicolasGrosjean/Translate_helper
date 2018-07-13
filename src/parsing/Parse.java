@@ -14,7 +14,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import config.WorkingSession;
-import translator.ITranslator;
 
 public class Parse {
 	/**
@@ -347,8 +346,13 @@ public class Parse {
 					if (text == null) {
 						continue;
 					}
+					int versionNumber = 0;
+					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					if (scanner.hasNextInt()) {
+						versionNumber = scanner.nextInt();
+					}
 					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
-							ParsedEntry.missingText, text, "");
+							ParsedEntry.missingText, text, "", versionNumber, 0);
 				}
 				line.close();
 				parsedFile.setUsefulLineNumber(usefulLineNumber);				
@@ -392,8 +396,13 @@ public class Parse {
 					if (text == null) {
 						continue;
 					}
+					int versionNumber = 0;
+					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					if (scanner.hasNextInt()) {
+						versionNumber = scanner.nextInt();
+					}
 					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
-							ParsedEntry.missingText, "", text);
+							ParsedEntry.missingText, "", text, 0, versionNumber);
 				}
 				line.close();
 				parsedFile.setUsefulLineNumber(usefulLineNumber);
@@ -410,7 +419,7 @@ public class Parse {
 			return parsedFile;
 		} else {
 			// Map destination texts
-			Map<String, TextAndLineNumber> destTexts = new HashMap<>();
+			Map<String, TextAndNumbers> destTexts = new HashMap<>();
 			int destUsefulLineNumber = 0;				
 			FileInputStream destinationFIS = null;
 			try {
@@ -436,10 +445,15 @@ public class Parse {
 					String id = splitted[0].trim();
 					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
 							lineNumber);
+					int versionNumber = 0;
+					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					if (scanner.hasNextInt()) {
+						versionNumber = scanner.nextInt();
+					}
 					if (text == null) {
 						continue;
 					}
-					destTexts.put(id, new TextAndLineNumber(text, lineNumber));
+					destTexts.put(id, new TextAndNumbers(text, lineNumber, versionNumber));
 				}
 				line.close();
 			} catch (FileNotFoundException e) {
@@ -476,18 +490,27 @@ public class Parse {
 					}
 					sourceUsefulLineNumber++;
 					String[] splitted = unCommented.split(":");
+					if (splitted.length < 2) {
+						continue;
+					}
 					String id = splitted[0].trim();
 					String sourceText = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage),
 							sourceLineNumber);
+					int sourceVersionNumber = 0;
+					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					if (scanner.hasNextInt()) {
+						sourceVersionNumber = scanner.nextInt();
+					}
 					if (sourceText == null) {
 						continue;
 					}
 					int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
 					String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+					int destVersionNumber = (destTexts.get(id) != null) ? destTexts.get(id).versionNumber : 0;
 
 					if (returnAllLines) {
 						parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id, "", sourceText,
-								destText);
+								destText, sourceVersionNumber, destVersionNumber);
 						continue;
 					}
 					
@@ -496,18 +519,25 @@ public class Parse {
 					String sourceAnalysis = analyzeExpression(sourceText);
 					if (!sourceAnalysis.equals("")) {
 						parsedFile.addLastMissingSourceLine(sourceLineNumber, destLineNumber, id,
-								sourceAnalysis, sourceText, destText);
+								sourceAnalysis, sourceText, destText, sourceVersionNumber,
+								destVersionNumber);
 						continue;
 					}
 					String destinationAnalysis = analyzeExpression(destText);
 					if (!destinationAnalysis.equals("")) {
 						parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
-								destinationAnalysis, sourceText, destText);
+								destinationAnalysis, sourceText, destText, sourceVersionNumber,
+								destVersionNumber);
 					} else {
 						if (sourceText.equals(destText)
 								&& !acceptedLoanword.contains(destText)) {
 							parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
-									ParsedEntry.copyText, sourceText, destText);
+									ParsedEntry.copyText, sourceText, destText, sourceVersionNumber,
+									destVersionNumber);
+						} else if (destVersionNumber < sourceVersionNumber) {
+							parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
+									ParsedEntry.nonUpdated, sourceText, destText, sourceVersionNumber,
+									destVersionNumber);
 						}
 					}
 				}
@@ -596,13 +626,15 @@ public class Parse {
 	}
 	
 	
-	private class TextAndLineNumber {
+	private class TextAndNumbers {
 		String text;
 		int lineNumber;
+		int versionNumber;
 		
-		public TextAndLineNumber(String text, int lineNumber) {
+		public TextAndNumbers(String text, int lineNumber, int versionNumber) {
 			this.text = text;
 			this.lineNumber = lineNumber;
+			this.versionNumber = versionNumber;
 		}
 	}
 }

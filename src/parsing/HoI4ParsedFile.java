@@ -12,9 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import translator.TranslatorParsedFile;
 import translator.ITranslator;
 import translator.TranslatedEntry;
+import translator.TranslatorParsedFile;
 
 public class HoI4ParsedFile extends TranslatorParsedFile {
 	/**
@@ -73,12 +73,14 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 		boolean sourceMissingEntry = (entryToSave.getSourceLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
 		int sourceSaveLineNumber = saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
 				sourceMissingEntry ? entryToSave.getDestLineNumber() : entryToSave.getSourceLineNumber(),
-				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource(), true);
+				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource(),
+				entryInMemory.getSourceVersionNumber(), true);
 		boolean destMissingEntry = (entryToSave.getDestLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
 		int destSaveLineNumber = saveEntryInfile(getFilePath(destinationLanguage),
 				destinationLanguage.getCode(),
 				destMissingEntry ? entryToSave.getSourceLineNumber() : entryToSave.getDestLineNumber(),
-				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(), false);
+				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(),
+				entryInMemory.getDestinationVersionNumber(), false);
 
 		// Update line number in memory
 		if (sourceMissingEntry) {
@@ -90,7 +92,7 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 	}
 	
 	private int saveEntryInfile(String filePath, String languageName, int lineNumber,
-			boolean missingEntry, String id, String text, boolean source) {
+			boolean missingEntry, String id, String text, int versionNumber, boolean source) {
 		int saveLineNumber = lineNumber;
 		BufferedReader file = null;
 		StringBuilder builder = new StringBuilder();
@@ -106,7 +108,7 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 					line = "\uFEFFl_" + languageName.toLowerCase() + ":";
 				}
 				if (i == lineNumber) {
-					String newLine = " " + id + ":0 \"" + text + "\"";
+					String newLine = " " + id + ":" + versionNumber + " \"" + text + "\"";
 					if (missingEntry) {
 						line = newLine + "\n" + line;
 					} else {
@@ -118,12 +120,12 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			// Add the line at the end if the line in the other file is too big
 			if (lineNumber > i)
 			{
-				builder.append(" " + id + ":0 \"" + text + "\"\n");
+				builder.append(" " + id + ":" + versionNumber + " \"" + text + "\"\n");
 				saveLineNumber = i;
 			}
 		} catch (FileNotFoundException e) {
 			builder.append("\uFEFFl_" + languageName.toLowerCase() + ":\n");
-			builder.append(" " + id + ":0 \"" + text + "\"\n");
+			builder.append(" " + id + ":" + versionNumber + " \"" + text + "\"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -228,15 +230,17 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 	}
 
 	public void addLastLineToTranslate(int sourceLineNumber, int destinationLineNumber, String id, String reason,
-			String sourceText, String destinationText) {
+			String sourceText, String destinationText, int sourceVersionNumber, int destinationVersionNumber) {
 		this.linesToTranslate.addLast(
-				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText));
+				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText,
+						sourceVersionNumber, destinationVersionNumber));
 	}
 
 	public void addLastMissingSourceLine(int sourceLineNumber, int destinationLineNumber, String id, String reason,
-			String sourceText, String destinationText) {
+			String sourceText, String destinationText, int sourceVersionNumber, int destinationVersionNumber) {
 		this.missingSourceLines.addLast(
-				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText));
+				new HoI4ParsedEntry(sourceLineNumber, destinationLineNumber, id, reason, sourceText, destinationText,
+						sourceVersionNumber, destinationVersionNumber));
 	}
 	
 	public String getFilePath(Language language)
