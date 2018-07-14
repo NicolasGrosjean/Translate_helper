@@ -22,6 +22,13 @@ public interface ITranslator {
 	public TranslatedEntry getNextEntryToTranslate();
 	
 	/**
+	 * Call getNextEntryToTranslate until the lineNumber (for destination) is reached
+	 * @param lineNumber
+	 * @return
+	 */
+	public TranslatedEntry getEntryToTranslate(int lineNumber);
+	
+	/**
 	 * Save an entry and get the next entry to translate or null if there is no one
 	 * @param entryToSave
 	 * @param sourceLanguage

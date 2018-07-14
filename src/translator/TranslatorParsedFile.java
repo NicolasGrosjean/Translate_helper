@@ -54,6 +54,16 @@ public abstract class TranslatorParsedFile implements ITranslator, IParsedFile{
 	}
 
 	@Override
+	public TranslatedEntry getEntryToTranslate(int lineNumber)
+	{
+		TranslatedEntry entry = getNextEntryToTranslate();
+		while ((entry != null) && (entry.getDestLineNumber() < lineNumber)) {
+			entry = getNextEntryToTranslate();
+		}
+		return entry;
+	}
+
+	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSetLoanWord(TranslatedEntry loanWordEntry) {
 		String filename= Diagnostic.acceptedLoanwordFile;
 		FileWriter fw = null;

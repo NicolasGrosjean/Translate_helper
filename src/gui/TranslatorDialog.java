@@ -71,7 +71,7 @@ public class TranslatorDialog extends JDialog {
 			Language destinationLanguage, boolean automaticGoogleCall) {		
 		// Create the JDialog
 		super(parent, "", modal);
-		setSize(1100, 620);
+		setSize(1150, 620);
 		setLocationRelativeTo(null);
 		
 		this.fileName = fileName;
@@ -233,6 +233,35 @@ public class TranslatorDialog extends JDialog {
 			}
 		});
 		
+		JButton goToBtn = new JButton("Go to entry without saving");
+		goToBtn.setMnemonic(KeyEvent.VK_G);
+		goToBtn.addActionListener(e ->{ 
+			if (hasChangedText()) {
+				int option = JOptionPane.showConfirmDialog(null,
+						"You have changed at least one text.\n" +
+								"Do you want to cancel your changes?",
+								"Changed texts",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if(option == JOptionPane.NO_OPTION ||
+						option == JOptionPane.CANCEL_OPTION ||
+						option == JOptionPane.CLOSED_OPTION){
+					// We don't move to the next entry
+					return;
+				}
+			}
+			String sLineNumber = JOptionPane.showInputDialog(this, "Line number in the destination to go",
+					"Go to line", JOptionPane.QUESTION_MESSAGE);
+			int lineNumber;
+			try {
+				lineNumber = Integer.parseInt(sLineNumber);
+				entry = file.getEntryToTranslate(lineNumber);
+				updateTextAreaAndTitle();
+			} catch (Exception exception) {
+				JOptionPane.showMessageDialog(null, "Impossible to go to the entry.\n" + exception.getMessage(),
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
 		JButton nextBtn = new JButton("Next entry without saving");
 		nextBtn.setMnemonic(KeyEvent.VK_N);
 		nextBtn.addActionListener(e ->{ 
@@ -263,12 +292,17 @@ public class TranslatorDialog extends JDialog {
 			updateTextAreaAndTitle();
 		});
 		
-		JPanel btnPan = new JPanel(new GridLayout(1, 4, 5, 5));
-		btnPan.add(loanWordBtn);
-		btnPan.add(prevBtn);
-		btnPan.add(nextBtn);
-		btnPan.add(nextSaveBtn);
-		getContentPane().add(btnPan, BorderLayout.SOUTH);
+		JPanel southPan = new JPanel(new GridLayout(1, 3, 0, 5));
+		JPanel btnPan1 = new JPanel(new GridLayout(1, 2, 0, 5));
+		btnPan1.add(loanWordBtn);
+		btnPan1.add(prevBtn);
+		JPanel btnPan2 = new JPanel(new GridLayout(1, 2, 0, 5));
+		btnPan2.add(goToBtn);
+		btnPan2.add(nextBtn);
+		southPan.add(btnPan1);
+		southPan.add(btnPan2);
+		southPan.add(nextSaveBtn);
+		getContentPane().add(southPan, BorderLayout.SOUTH);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
