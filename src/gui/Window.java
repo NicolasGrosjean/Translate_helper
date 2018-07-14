@@ -53,7 +53,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import config.ConfigStorage;
 import config.WorkingSession;
 import parsing.CK2ParsedFile;
+import parsing.HoI4ParsedFile;
 import parsing.IParsedFile;
+import parsing.Language;
 import parsing.Parse;
 import renderer.ButtonRenderer;
 import renderer.ColoredInteger;
@@ -459,39 +461,13 @@ public class Window extends JFrame {
         });
         contextMenu.add(checkLineItem);
         
-		JMenuItem openFileItem = new JMenuItem("Open file in the default software");
-		openFileItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int row = table.getSelectedRows()[0];
-				String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
-				if ((table.getValueAt(row, FILE_COLUMN) instanceof CK2ParsedFile)) {
-					IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
-					try {
-						Desktop.getDesktop().open(new File(directory + f.getName()));
-					} catch (IllegalArgumentException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName() + ".\nThe file doesn't exist anymore.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (UnsupportedOperationException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName()
-										+ ".\nYour platform doesn't allow to open files.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (IOException exception) {
-						JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName()
-								+ ".\nNo defined application to open this file or the application failed to launch.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					} catch (SecurityException exception) {
-						JOptionPane.showMessageDialog(null,
-								"Impossible to open the file " + f.getName()
-										+ ".\nInsuffisant permission to open this file. ",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		});
-        contextMenu.add(openFileItem);
+		JMenuItem openSourceFileItem = new JMenuItem("Open source file in the default software");
+		openSourceFileItem.addActionListener(new OpenFile(ws.getSourceLanguage()));
+        contextMenu.add(openSourceFileItem);
+        
+		JMenuItem openDestFileItem = new JMenuItem("Open destination file in the default software");
+		openDestFileItem.addActionListener(new OpenFile(ws.getSourceLanguage()));
+        contextMenu.add(openDestFileItem);
         
         // Select a line by right clicking
         contextMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -663,6 +639,52 @@ public class Window extends JFrame {
 				} catch (FileNotFoundException | DocumentException e) {
 					JOptionPane.showMessageDialog(Window.this, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		}
+	}
+	
+	class OpenFile implements ActionListener {
+		private Language language;
+		
+		OpenFile(Language language) {
+			this.language = language;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int row = table.getSelectedRows()[0];
+			String directory = (ws.getDirectory().endsWith("/")) ? ws.getDirectory() : ws.getDirectory() + "/";
+			Object file = table.getValueAt(row, FILE_COLUMN);
+			if (!(file instanceof IParsedFile)) {
+				System.err.println("The line is not a IParsedFile");
+			}
+			String filePath = "";
+			IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
+			if (file instanceof CK2ParsedFile) {
+				filePath = directory + f.getName();
+			} else if (table.getValueAt(row, FILE_COLUMN) instanceof HoI4ParsedFile) {
+				filePath = ((HoI4ParsedFile) table.getValueAt(row, FILE_COLUMN)).getFilePath(language);
+			}
+			try {
+				Desktop.getDesktop().open(new File(filePath));
+			} catch (IllegalArgumentException exception) {
+				JOptionPane.showMessageDialog(null,
+						"Impossible to open the file " + f.getName() + ".\nThe file doesn't exist anymore.",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			} catch (UnsupportedOperationException exception) {
+				JOptionPane.showMessageDialog(null,
+						"Impossible to open the file " + f.getName()
+								+ ".\nYour platform doesn't allow to open files.",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException exception) {
+				JOptionPane.showMessageDialog(null, "Impossible to open the file " + f.getName()
+						+ ".\nNo defined application to open this file or the application failed to launch.",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			} catch (SecurityException exception) {
+				JOptionPane.showMessageDialog(null,
+						"Impossible to open the file " + f.getName()
+								+ ".\nInsuffisant permission to open this file. ",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
