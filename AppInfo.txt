@@ -1,3 +1,8 @@
+AppVersion=2.5
+- Manage version number for EUIV/HoI4/Stellaris
+- Add a go to line button in translation interface
+- Split open file right-click action into open source and open destination file
+
 AppVersion=2.4
 - Add buttons to restore the original source or destination text
 - Add a button to copy source text into destination
