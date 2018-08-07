@@ -42,6 +42,8 @@ import javax.swing.text.ViewFactory;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Languages;
 
+import com.google.common.primitives.Chars;
+
 import jlanguagetool.LanguageToolSupport;
 import jlanguagetool.UndoRedoSupport;
 import parsing.Language;
@@ -379,10 +381,7 @@ public class TranslatorDialog extends JDialog {
 		
 		// Coloration
 		// §Y...§!
-		for (char color : PARADOX_COLOR_CODES)
-		{
-			colorCodes(textPane, color);
-		}
+		colorCodes(textPane);
 		
 		// \n
 		int lineBreak = textPane.getText().indexOf("\\n");
@@ -431,21 +430,28 @@ public class TranslatorDialog extends JDialog {
 	 * Color the color code of a textPane. EX : §Y...§!
 	 * 
 	 * @param textPane
-	 * @param color : letter of the color code (in the example, Y)
 	 */
-	private static void colorCodes(JTextPane textPane, char color)
+	private static void colorCodes(JTextPane textPane)
 	{
-		int colorBegin = textPane.getText().indexOf('§' + String.valueOf(color));
+		int colorBegin = textPane.getText().indexOf('§');
+		int colorEnd = -1;
 		while (colorBegin != STRING_NOT_FOUND)
 		{
-			int colorEnd = textPane.getText().indexOf("§!", colorBegin);
+			if (!Chars.contains(PARADOX_COLOR_CODES, textPane.getText().charAt(colorBegin + 1))) {
+				colorBegin = textPane.getText().indexOf('§', colorBegin + 1);
+			}
+			if (colorEnd == -1) {
+				colorEnd = textPane.getText().substring(colorBegin).lastIndexOf("§!");
+			} else {
+				colorEnd = textPane.getText().lastIndexOf("§!", colorEnd - 1);
+			}
 			if (colorEnd == STRING_NOT_FOUND)
 			{
 				break;
 			}
 			changeColor(textPane, Color.RED, colorBegin, 2, true);
 			changeColor(textPane, Color.RED, colorEnd, 2, true);
-			colorBegin = textPane.getText().indexOf('§' + String.valueOf(color), colorEnd);
+			colorBegin = textPane.getText().indexOf('§', colorBegin + 1);
 		}
 	}
 	
