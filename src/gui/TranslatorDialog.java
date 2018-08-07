@@ -64,7 +64,8 @@ public class TranslatorDialog extends JDialog {
 	private JLabel destLangLabel;
 	
 	private static final int STRING_NOT_FOUND = -1;
-	private static final char[] CK2_COLOR_CODES = {'B', 'C', 'F', 'G', 'K', 'M', 'P', 'R', 'Y', 'Z'};
+	private static final char[] PARADOX_COLOR_CODES = {'b', 'B', 'C', 'F', 'g', 'H', 'G', 'K', 'l',
+			'M', 'P', 'R', 'T', 'W', 'Y', 'Z', '+', '-'};
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
 			ITranslator file, Language sourceLanguage,
@@ -371,14 +372,14 @@ public class TranslatorDialog extends JDialog {
 	}
 	
 	// TODO Adapt this to other Paradox games
-	private static void ck2TextColoration(JTextPane textPane)
+	private static void textColoration(JTextPane textPane)
 	{
 		// Erase all the colorations
 		changeColor(textPane, Color.BLACK, 0, textPane.getText().length(), false);
 		
 		// Coloration
 		// §Y...§!
-		for (char color : CK2_COLOR_CODES)
+		for (char color : PARADOX_COLOR_CODES)
 		{
 			colorCodes(textPane, color);
 		}
@@ -481,7 +482,7 @@ public class TranslatorDialog extends JDialog {
 	        {
 	            public void run()
 	            {
-	            	ck2TextColoration(tp);
+	            	textColoration(tp);
 	            	setCharNb(sourceLangLabel, sourceTextPane.getText().length());
 	            	setCharNb(destLangLabel, destTextPane.getText().length());
 	            }
@@ -494,7 +495,7 @@ public class TranslatorDialog extends JDialog {
 	        {
 	            public void run()
 	            {
-	            	ck2TextColoration(tp);
+	            	textColoration(tp);
 	            	setCharNb(sourceLangLabel, sourceTextPane.getText().length());
 	            	setCharNb(destLangLabel, destTextPane.getText().length());
 	            }
