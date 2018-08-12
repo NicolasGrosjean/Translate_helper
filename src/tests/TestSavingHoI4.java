@@ -118,8 +118,8 @@ public class TestSavingHoI4 {
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		
 		// Skip first line to translate
-		file.getFirstEntryToTranslate();
-		TranslatedEntry nextEntry = file.getNextEntryToTranslate();
+		TranslatedEntry firstEntry = file.getFirstEntryToTranslate();
+		TranslatedEntry nextEntry = file.getNextEntryToTranslateAndSave(firstEntry, sourceLanguage, destinationLanguage);
 		Assert.assertEquals("Incorrect next entry!", oldSource, nextEntry.getSource());
 		Assert.assertEquals("Incorrect next entry!", oldDest, nextEntry.getDestination());
 		
@@ -143,9 +143,7 @@ public class TestSavingHoI4 {
 		// Check that is what we expect
 		String[] expected = { "\uFEFFl_french:",
 				" ID_1:0 \"" + "" + "\"",
-				" " + entryToSave.getId() + ":0 \"" + entryToSave.getDestination() + "\"",
-				" ID_3:0 \"" + "" + "\"",
-				" ID_4:0 \"" + "" + "\""};
+				" " + entryToSave.getId() + ":0 \"" + entryToSave.getDestination() + "\""};
 		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {

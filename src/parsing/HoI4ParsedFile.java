@@ -100,9 +100,8 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 			file = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),
 					StandardCharsets.UTF_8));
 			String line;
-			int i = 0;
+			int i = 1;
 			while ((line = file.readLine()) != null) {
-				i++;
 				if (i == 1)
 				{
 					line = "\uFEFFl_" + languageName.toLowerCase() + ":";
@@ -116,9 +115,10 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 					}
 				}
 				builder.append(line + "\n");
+				i++;
 			}
 			// Add the line at the end if the line in the other file is too big
-			if (lineNumber > i)
+			if (lineNumber >= i)
 			{
 				builder.append(" " + id + ":" + versionNumber + " \"" + text + "\"\n");
 				saveLineNumber = i;
