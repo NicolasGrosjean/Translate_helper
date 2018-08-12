@@ -88,6 +88,100 @@ public class TestSavingHoI4 {
 		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true, 3, 0);
 	}
 	
+	@Test
+	public void testSeveralLinesWithoutDestFile() throws IOException {
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file8_l";
+		// Create data
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
+		String sourceText1 = "OK";
+		String sourceText3 = "What?";
+		String sourceText4 = "Okay";
+		file.addLastLineToTranslate(2, HoI4ParsedEntry.MISSING_ENTRY, "ID_1", "", sourceText1, "", 0, 0);
+		String oldSourceLine = "";
+		String oldSource = "";
+		String oldDest = "";
+		oldSource = "Toto";
+		oldDest = "";
+		file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest, 0, 0);
+		oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
+		file.addLastLineToTranslate(4, HoI4ParsedEntry.MISSING_ENTRY, "ID_3", "", sourceText3, "", 0, 0);
+		file.addLastLineToTranslate(5, HoI4ParsedEntry.MISSING_ENTRY, "ID_4", "", sourceText4, "", 0, 0);
+		
+		// Create source file corresponding to these data
+		String[] sourceData = { "\uFEFFl_english:\n" +
+				" ID_1:0 \"" + sourceText1 + "\"\n" +
+				oldSourceLine +
+				" ID_3:0 \"" + sourceText3 + "\"\n" +
+				" ID_4:0 \"" + sourceText4 + "\"",};
+		List<String> sourceLines = Arrays.asList(sourceData);
+		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
+		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
+		
+		// Skip first line to translate
+		file.getFirstEntryToTranslate();
+		TranslatedEntry nextEntry = file.getNextEntryToTranslate();
+		Assert.assertEquals("Incorrect next entry!", oldSource, nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", oldDest, nextEntry.getDestination());
+		
+		// Modify and save the file
+		nextEntry.setSource(entryToSave.getSource());
+		nextEntry.setDestination(entryToSave.getDestination());
+		nextEntry = file.getNextEntryToTranslateAndSave(nextEntry, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", "", nextEntry.getDestination());
+		
+		// Go back to the previous entry
+		TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
+		Assert.assertEquals("Incorrect next entry!", entryToSave.getSource(), prevEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", entryToSave.getDestination(), prevEntry.getDestination());
+		
+		// Save it again
+		nextEntry = file.getNextEntryToTranslateAndSave(prevEntry, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", "", nextEntry.getDestination());
+		
+		// Check that is what we expect
+		String[] expected = { "\uFEFFl_french:",
+				" ID_1:0 \"" + "" + "\"",
+				" " + entryToSave.getId() + ":0 \"" + entryToSave.getDestination() + "\"",
+				" ID_3:0 \"" + "" + "\"",
+				" ID_4:0 \"" + "" + "\""};
+		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expected.length > i);
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
+		}
+		// Check also the source
+		String[] expectedSource = { "\uFEFFl_english:",
+				" ID_1:0 \"" + sourceText1 + "\"",
+				" " + entryToSave.getId() + ":0 \"" + entryToSave.getSource() + "\"",
+				" ID_3:0 \"" + sourceText3 + "\"",
+				" ID_4:0 \"" + sourceText4 + "\""};
+		fis = new FileInputStream(troncatedFilePath + "_english.yml");
+		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expectedSource.length > i);
+				Assert.assertEquals("Incorrect line!", expectedSource[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
+		} finally {
+			br.close();
+		}
+	}
+	
 	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
 			boolean missingDest, TranslatedEntry entryToSave)
 			throws IOException {
@@ -207,6 +301,7 @@ public class TestSavingHoI4 {
 			br.close();
 		}
 	}
+	
 	private void testSaveOneLine(String troncatedFilePath, String destinationText,
 			String sourceText, boolean missingDest, int sourceVersionNumber,
 			int destinationVersionNumber) throws IOException {
@@ -215,7 +310,11 @@ public class TestSavingHoI4 {
 		String oldDestText = "TOTO";
 		String id = "ID_1";
 		entryToSave.setDestination(destinationText);
-		file.addLastLineToTranslate(2, 2, id, "", sourceText, oldDestText, sourceVersionNumber, destinationVersionNumber);
+		if (missingDest) {
+			file.addLastLineToTranslate(2, HoI4ParsedEntry.MISSING_ENTRY, id, "", sourceText, "", sourceVersionNumber, 0);
+		} else {
+			file.addLastLineToTranslate(2, 2, id, "", sourceText, oldDestText, sourceVersionNumber, destinationVersionNumber);
+		}
 		
 		// Create files corresponding to these data
 		String[] sourceData = { "\uFEFFl_english:\n" + " ID_1:" + sourceVersionNumber + "\"" + entryToSave.getSource() + "\"" };
@@ -229,10 +328,11 @@ public class TestSavingHoI4 {
 			Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
 		}
 		
-		file.getFirstEntryToTranslate();
+		TranslatedEntry entryToSave2 = file.getFirstEntryToTranslate();
+		
 		// Modify and save the file
-		TranslatedEntry entryToSave2 = new TranslatedEntry(entryToSave.getSource(),
-				destinationText, missingDest ? -1 : 2, 2, id);
+		entryToSave2.setSource(entryToSave.getSource());
+		entryToSave2.setDestination(destinationText);
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
@@ -289,5 +389,7 @@ public class TestSavingHoI4 {
 		new File("./test_localisation_files/hoi4/save_file6_l_french.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file7_l_english.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file7_l_french.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file8_l_english.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file8_l_french.yml").delete();
 	}
 }
