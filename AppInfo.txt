@@ -1,3 +1,7 @@
+AppVersion=2.6
+- Add HoI4 coloration
+- Fix bug when using previous button when destination file doesn't exist
+
 AppVersion=2.5
 - Manage version number for EUIV/HoI4/Stellaris
 - Add a go to line button in translation interface
