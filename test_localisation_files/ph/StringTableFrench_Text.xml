@@ -1,0 +1,9 @@
+﻿<Database>
+    <GameDBStringTable ID="LOC_FR_TUTORIAL">
+        <LanguageCode>fr</LanguageCode>
+        <LocalizedStrings>
+            <GameDBLocalizedString>      <LocID>TEXT</LocID>           <Text>Texte</Text>  </GameDBLocalizedString>
+        </LocalizedStrings>
+    </GameDBStringTable>
+</Database>
+    

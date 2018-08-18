@@ -1,0 +1,9 @@
+﻿<Database>
+    <GameDBStringTable ID="LOC_EN_TUTORIAL">
+        <LanguageCode>en</LanguageCode>
+        <LocalizedStrings>
+            <GameDBLocalizedString>      <LocID>KEY</LocID>           <Text>Götaland</Text>  </GameDBLocalizedString>
+        </LocalizedStrings>
+    </GameDBStringTable>
+</Database>
+    
