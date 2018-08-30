@@ -8,10 +8,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 import config.WorkingSession;
 
@@ -59,7 +65,7 @@ public class Parse {
 			if (filePath.endsWith(".csv")) {
 				files.addLast(parseAcsvFile(filePath));
 			} else if (filePath.endsWith(".yml")){
-				String troncated = getFilePathWithoutLanguage(filePath);
+				String troncated = getFilePathWithoutLanguageYML(filePath);
 				if (troncated.equals(""))
 				{
 					System.err.println(filePath + " was bad named. It doesn't respect format : dir/name_l_language.yml");
@@ -72,6 +78,22 @@ public class Parse {
 						files.addLast(parsedFile);
 					}
 					parsedTroncatedFiles.add(troncated);
+				}
+			} else if (filePath.endsWith(".xml")) {
+				String fileName = new File(filePath).getName();
+				String name = getFileNameWithoutLanguageXML(fileName);
+				if (name.equals(""))
+				{
+					System.err.println(filePath + " was bad named. It doesn't respect format : dir/StringTableLanguage_name.xml");
+					continue;
+				}
+				if (!parsedTroncatedFiles.contains(name))
+				{
+					PHParsedFile parsedFile = parseAxmlFile(new File(filePath).getParent(), name);
+					if (parsedFile != null) {
+						files.addLast(parsedFile);
+					}
+					parsedTroncatedFiles.add(name);
 				}
 			}
 		}
@@ -557,6 +579,40 @@ public class Parse {
 		}
 	}
 
+	private PHParsedFile parseAxmlFile(String directory, String name) {
+		return parseAxmlFile(directory, name, false);
+	}
+
+	public PHParsedFile parseAxmlFile(String directory, String name, boolean returnAllLines) {
+		PHParsedFile parsedFile = new PHParsedFile(directory, name);
+		File sourceFile = new File(parsedFile.getFilePath(sourceLanguage));
+		File destinationFile = new File(parsedFile.getFilePath(destinationLanguage));
+		if (!sourceFile.exists() && !destinationFile.exists()) {
+			// TODO Manage better this error
+			System.err.println(parsedFile.getFilePath(sourceLanguage) +
+					" and " + parsedFile.getFilePath(destinationLanguage)
+					+ " don't exist");
+			return null;
+		} else if (sourceFile.exists() && !destinationFile.exists()) {
+			Element root = null;
+			try {
+				// Build the XML tree and gather the root
+				root = new SAXBuilder().build(sourceFile).getRootElement();
+			} catch (JDOMException | IOException e) {
+				// No configuration file
+				return parsedFile;
+			}
+			List<Element> gameDBLocalizedStrings = root.getChild("GameDBStringTable").getChild("LocalizedStrings").getChildren();
+			Iterator<Element> it = gameDBLocalizedStrings.iterator();
+			while (it.hasNext()) {
+				Element gameDBLocalizedString = it.next();
+				String key = gameDBLocalizedString.getChild("LocID").getValue();
+				String text = gameDBLocalizedString.getChild("Text").getValue();
+			}
+		}
+		return parsedFile;
+	}
+
 	private String analyzeExpression(String expression) {
 		// Remove end line code
 		String expr = expression.replace("\r", "").replace("\n", "");
@@ -578,7 +634,7 @@ public class Parse {
 	 * @param filePath
 	 * @return
 	 */
-	private static String getFilePathWithoutLanguage(String filePath) {
+	private static String getFilePathWithoutLanguageYML(String filePath) {
 		String[] split = filePath.split("_");
 		// Concatenate all except the last one
 		String res = "";
@@ -597,6 +653,30 @@ public class Parse {
 		}
 		// Language prefix l_ not found
 		return "";
+	}
+	
+	/**
+	 * Remove the language form file name
+	 * Ex : StringTableEnglish_Tutorial.xml => Tutorial
+	 * 
+	 * Return "" in case of bad format
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	private static String getFileNameWithoutLanguageXML(String filePath) {
+		String[] split = filePath.split("_");
+		// Concatenate all except the first one
+		String res = "";
+		for (int i = 1; i < split.length; i++)
+		{
+			if(i > 1)
+			{
+				res = res.concat("_");
+			}
+			res = res.concat(split[i]);
+		}
+		return res.split("[.]")[0];
 	}
 	
 	/**

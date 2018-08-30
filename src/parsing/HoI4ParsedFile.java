@@ -16,6 +16,12 @@ import translator.ITranslator;
 import translator.TranslatedEntry;
 import translator.TranslatorParsedFile;
 
+/**
+ * Parsed file for HoI4, EUIV and Stellaris
+ * 
+ * @author NicolasGrosjean alias Mouchi
+ *
+ */
 public class HoI4ParsedFile extends TranslatorParsedFile {
 	/**
 	 * Path of the file

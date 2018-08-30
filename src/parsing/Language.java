@@ -44,6 +44,10 @@ public class Language {
 	public Locale getLocale() {
 		return locale;
 	}
+	
+	public String getName() {
+		return code.substring(0, 1) + code.substring(1).toLowerCase();
+	}
 
 	/**
 	 * Return if it is the "NONE" language (=no language)
