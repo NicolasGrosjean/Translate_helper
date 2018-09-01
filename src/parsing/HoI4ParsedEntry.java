@@ -5,11 +5,11 @@ import translator.TranslatedEntry;
 public class HoI4ParsedEntry extends ParsedEntry {
 	public static int MISSING_ENTRY = -1;
 
-	int sourceLineNumber = MISSING_ENTRY;
-	int destinationLineNumber = MISSING_ENTRY;
+	protected int sourceLineNumber = MISSING_ENTRY;
+	protected int destinationLineNumber = MISSING_ENTRY;
 	
-	int sourceVersionNumber;
-	int destinationVersionNumber;
+	protected int sourceVersionNumber;
+	protected int destinationVersionNumber;
 
 	public HoI4ParsedEntry(int sourceLineNumber, int destinationLineNumber, String id, String reason, String sourceText,
 			String destinationText, int sourceVersionNumber, int destinationVersionNumber) {

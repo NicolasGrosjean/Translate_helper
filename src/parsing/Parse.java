@@ -604,11 +604,103 @@ public class Parse {
 			}
 			List<Element> gameDBLocalizedStrings = root.getChild("GameDBStringTable").getChild("LocalizedStrings").getChildren();
 			Iterator<Element> it = gameDBLocalizedStrings.iterator();
+			int sourceLineNumber = 0;
 			while (it.hasNext()) {
 				Element gameDBLocalizedString = it.next();
-				String key = gameDBLocalizedString.getChild("LocID").getValue();
+				String id = gameDBLocalizedString.getChild("LocID").getValue();
 				String text = gameDBLocalizedString.getChild("Text").getValue();
+				PHParsedEntry entry = parsedFile.addLine(id, text, "",
+						sourceLineNumber, HoI4ParsedEntry.MISSING_ENTRY);
+				parsedFile.addLineToTranslate(entry, ParsedEntry.missingText);
+				sourceLineNumber++;
 			}
+		} else if (!sourceFile.exists() && destinationFile.exists()) {
+			Element root = null;
+			try {
+				// Build the XML tree and gather the root
+				root = new SAXBuilder().build(destinationFile).getRootElement();
+			} catch (JDOMException | IOException e) {
+				// No configuration file
+				return parsedFile;
+			}
+			List<Element> gameDBLocalizedStrings = root.getChild("GameDBStringTable").getChild("LocalizedStrings").getChildren();
+			Iterator<Element> it = gameDBLocalizedStrings.iterator();
+			int destinationLineNumber = 0;
+			while (it.hasNext()) {
+				Element gameDBLocalizedString = it.next();
+				String id = gameDBLocalizedString.getChild("LocID").getValue();
+				String text = gameDBLocalizedString.getChild("Text").getValue();
+				PHParsedEntry entry = parsedFile.addLine(id, "", text,
+						HoI4ParsedEntry.MISSING_ENTRY, destinationLineNumber);
+				parsedFile.addMissingSourceLine(entry);
+				destinationLineNumber++;
+			}
+		} else {
+			// Map destination texts
+			Map<String, TextAndNumbers> destTexts = new HashMap<>();
+			Element destRoot = null;
+			try {
+				// Build the XML tree and gather the root
+				destRoot = new SAXBuilder().build(destinationFile).getRootElement();
+			} catch (JDOMException | IOException e) {
+				// No configuration file
+				return parsedFile;
+			}
+			List<Element> destGameDBLocalizedStrings = destRoot.getChild("GameDBStringTable").getChild("LocalizedStrings").getChildren();
+			Iterator<Element> destIt = destGameDBLocalizedStrings.iterator();
+			int destinationLineNumber = 0;
+			while (destIt.hasNext()) {
+				Element gameDBLocalizedString = destIt.next();
+				String id = gameDBLocalizedString.getChild("LocID").getValue();
+				String text = gameDBLocalizedString.getChild("Text").getValue();
+				destTexts.put(id, new TextAndNumbers(text, destinationLineNumber, 0));
+				destinationLineNumber++;
+			}
+			
+			// Get then analyze source texts
+			Element sourceRoot = null;
+			try {
+				// Build the XML tree and gather the root
+				sourceRoot = new SAXBuilder().build(sourceFile).getRootElement();
+			} catch (JDOMException | IOException e) {
+				// No configuration file
+				return parsedFile;
+			}
+			List<Element> sourceGameDBLocalizedStrings = sourceRoot.getChild("GameDBStringTable").getChild("LocalizedStrings").getChildren();
+			Iterator<Element> sourceIt = sourceGameDBLocalizedStrings.iterator();
+			int sourceLineNumber = 0;
+			while (sourceIt.hasNext()) {
+				Element gameDBLocalizedString = sourceIt.next();
+				String id = gameDBLocalizedString.getChild("LocID").getValue();
+				String sourceText = gameDBLocalizedString.getChild("Text").getValue();
+				int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
+				String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+				
+				PHParsedEntry entry = parsedFile.addLine(id, sourceText, destText, sourceLineNumber, destLineNumber);
+				if (returnAllLines) {
+					parsedFile.addLineToTranslate(entry, "");
+					continue;
+				}
+				
+				// We can now analyze the two expressions
+				// Firstly individually
+				String sourceAnalysis = analyzeExpression(sourceText);
+				if (!sourceAnalysis.equals("")) {
+					parsedFile.addMissingSourceLine(entry);
+					continue;
+				}
+				String destinationAnalysis = analyzeExpression(destText);
+				if (!destinationAnalysis.equals("")) {
+					parsedFile.addLineToTranslate(entry, destinationAnalysis);
+				} else {
+					if (sourceText.equals(destText)
+							&& !acceptedLoanword.contains(destText)) {
+						parsedFile.addLineToTranslate(entry, ParsedEntry.copyText);
+					}
+				}
+				sourceLineNumber++;
+			}
+			
 		}
 		return parsedFile;
 	}

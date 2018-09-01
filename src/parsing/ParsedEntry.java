@@ -11,7 +11,7 @@ public class ParsedEntry {
 
 	private int lineNumber;
 	private String id;
-	private String reason;
+	protected String reason;
 	private String sourceText;
 	private String destinationText;
 

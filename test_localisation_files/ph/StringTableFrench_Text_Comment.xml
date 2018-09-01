@@ -2,7 +2,7 @@
     <GameDBStringTable ID="LOC_FR_TUTORIAL">
         <LanguageCode>fr</LanguageCode>
         <LocalizedStrings>
-            <GameDBLocalizedString>      <LocID>KEY</LocID>           <Text>FRENCH</Text>  </GameDBLocalizedString>
+            <GameDBLocalizedString>      <LocID>KEY</LocID>           <Text>Translated</Text>  </GameDBLocalizedString>
             <!--<GameDBLocalizedString>      <LocID>COMMENT</LocID>           <Text>Comment</Text>  </GameDBLocalizedString>!-->
         </LocalizedStrings>
     </GameDBStringTable>

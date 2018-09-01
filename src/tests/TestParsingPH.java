@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import parsing.HoI4ParsedEntry;
 import parsing.Language;
+import parsing.PHParsedEntry;
 import parsing.PHParsedFile;
 import parsing.Parse;
 import parsing.ParsedEntry;
@@ -92,10 +92,10 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
-			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			PHParsedEntry e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid ID", "KEY", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 		} else {
 			Assert.fail("File not parsed");
@@ -110,10 +110,10 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
-			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			PHParsedEntry e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid ID", "KEY", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.fakeText, e.getReason());
 		} else {
 			Assert.fail("File not parsed");
@@ -139,14 +139,14 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 3, e.getDestinationLineNumber());
+			PHParsedEntry e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 1, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT1", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
-			e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 3, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 1, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT2", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 		} else {
@@ -184,9 +184,9 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", HoI4ParsedEntry.MISSING_ENTRY, e.getDestinationLineNumber());
+			PHParsedEntry e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", PHParsedEntry.MISSING_ENTRY, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -202,9 +202,9 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have 1 missing source text", 1, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> missingSourceIterator = f.getDescendingIteratorMissingSourceLines();
 			Assert.assertEquals("Nothing in the iterator", true, missingSourceIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) missingSourceIterator.next();
-			Assert.assertEquals("Invalid source line number", HoI4ParsedEntry.MISSING_ENTRY, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			PHParsedEntry e = (PHParsedEntry) missingSourceIterator.next();
+			Assert.assertEquals("Invalid source line number", PHParsedEntry.MISSING_ENTRY, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -231,9 +231,9 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have 1 missing source text", 1, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> missingSourceIterator = f.getDescendingIteratorMissingSourceLines();
 			Assert.assertEquals("Nothing in the iterator", true, missingSourceIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) missingSourceIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			PHParsedEntry e = (PHParsedEntry) missingSourceIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
@@ -249,9 +249,9 @@ public class TestParsingPH {
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
 			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
-			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
-			Assert.assertEquals("Invalid source line number", 2, e.getSourceLineNumber());
-			Assert.assertEquals("Invalid destination line number", 2, e.getDestinationLineNumber());
+			PHParsedEntry e = (PHParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 0, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 0, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.missingText, e.getReason());
 		} else {
