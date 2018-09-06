@@ -73,6 +73,12 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		this.linesToTranslate.add(entry);
 	}
 	
+	public void addLastLineToTranslate(int sourceLineNumber, int destinationLineNumber, String id, String reason,
+			String sourceText, String destinationText, int sourceVersionNumber, int destinationVersionNumber) {
+		PHParsedEntry entry = addLine(id, sourceText, destinationText, sourceLineNumber, destinationLineNumber);
+		addLineToTranslate(entry, reason);
+	}
+	
 	public void addMissingSourceLine(PHParsedEntry entry)
 	{
 		entry.setReason(ParsedEntry.missingText);
