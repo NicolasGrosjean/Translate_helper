@@ -1,8 +1,15 @@
 package parsing;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import translator.ITranslator;
@@ -100,26 +107,86 @@ public class PHParsedFile extends TranslatorParsedFile  {
 	@Override
 	public TranslatedEntry getNextEntryToTranslateAndSave(TranslatedEntry entryToSave, Language sourceLanguage,
 			Language destinationLanguage) {
-		// TODO Auto-generated method stub
-		return null;
+		// Save text in memory
+		PHParsedEntry entryInMemory = linesToTranslate.get(lineToTranslateIndex);
+		entryInMemory.saveEntry(entryToSave);
+
+		TranslatedEntry nextEntry = getNextEntryToTranslate();
+		allLines.sort(new SourceSorter());
+		int sourceSaveLineNumber = saveXMLFile(getFilePath(sourceLanguage), sourceLanguage.getLocale().toString(),
+				allLines, true, entryToSave);
+		allLines.sort(new DestSorter());
+		int destSaveLineNumber = saveXMLFile(getFilePath(destinationLanguage), destinationLanguage.getLocale().toString(),
+				allLines, false, entryToSave);
+		
+		// Update line number in memory
+		if (sourceSaveLineNumber != -1) {
+			entryInMemory.setSourceLineNumber(sourceSaveLineNumber);
+		} else if (destSaveLineNumber != -1) {
+			entryInMemory.setDestinationLineNumber(destSaveLineNumber);
+		}
+		return nextEntry;
+	}
+	
+	private int saveXMLFile(String filePath, String langCode, List<PHParsedEntry> entries,
+			boolean source, TranslatedEntry missingEntryTosave) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getHeader(langCode, name));
+		builder.append("\n");
+		int lineNumber = 2;
+		boolean entryToSaveOverrided = false;
+		for (PHParsedEntry entryToSave : entries)
+		{
+			builder.append(getLine(entryToSave.getID(), source ? entryToSave.getSourceText() :
+				entryToSave.getDestinationText()));
+			builder.append("\n");
+			lineNumber++;
+			if (entryToSave.getID().equals(missingEntryTosave.getId())) {
+				entryToSaveOverrided = true;
+			}
+		}
+		if (!entryToSaveOverrided) {
+			builder.append(getLine(missingEntryTosave.getId(), source ? missingEntryTosave.getSource() :
+				missingEntryTosave.getDestination()));
+			builder.append("\n");
+		}
+		builder.append(getFooter());
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filePath),
+					StandardCharsets.UTF_8), true);
+			writer.print(builder.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null)
+				writer.close();
+		}
+		return entryToSaveOverrided ? -1 : lineNumber;
 	}
 
 	@Override
 	public String getMissingSourceText() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder builder = new StringBuilder();
+		for (PHParsedEntry e : missingSourceLines) {
+			builder.append(e.getSourceToString() + System.lineSeparator());
+		}
+		return builder.toString();
 	}
 
 	@Override
 	public String getMissingTranslation() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder builder = new StringBuilder();
+		for (PHParsedEntry e : linesToTranslate) {
+			builder.append(e.getDestinationToString() + System.lineSeparator());
+		}
+		return builder.toString();
 	}
 
 	@Override
 	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage) {
-		// TODO Auto-generated method stub
-		return null;
+		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null);
+		return parseObj.parseAxmlFile(directory, name, true);
 	}
 
 	@Override
@@ -140,5 +207,41 @@ public class PHParsedFile extends TranslatorParsedFile  {
 			list.add(e);
 		}
 		return list.iterator();
+	}
+	
+	public static String getHeader(String langCode, String name) {
+		return "<Database>\n\t<GameDBStringTable ID=\"LOC_"
+				+ langCode.toUpperCase() + "_" + name + "\">\n\t\t<LanguageCode>"
+				+ langCode + "</LanguageCode>\n\t\t<LocalizedStrings>";
+	}
+	
+	public static String getFooter() {
+		return "\t\t</LocalizedStrings>\n\t</GameDBStringTable>\n</Database>";
+	}
+	
+	public static String getLine(String id, String text) {
+		return "\t\t\t<GameDBLocalizedString>\t<LocID>" + id + "</LocID>\t<Text>" + text + "</Text>\t</GameDBLocalizedString>"; 
+	}
+	
+	private class SourceSorter implements Comparator<PHParsedEntry>{
+
+	    public int compare(PHParsedEntry entry1, PHParsedEntry entry2){
+	    	int lineNumber1 = entry1.getSourceLineNumber() != PHParsedEntry.MISSING_ENTRY ? entry1.getSourceLineNumber() :
+	    		entry1.getDestinationLineNumber();
+	    	int lineNumber2 = entry2.getSourceLineNumber() != PHParsedEntry.MISSING_ENTRY ? entry2.getSourceLineNumber() :
+	    		entry2.getDestinationLineNumber();
+	    	return lineNumber1 - lineNumber2;
+	    }
+	}
+	
+	private class DestSorter implements Comparator<PHParsedEntry>{
+
+	    public int compare(PHParsedEntry entry1, PHParsedEntry entry2){
+	    	int lineNumber1 = entry1.getDestinationLineNumber() != PHParsedEntry.MISSING_ENTRY ? entry1.getDestinationLineNumber() :
+	    		entry1.getSourceLineNumber();
+	    	int lineNumber2 = entry2.getDestinationLineNumber() != PHParsedEntry.MISSING_ENTRY ? entry2.getDestinationLineNumber() :
+	    		entry2.getSourceLineNumber();
+	    	return lineNumber1 - lineNumber2;
+	    }
 	}
 }

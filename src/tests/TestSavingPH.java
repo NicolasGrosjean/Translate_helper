@@ -36,20 +36,6 @@ public class TestSavingPH {
 		destinationLanguage = new Language("FRENCH", 2, "fr");
 	}
 	
-	private String getHeader(String langCode) {
-		return "<Database>\n\t<GameDBStringTable ID=\"LOC_"
-				+ langCode.toUpperCase() + "_TUTORIAL\">\n\t\t<LanguageCode>"
-				+ langCode + "</LanguageCode>\n\t\t<LocalizedStrings>";
-	}
-	
-	private String getFooter() {
-		return "\t\t</LocalizedStrings>\n\t</GameDBStringTable>\n</Database>";
-	}
-	
-	private String getLine(String id, String text) {
-		return "<GameDBLocalizedString>\t<LocID>" + id + "</LocID>\t<Text>" + text + "</Text>\t</GameDBLocalizedString>"; 
-	}
-	
 	@Test
 	public void testSaveWithSameLineNumber() throws IOException {
 		testSaveSeveralLines("save", false, false,
@@ -115,12 +101,12 @@ public class TestSavingPH {
 		file.addLastLineToTranslate(5, HoI4ParsedEntry.MISSING_ENTRY, "ID_4", "", sourceText4, "", 0, 0);
 		
 		// Create source file corresponding to these data
-		String[] sourceData = {getHeader("en") + "\n" +
-				getLine("ID_1", sourceText1) + "\n" +
-				getLine("ID_2", oldSource) + "\n" +
-				getLine("ID_3", sourceText3) + "\n" +
-				getLine("ID_4", sourceText4) + "\n" +
-				getFooter(),};
+		String[] sourceData = {PHParsedFile.getHeader("en", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
+				PHParsedFile.getLine("ID_2", oldSource) + "\n" +
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
@@ -149,10 +135,12 @@ public class TestSavingPH {
 		Assert.assertEquals("Incorrect next entry!", "", nextEntry.getDestination());
 		
 		// Check that is what we expect
-		String[] expected = { getHeader("fr"),
-				getLine("ID_1", ""),
-				getLine(entryToSave.getId(), entryToSave.getDestination()),
-				getFooter() };
+		String[] expected = (PHParsedFile.getHeader("fr", fileName) + "\n" + 
+				PHParsedFile.getLine("ID_1", "") + "\n" + 
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
+				PHParsedFile.getLine("ID_3", "") + "\n" + 
+				PHParsedFile.getLine("ID_4", "") + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -160,7 +148,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expected.length > i);
-				Assert.assertEquals("Incorrect line!", expected[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				assertLinesEquals(expected[i], line);
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
@@ -168,12 +156,12 @@ public class TestSavingPH {
 			br.close();
 		}
 		// Check also the source
-		String[] expectedSource = { getHeader("en"),
-				getLine("ID_1", sourceText1),
-				getLine(entryToSave.getId(), entryToSave.getSource()),
-				getLine("ID_3", sourceText3),
-				getLine("ID_4", sourceText4),
-				getFooter()};
+		String[] expectedSource = (PHParsedFile.getHeader("en", fileName) + "\n" + 
+				PHParsedFile.getLine("ID_1", sourceText1) + "\n" + 
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -181,7 +169,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expectedSource.length > i);
-				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t", ""), line.replaceAll("\t", ""));
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
@@ -208,13 +196,13 @@ public class TestSavingPH {
 		file.addLastLineToTranslate(6, HoI4ParsedEntry.MISSING_ENTRY, "ID_4", "", sourceText4, "", 0, 0);
 		
 		// Create source file corresponding to these data
-		String[] sourceData = { getHeader("en") + "\n" +
+		String[] sourceData = { PHParsedFile.getHeader("en", fileName) + "\n" +
 				"\t<!--COMMENT--> \n" +
-				getLine("ID_1", sourceText1) + "\n" +
-				getLine("ID_2", oldSource) + "\n" +
-				getLine("ID_3", sourceText3) + "\n" +
-				getLine("ID_4", sourceText4) + "\n" +
-				getFooter(),};
+				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
+				PHParsedFile.getLine("ID_2", oldSource) + "\n" +
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
@@ -246,10 +234,12 @@ public class TestSavingPH {
 		Assert.assertEquals("Incorrect next entry!", "", nextEntry.getDestination());
 		
 		// Check that is what we expect
-		String[] expected = {  getHeader("fr"),
-				getLine("ID_1", entryToSave.getDestination() + "2"),
-				getLine(entryToSave.getId(), entryToSave.getDestination() + "3"),
-				getFooter() };
+		String[] expected = (PHParsedFile.getHeader("fr", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", entryToSave.getDestination() + "2") + "\n" +
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination() + "3") + "\n" +
+				PHParsedFile.getLine("ID_3", "") + "\n" + 
+				PHParsedFile.getLine("ID_4", "") + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -257,7 +247,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expected.length > i);
-				Assert.assertEquals("Incorrect line!", expected[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				assertLinesEquals(expected[i], line);
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
@@ -265,13 +255,12 @@ public class TestSavingPH {
 			br.close();
 		}
 		// Check also the source
-		String[] expectedSource = { getHeader("en"),
-				getLine("ID_1", entryToSave.getSource() + "2"),
-				"\t<!--COMMENT-->",
-				getLine(entryToSave.getId(), entryToSave.getSource() + "3"),
-				getLine("ID_3", sourceText3),
-				getLine("ID_4", sourceText4),
-				getFooter() };
+		String[] expectedSource = (PHParsedFile.getHeader("en", fileName) + "\n" + 
+				PHParsedFile.getLine("ID_1", entryToSave.getSource() + "2") + "\n" +
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource() + "3") + "\n" + 
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -279,7 +268,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expectedSource.length > i);
-				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t", ""), line.replaceAll("\t", ""));
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
@@ -310,39 +299,39 @@ public class TestSavingPH {
 			oldDest = destText2;
 			file.addLastLineToTranslate(HoI4ParsedEntry.MISSING_ENTRY, 3, "ID_2", "", oldSource, oldDest, 0, 0);
 			oldSourceLine = "";
-			oldDestLine = getLine("ID_2", destText2) + "\n";
+			oldDestLine = PHParsedFile.getLine("ID_2", destText2) + "\n";
 		} else if (missingDest) { // missingSource == true == missingDest has no meaning
 			oldSource = "Toto";
 			oldDest = "";
 			file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest, 0, 0);
-			oldSourceLine = getLine("ID_2", oldSource) + "\n";
+			oldSourceLine = PHParsedFile.getLine("ID_2", oldSource) + "\n";
 			oldDestLine = "";
 		} else {
 			oldSource = "Toto";
 			oldDest = destText2;
 			file.addLastLineToTranslate(3, 3, "ID_2", "", oldSource, oldDest, 0, 0);
-			oldSourceLine = getLine("ID_2", oldSource) + "\n";
-			oldDestLine = getLine("ID_2", destText2) + "\n";
+			oldSourceLine = PHParsedFile.getLine("ID_2", oldSource) + "\n";
+			oldDestLine = PHParsedFile.getLine("ID_2", destText2) + "\n";
 		}
 		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3, 0, 0);
 		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4, 0, 0);
 		
 		// Create files corresponding to these data
-		String[] sourceData = { getHeader("en") + "\n" +
-				getLine("ID_1", sourceText1) + "\n" +
+		String[] sourceData = { PHParsedFile.getHeader("en", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
 				oldSourceLine +
-				getLine("ID_3", sourceText3) + "\n" +
-				getLine("ID_4", sourceText4) + "\n" +
-				getFooter(),};
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
-		String[] destData = { getHeader("en") + "\n" +
-				getLine("ID_1", destText1) + "\n" +
+		String[] destData = { PHParsedFile.getHeader("en", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", destText1) + "\n" +
 				oldDestLine +
-				getLine("ID_3", destText3) + "\n" +
-				getLine("ID_4", destText4) + "\n" +
-				getFooter(),};
+				PHParsedFile.getLine("ID_3", destText3) + "\n" +
+				PHParsedFile.getLine("ID_4", destText4) + "\n" +
+				PHParsedFile.getFooter(),};
 		List<String> destLines = Arrays.asList(destData);
 		Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
@@ -369,12 +358,12 @@ public class TestSavingPH {
 		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
 		
 		// Check that is what we expect
-		String[] expected = {getHeader("fr"),
-				getLine("ID_1", destText1),
-				getLine(entryToSave.getId(), entryToSave.getDestination()),
-				getLine("ID_3", destText3),
-				getLine("ID_4", destText4),
-				getFooter() };
+		String[] expected = (PHParsedFile.getHeader("fr", fileName) + "\n" + 
+				PHParsedFile.getLine("ID_1", destText1) + "\n" + 
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
+				PHParsedFile.getLine("ID_3", destText3) + "\n" + 
+				PHParsedFile.getLine("ID_4", destText4) + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -382,7 +371,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expected.length > i);
-				Assert.assertEquals("Incorrect line!", expected[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				assertLinesEquals(expected[i], line);
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
@@ -390,12 +379,12 @@ public class TestSavingPH {
 			br.close();
 		}
 		// Check also the source
-		String[] expectedSource = { getHeader("en"),
-				getLine("ID_1", sourceText1),
-				getLine(entryToSave.getId(), entryToSave.getSource()),
-				getLine("ID_3", sourceText3),
-				getLine("ID_4", sourceText4),
-				getFooter() };
+		String[] expectedSource = ( PHParsedFile.getHeader("en", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", sourceText1) + "\n" + 
+				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
+				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
+				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -403,7 +392,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expectedSource.length > i);
-				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t",  ""), line.replaceAll("\t",  ""));
+				Assert.assertEquals("Incorrect line!", expectedSource[i].replaceAll("\t", ""), line.replaceAll("\t", ""));
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expectedSource.length, i);
@@ -426,16 +415,16 @@ public class TestSavingPH {
 		}
 		
 		// Create files corresponding to these data
-		String[] sourceData = { getHeader("en") + "\n" +
-				getLine("ID_1", entryToSave.getSource()) + "\n" +
-				getFooter(), };
+		String[] sourceData = { PHParsedFile.getHeader("en", fileName) + "\n" +
+				PHParsedFile.getLine("ID_1", entryToSave.getSource()) + "\n" +
+				PHParsedFile.getFooter(), };
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		if (!missingDest) {
-			String[] destData = {getHeader("fr") + "\n" +
-					getLine("ID_1", oldDestText) + "\n" +
-					getFooter(), };
+			String[] destData = {PHParsedFile.getHeader("fr", fileName) + "\n" +
+					PHParsedFile.getLine("ID_1", oldDestText) + "\n" +
+					PHParsedFile.getFooter(), };
 			List<String> destLines = Arrays.asList(destData);
 			Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 			Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
@@ -449,9 +438,8 @@ public class TestSavingPH {
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
-		String expected[] = {getHeader("fr"),
-				getLine("ID_1", destinationText),
-				getFooter() };
+		String expected[] = (PHParsedFile.getHeader("fr", fileName) + "\n" +  PHParsedFile.getLine("ID_1", destinationText) +
+				"\n" +  PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -459,7 +447,7 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", expected.length > i);
-				Assert.assertEquals("Incorrect line!", expected[i], line);
+				assertLinesEquals(expected[i], line);
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", expected.length, i);
@@ -467,9 +455,8 @@ public class TestSavingPH {
 			br.close();
 		}
 		// Check also source
-		String sourceExpected[] = { getHeader("en"),
-				getLine("ID_1", entryToSave.getSource()),
-				getFooter() };
+		String sourceExpected[] = (PHParsedFile.getHeader("en", fileName) + "\n" + PHParsedFile.getLine("ID_1", entryToSave.getSource()) + 
+				"\n" + PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
@@ -477,13 +464,26 @@ public class TestSavingPH {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				Assert.assertTrue("Incorrect line number!", sourceExpected.length > i);
-				Assert.assertEquals("Incorrect line!", sourceExpected[i], line);
+				assertLinesEquals(sourceExpected[i], line);
 				i++;
 			}
 			Assert.assertEquals("Incorrect line number!", sourceExpected.length, i);
 		} finally {
 			br.close();
 		}
+	}
+	
+	private void assertLinesEquals(String expected, String line) {
+		String lineWTabs = line.replaceAll("\t", "");
+		int i = 0;
+		while (i < lineWTabs.length()) {
+			if (lineWTabs.charAt(i) == ' ') {
+				i++;
+			} else {
+				break;
+			}
+		}
+		Assert.assertEquals("Incorrect line!", expected.replaceAll("\t", ""), lineWTabs.substring(i));
 	}
 	
 	@AfterClass
