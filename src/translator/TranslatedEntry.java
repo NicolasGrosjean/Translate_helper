@@ -1,6 +1,5 @@
 package translator;
 
-import parsing.HoI4ParsedEntry;
 import parsing.ParsedEntry;
 
 public class TranslatedEntry {

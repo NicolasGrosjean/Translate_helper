@@ -369,10 +369,12 @@ public class Parse {
 						continue;
 					}
 					int versionNumber = 0;
-					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					Scanner scanner = new Scanner(splitted[1]);
+					scanner.useDelimiter("[^0-9]+");
 					if (scanner.hasNextInt()) {
 						versionNumber = scanner.nextInt();
 					}
+					scanner.close();
 					parsedFile.addLastLineToTranslate(lineNumber, HoI4ParsedEntry.MISSING_ENTRY, id,
 							ParsedEntry.missingText, text, "", versionNumber, 0);
 				}
@@ -419,10 +421,12 @@ public class Parse {
 						continue;
 					}
 					int versionNumber = 0;
-					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					Scanner scanner = new Scanner(splitted[1]);
+					scanner.useDelimiter("[^0-9]+");
 					if (scanner.hasNextInt()) {
 						versionNumber = scanner.nextInt();
 					}
+					scanner.close();
 					parsedFile.addLastMissingSourceLine(HoI4ParsedEntry.MISSING_ENTRY, lineNumber, id,
 							ParsedEntry.missingText, "", text, 0, versionNumber);
 				}
@@ -468,10 +472,12 @@ public class Parse {
 					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
 							lineNumber);
 					int versionNumber = 0;
-					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					Scanner scanner = new Scanner(splitted[1]);
+					scanner.useDelimiter("[^0-9]+");
 					if (scanner.hasNextInt()) {
 						versionNumber = scanner.nextInt();
 					}
+					scanner.close();
 					if (text == null) {
 						continue;
 					}
@@ -519,10 +525,12 @@ public class Parse {
 					String sourceText = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage),
 							sourceLineNumber);
 					int sourceVersionNumber = 0;
-					Scanner scanner = new Scanner(splitted[1]).useDelimiter("[^0-9]+");
+					Scanner scanner = new Scanner(splitted[1]);
+					scanner.useDelimiter("[^0-9]+");
 					if (scanner.hasNextInt()) {
 						sourceVersionNumber = scanner.nextInt();
 					}
+					scanner.close();
 					if (sourceText == null) {
 						continue;
 					}
