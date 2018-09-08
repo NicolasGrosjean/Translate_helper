@@ -1,6 +1,8 @@
 # Translate_helper
 An application to help to translate the Paradox games localisation files.
 
+You can find a tutorial [in Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=1440776102).
+
 # Diagnostic of a localisation directory
 * Define a source and optionally a destination language
 * Visualize the number of useful lines with no source text, and with no translation (no text or invalid text like FRENCH or copy of the source text)
