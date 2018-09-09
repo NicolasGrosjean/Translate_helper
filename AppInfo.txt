@@ -1,3 +1,11 @@
+AppVersion=2.7
+- Support Project Hospital files
+- Consider missing text as non translated (useful for HoI4 where the code is used instead of the English text like in CK2)
+- Add an option to consider all copy texts as valid translation
+- Add an icon
+- Do not display warning when copying source text whereas destination text is empty
+- Fix text coloration
+
 AppVersion=2.6
 - Add HoI4 coloration
 - Fix bug when using previous button when destination file doesn't exist
