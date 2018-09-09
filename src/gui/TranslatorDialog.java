@@ -436,14 +436,14 @@ public class TranslatorDialog extends JDialog {
 	private static void colorCodes(JTextPane textPane)
 	{
 		int colorBegin = textPane.getText().indexOf('§');
-		int colorEnd = -1;
+		int colorEnd = STRING_NOT_FOUND;
 		while (colorBegin != STRING_NOT_FOUND)
 		{
 			if (!Chars.contains(PARADOX_COLOR_CODES, textPane.getText().charAt(colorBegin + 1))) {
 				colorBegin = textPane.getText().indexOf('§', colorBegin + 1);
 			}
-			if (colorEnd == -1) {
-				colorEnd = textPane.getText().substring(colorBegin).lastIndexOf("§!");
+			if (colorEnd == STRING_NOT_FOUND) {
+				colorEnd = colorBegin + textPane.getText().substring(colorBegin).lastIndexOf("§!");
 			} else {
 				colorEnd = textPane.getText().lastIndexOf("§!", colorEnd - 1);
 			}
