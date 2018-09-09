@@ -6,6 +6,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -114,7 +115,7 @@ public class Window extends JFrame {
 		this.setContentPane(container);
 
 		// New icon image
-		// setIconImage(Toolkit.getDefaultToolkit().getImage("ressources/icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("config/icon.png"));
 
 		// Menus
 		JMenuBar windowMenuBar = new JMenuBar();
