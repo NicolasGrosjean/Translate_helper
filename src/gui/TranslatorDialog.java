@@ -360,6 +360,9 @@ public class TranslatorDialog extends JDialog {
 	
 	private void callGoogleTranslate()
 	{
+		if ("".equals(sourceTextPane.getText())) {
+			return;
+		}
 		try {
 			destTextPane.setText(google.translate(sourceTextPane.getText()));
 			destLangLabel.setText(destinationLanguageCode + " (GOOGLE TRANSLATION)");

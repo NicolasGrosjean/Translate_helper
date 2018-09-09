@@ -535,7 +535,7 @@ public class Parse {
 						continue;
 					}
 					int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
-					String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+					String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : null;
 					int destVersionNumber = (destTexts.get(id) != null) ? destTexts.get(id).versionNumber : 0;
 
 					if (returnAllLines) {
@@ -551,10 +551,9 @@ public class Parse {
 						parsedFile.addLastMissingSourceLine(sourceLineNumber, destLineNumber, id,
 								sourceAnalysis, sourceText, destText, sourceVersionNumber,
 								destVersionNumber);
-						continue;
 					}
 					String destinationAnalysis = analyzeExpression(destText);
-					if (!destinationAnalysis.equals("")) {
+					if (!destinationAnalysis.equals("") && !("".equals(sourceText) && "".equals(destText))) {
 						parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
 								destinationAnalysis, sourceText, destText, sourceVersionNumber,
 								destVersionNumber);
@@ -714,6 +713,9 @@ public class Parse {
 	}
 
 	private String analyzeExpression(String expression) {
+		if (expression == null) {
+			return ParsedEntry.missingText;
+		}
 		// Remove end line code
 		String expr = expression.replace("\r", "").replace("\n", "");
 		if (expr.equals("")) {
