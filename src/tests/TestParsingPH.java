@@ -21,7 +21,7 @@ public class TestParsingPH {
 		// Translate English to French
 		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/ph"),
 				new Language("ENGLISH", 1, "en"), new Language("FRENCH", 2, "fr"),
-				"config/fake_translations.txt", "config/accepted_loanwords.txt");
+				"config/fake_translations.txt", "config/accepted_loanwords.txt", false);
 	}
 
 	@Test

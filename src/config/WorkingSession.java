@@ -35,6 +35,11 @@ public class WorkingSession {
 	 * Call automatically Google translate when the destination text is empty
 	 */
 	private boolean automaticGoogleCall;
+	
+	/**
+	 * Do not consider copy text as a missing translation
+	 */
+	private boolean acceptAllCopies;
 
 	private String errorMessage;
 	
@@ -53,7 +58,8 @@ public class WorkingSession {
 	 * @param destinationLanguage
 	 */
 	public WorkingSession(String name, String directory, Language sourceLanguage,
-			Language destinationLanguage, boolean automaticGoogleCall) {
+			Language destinationLanguage, boolean automaticGoogleCall,
+			boolean acceptAllCopies) {
 		if (!isAvailableLanguagesInitialized()) {
 			throw new IllegalArgumentException("The list of available languages was not initialized!");
 		}
@@ -78,13 +84,14 @@ public class WorkingSession {
 			errorMessage.append(e.getMessage() + System.lineSeparator());
 		}
 		setAutomaticGoogleCall(automaticGoogleCall);
+		setAcceptAllCopies(acceptAllCopies);
 		
 		this.errorMessage = errorMessage.toString();
 	}
 
 	public WorkingSession(String name, String directory, Language sourceLanguage,
-			boolean automaticGoogleCall) {
-		this(name, directory, sourceLanguage, new Language(), automaticGoogleCall);
+			boolean automaticGoogleCall, boolean acceptAllCopies) {
+		this(name, directory, sourceLanguage, new Language(), automaticGoogleCall, acceptAllCopies);
 	}
 
 	public String getName() {
@@ -140,6 +147,14 @@ public class WorkingSession {
 
 	public void setAutomaticGoogleCall(boolean automaticGoogleCall) {
 		this.automaticGoogleCall = automaticGoogleCall;
+	}
+
+	public boolean isAcceptAllCopies() {
+		return acceptAllCopies;
+	}
+
+	public void setAcceptAllCopies(boolean acceptAllCopies) {
+		this.acceptAllCopies = acceptAllCopies;
 	}
 
 	public String getErrorMessage() {

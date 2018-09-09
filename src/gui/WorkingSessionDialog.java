@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import parsing.Language;
 import config.WorkingSession;
+import parsing.Language;
 
 public class WorkingSessionDialog extends JDialog {
 	// Working session fields
@@ -34,6 +34,7 @@ public class WorkingSessionDialog extends JDialog {
 	private JComboBox<Language> sourceLanguageSourceComboBox;
 	private JComboBox<Language> destinationLanguageComboBox;
 	private JCheckBox automaticGoogleCall;
+	private JCheckBox acceptAllCopiesCB;
 	private JPanel container;
 	private JPanel wsNamePanel;
 	private JPanel localisationDirPanel;
@@ -58,10 +59,10 @@ public class WorkingSessionDialog extends JDialog {
 	 */
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal, String name,
 			String directory, Language sourceLanguage, Language destinationLanguage,
-			boolean automaticGoogleTranslate) {
+			boolean automaticGoogleTranslate, boolean acceptAllCopies) {
 		// Create the JDialog
 		super(parent, title, modal);
-		setSize(500, 400);
+		setSize(500, 450);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -87,6 +88,9 @@ public class WorkingSessionDialog extends JDialog {
 		
 		automaticGoogleCall = new JCheckBox("Call automatically Google Translate when destination text is empty");
 		automaticGoogleCall.setSelected(automaticGoogleTranslate);
+		
+		acceptAllCopiesCB = new JCheckBox("Do not consider copy text as a non translation reason");
+		acceptAllCopiesCB.setSelected(acceptAllCopies);
 
 		// Create all necessary components
 		JButton localisationDirectoryFC = new JButton("...");
@@ -112,17 +116,21 @@ public class WorkingSessionDialog extends JDialog {
 		JPanel googlePanel = new JPanel();
 		googlePanel.setBorder(BorderFactory.createTitledBorder("Google translate"));
 		googlePanel.add(automaticGoogleCall);
+		JPanel copyPanel = new JPanel();
+		copyPanel.setBorder(BorderFactory.createTitledBorder("Copy policy"));
+		copyPanel.add(acceptAllCopiesCB);
 		validCancelPanel = new JPanel();
 		validCancelPanel.add(validate);
 		validCancelPanel.add(cancel);
 
 		// Add to the container
 		container = new JPanel();
-		container.setLayout(new GridLayout(5, 1, 5, 5));
+		container.setLayout(new GridLayout(6, 1, 5, 5));
 		container.add(wsNamePanel);
 		container.add(localisationDirPanel);
 		container.add(languagePanel);
 		container.add(googlePanel);
+		container.add(copyPanel);
 		container.add(validCancelPanel);
 		setContentPane(container);
 
@@ -135,14 +143,14 @@ public class WorkingSessionDialog extends JDialog {
 	}
 
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal) {
-		this(parent, title, modal, "", "", new Language(), new Language(), false);
+		this(parent, title, modal, "", "", new Language(), new Language(), false, false);
 	}
 
 	public WorkingSessionDialog(JFrame parent, String title, boolean modal,
 			WorkingSession ws) {
 		this(parent, title, modal, ws.getName(), ws.getDirectory(),
 				ws.getSourceLanguage(), ws.getDestinationLanguage(),
-				ws.isAutomaticGoogleCall());
+				ws.isAutomaticGoogleCall(), ws.isAcceptAllCopies());
 	}
 
 	public WorkingSession getWorkingSession() {
@@ -157,7 +165,7 @@ public class WorkingSessionDialog extends JDialog {
 		return new WorkingSession(wsName.getText(), localisationDirectoryTF.getText(),
 				sourceLanguageSourceComboBox.getItemAt(sourceLanguageSourceComboBox.getSelectedIndex()),
 				destinationLanguageComboBox.getItemAt(destinationLanguageComboBox.getSelectedIndex()),
-				automaticGoogleCall.isSelected());
+				automaticGoogleCall.isSelected(), acceptAllCopiesCB.isSelected());
 	}
 
 	class FileExplorer implements ActionListener {

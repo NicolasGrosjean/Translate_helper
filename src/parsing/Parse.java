@@ -46,6 +46,11 @@ public class Parse {
 	 * List of accepted words from foreign languages
 	 */
 	private LinkedList<String> acceptedLoanword;
+	
+	/**
+	 * Do not consider copy text as a missing translation
+	 */
+	private boolean acceptAllCopies;
 
 	/**
 	 * Parse the files in order to store the entries which are not translated
@@ -54,12 +59,13 @@ public class Parse {
 	 */
 	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
 			Language destinationLanguage, String fakeTranslationFile,
-			String acceptedLoanwordFile) {
+			String acceptedLoanwordFile, boolean acceptAllCopies) {
 		this.sourceLanguage = sourceLanguage;
 		this.destinationLanguage = destinationLanguage;
 		files = new LinkedList<IParsedFile>();
 		fakeTranslation = readList(fakeTranslationFile);
 		acceptedLoanword = readList(acceptedLoanwordFile);
+		this.acceptAllCopies = acceptAllCopies;
 		Set<String> parsedTroncatedFiles = new HashSet<>();
 		for (String filePath : filePaths) {
 			if (filePath.endsWith(".csv")) {
@@ -103,7 +109,8 @@ public class Parse {
 			String acceptedLoanwordFile) {
 		this(Parse.listDirectoryFiles(ws.getDirectory()),
 				ws.getSourceLanguage(), ws.getDestinationLanguage(),
-				fakeTranslationFile, acceptedLoanwordFile);
+				fakeTranslationFile, acceptedLoanwordFile,
+				ws.isAcceptAllCopies());
 	}
 
 	/**
@@ -300,7 +307,7 @@ public class Parse {
 						parsedFile.addLastLineToTranslate(lineNumber, ID, destinationAnalysis,
 								sourceExpression, destinationExpression);
 					} else {
-						if (sourceExpression.equals(destinationExpression) &&
+						if (!acceptAllCopies && sourceExpression.equals(destinationExpression) &&
 								!acceptedLoanword.contains(destinationExpression)) {
 							parsedFile.addLastLineToTranslate(lineNumber, ID, ParsedEntry.copyText,
 									sourceExpression, destinationExpression);
@@ -558,7 +565,7 @@ public class Parse {
 								destinationAnalysis, sourceText, destText, sourceVersionNumber,
 								destVersionNumber);
 					} else {
-						if (sourceText.equals(destText)
+						if (!acceptAllCopies && sourceText.equals(destText)
 								&& !acceptedLoanword.contains(destText)) {
 							parsedFile.addLastLineToTranslate(sourceLineNumber, destLineNumber, id,
 									ParsedEntry.copyText, sourceText, destText, sourceVersionNumber,
@@ -699,7 +706,7 @@ public class Parse {
 				if (!destinationAnalysis.equals("") && !("".equals(sourceText) && "".equals(destText))) {
 					parsedFile.addLineToTranslate(entry, destinationAnalysis);
 				} else {
-					if (sourceText.equals(destText)
+					if (!acceptAllCopies && sourceText.equals(destText)
 							&& !acceptedLoanword.contains(destText)) {
 						parsedFile.addLineToTranslate(entry, ParsedEntry.copyText);
 					}

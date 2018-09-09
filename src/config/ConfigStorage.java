@@ -26,6 +26,7 @@ public class ConfigStorage {
 	private static final String wsSourceLanguageAttribute = "source";
 	private static final String wsDestinationLanguageAttribute = "destination";
 	private static final String wsAutomaticGoogleAttribute = "automaticGoogle";
+	private static final String wsAcceptAllCopies = "acceptAllCopies";
 
 	/**
 	 * List of working sessions
@@ -59,11 +60,13 @@ public class ConfigStorage {
 		while (it.hasNext()) {
 			Element wsElem = it.next();
 			String automaticGoogleTranslate = wsElem.getAttributeValue(wsAutomaticGoogleAttribute);
+			String acceptAllCopies = wsElem.getAttributeValue(wsAcceptAllCopies);
 			WorkingSession ws = new WorkingSession(wsElem.getAttributeValue(wsNameAttribute),
 						wsElem.getAttributeValue(wsDirectoryAttribute),
 						WorkingSession.getLanguage(wsElem.getAttributeValue(wsSourceLanguageAttribute)),
 						WorkingSession.getLanguage(wsElem.getAttributeValue(wsDestinationLanguageAttribute)),
-						(automaticGoogleTranslate != null) ? Boolean.valueOf(automaticGoogleTranslate) : false);
+						(automaticGoogleTranslate != null) ? Boolean.valueOf(automaticGoogleTranslate) : false,
+						(acceptAllCopies != null) ? Boolean.valueOf(acceptAllCopies) : false);
 			if (!ws.getErrorMessage().equals("")) {
 				int option = JOptionPane.showConfirmDialog(null,
 						"Error with the working session " + ((ws != null) ? ws.getName() : "")
@@ -103,6 +106,8 @@ public class ConfigStorage {
 				.setAttribute(new Attribute(wsDestinationLanguageAttribute, ws.getDestinationLanguage().getCode()));
 		workingSessionElem
 				.setAttribute(new Attribute(wsAutomaticGoogleAttribute, Boolean.toString(ws.isAutomaticGoogleCall())));
+		workingSessionElem
+			.setAttribute(new Attribute(wsAcceptAllCopies, Boolean.toString(ws.isAcceptAllCopies())));
 		return workingSessionElem;
 	}
 

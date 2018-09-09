@@ -450,7 +450,8 @@ public class Window extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	int row = table.getSelectedRows()[0];
             	IParsedFile f = (IParsedFile) table.getValueAt(row, FILE_COLUMN);
-            	ITranslator file = f.createAllLines(ws.getSourceLanguage(), ws.getDestinationLanguage());
+            	ITranslator file = f.createAllLines(ws.getSourceLanguage(), ws.getDestinationLanguage(),
+            			ws.isAcceptAllCopies());
             	new TranslatorDialog(null, f.getName(), true, file,
             			ws.getSourceLanguage(), ws.getDestinationLanguage(),
             			ws.isAutomaticGoogleCall());

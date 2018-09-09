@@ -25,7 +25,7 @@ public interface IParsedFile {
 	 */
 	public String getMissingTranslation();
 	
-	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage);
+	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage, boolean acceptAllCopies);
 	
 	/** ---------------- FOR TESTING -------------------------------**/
 	public Iterator<ParsedEntry> getDescendingIteratorLineToTranslate();

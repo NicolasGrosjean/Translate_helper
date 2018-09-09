@@ -8,11 +8,11 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import parsing.ParsedEntry;
+import parsing.CK2ParsedFile;
 import parsing.IParsedFile;
 import parsing.Language;
 import parsing.Parse;
-import parsing.CK2ParsedFile;
+import parsing.ParsedEntry;
 
 /**
  * Test the parsing package NOTA : To run it with Eclipse, go to the project >
@@ -28,7 +28,7 @@ public class TestParsingCK2 {
 	public static void SetUp() {
 		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/ck2"),
 				new Language("FRENCH", 2, "fr"), new Language("ENGLISH", 1, "en"),
-				"config/fake_translations.txt", "config/accepted_loanwords.txt");
+				"config/fake_translations.txt", "config/accepted_loanwords.txt", false);
 	}
 
 	@Test
