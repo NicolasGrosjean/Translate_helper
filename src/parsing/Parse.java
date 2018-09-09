@@ -681,7 +681,7 @@ public class Parse {
 				String id = gameDBLocalizedString.getChild("LocID").getValue();
 				String sourceText = gameDBLocalizedString.getChild("Text").getValue();
 				int destLineNumber = (destTexts.get(id) != null) ? destTexts.get(id).lineNumber : HoI4ParsedEntry.MISSING_ENTRY;
-				String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : "";
+				String destText = (destTexts.get(id) != null) ? destTexts.get(id).text : null;
 				
 				PHParsedEntry entry = parsedFile.addLine(id, sourceText, destText, sourceLineNumber, destLineNumber);
 				if (returnAllLines) {
@@ -694,10 +694,9 @@ public class Parse {
 				String sourceAnalysis = analyzeExpression(sourceText);
 				if (!sourceAnalysis.equals("")) {
 					parsedFile.addMissingSourceLine(entry);
-					continue;
 				}
 				String destinationAnalysis = analyzeExpression(destText);
-				if (!destinationAnalysis.equals("")) {
+				if (!destinationAnalysis.equals("") && !("".equals(sourceText) && "".equals(destText))) {
 					parsedFile.addLineToTranslate(entry, destinationAnalysis);
 				} else {
 					if (sourceText.equals(destText)
