@@ -119,16 +119,18 @@ public class TranslatorDialog extends JDialog {
 			sourceCopyBtn.setIcon(img);
 		} catch (Exception e) { }
 		sourceCopyBtn.addActionListener(e -> {
-			int option = JOptionPane.showConfirmDialog(null,
-					"Are you sure to want erase the destination text by copying the source text ?\n"
-					+ "If you don't want change the destination text after, set source as loan words,\n"
-					+ "to tell the sotware that the translation is correct",
-					"Copy source text",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-			if (option == JOptionPane.NO_OPTION ||
-					option == JOptionPane.CANCEL_OPTION ||
-					option == JOptionPane.CLOSED_OPTION){
-				return;
+			if (!"".equals(destTextPane.getText())) {
+				int option = JOptionPane.showConfirmDialog(null,
+						"Are you sure to want erase the destination text by copying the source text ?\n"
+						+ "If you don't want change the destination text after, set source as loan words,\n"
+						+ "to tell the sotware that the translation is correct",
+						"Copy source text",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (option == JOptionPane.NO_OPTION ||
+						option == JOptionPane.CANCEL_OPTION ||
+						option == JOptionPane.CLOSED_OPTION){
+					return;
+				}
 			}
 			destTextPane.setText(sourceTextPane.getText());
 		});
