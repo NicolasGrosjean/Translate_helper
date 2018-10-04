@@ -116,10 +116,10 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		TranslatedEntry nextEntry = getNextEntryToTranslate();
 		allLines.sort(new SourceSorter());
 		int sourceSaveLineNumber = saveXMLFile(getFilePath(sourceLanguage), sourceLanguage.getLocale().toString(),
-				allLines, true, entryToSave);
+				sourceLanguage.getName(), allLines, true, entryToSave);
 		allLines.sort(new DestSorter());
 		int destSaveLineNumber = saveXMLFile(getFilePath(destinationLanguage), destinationLanguage.getLocale().toString(),
-				allLines, false, entryToSave);
+				destinationLanguage.getName(), allLines, false, entryToSave);
 		
 		// Update line number in memory
 		if (sourceSaveLineNumber != -1) {
@@ -130,10 +130,10 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		return nextEntry;
 	}
 	
-	private int saveXMLFile(String filePath, String langCode, List<PHParsedEntry> entries,
-			boolean source, TranslatedEntry missingEntryTosave) {
+	private int saveXMLFile(String filePath, String langCode, String langName,
+			List<PHParsedEntry> entries, boolean source, TranslatedEntry missingEntryTosave) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(getHeader(langCode, name));
+		builder.append(getHeader(langCode, name, langName));
 		builder.append("\n");
 		int lineNumber = 2;
 		boolean entryToSaveOverrided = false;
@@ -211,10 +211,16 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		return list.iterator();
 	}
 	
-	public static String getHeader(String langCode, String name) {
-		return "<Database>\n\t<GameDBStringTable ID=\"LOC_"
-				+ langCode.toUpperCase() + "_" + name + "\">\n\t\t<LanguageCode>"
-				+ langCode + "</LanguageCode>\n\t\t<LocalizedStrings>";
+	public static String getHeader(String langCode, String fileName, String languageName) {
+		String contributor = "en".equals(langCode) ? "Oxymoron Games" : "Scribio";
+		return "<Database>\n"
+				+ "\t<GameDBStringTable ID=\"LOC_" + langCode.toUpperCase() + "_" + fileName + "\">\n\n"
+				+ "\t\t<LanguageCode>" + langCode + "</LanguageCode>\n"
+				+ "\t\t<LanguageNameLocalized>" + languageName + "</LanguageNameLocalized>\n\n"
+		        + "\t\t<Contributors>\n"
+				+ "\t\t\t<Name>" + contributor + "</Name>\n"
+		        + "\t\t</Contributors>\n\n"
+				+ "\t\t<LocalizedStrings>";
 	}
 	
 	public static String getFooter() {
