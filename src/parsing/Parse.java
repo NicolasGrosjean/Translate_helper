@@ -628,6 +628,7 @@ public class Parse {
 				parsedFile.addLineToTranslate(entry, ParsedEntry.missingText);
 				sourceLineNumber++;
 			}
+			parsedFile.setUsefulLineNumber(sourceLineNumber);
 		} else if (!sourceFile.exists() && destinationFile.exists()) {
 			Element root = null;
 			try {
@@ -649,6 +650,7 @@ public class Parse {
 				parsedFile.addMissingSourceLine(entry);
 				destinationLineNumber++;
 			}
+			parsedFile.setUsefulLineNumber(destinationLineNumber);
 		} else {
 			// Map destination texts
 			Map<String, TextAndNumbers> destTexts = new HashMap<>();
@@ -713,7 +715,7 @@ public class Parse {
 				}
 				sourceLineNumber++;
 			}
-			
+			parsedFile.setUsefulLineNumber(Math.max(sourceLineNumber, destinationLineNumber));			
 		}
 		return parsedFile;
 	}

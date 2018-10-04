@@ -166,7 +166,11 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		}
 		return entryToSaveOverrided ? -1 : lineNumber;
 	}
-
+	
+	public void setUsefulLineNumber(int usefulLineNumber) {
+		this.usefulLineNumber = usefulLineNumber;
+	}
+	
 	@Override
 	public String getMissingSourceText() {
 		StringBuilder builder = new StringBuilder();
