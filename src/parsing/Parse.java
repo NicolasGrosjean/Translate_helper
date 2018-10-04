@@ -90,7 +90,7 @@ public class Parse {
 				String name = getFileNameWithoutLanguageXML(fileName);
 				if (name.equals(""))
 				{
-					System.err.println(filePath + " was bad named. It doesn't respect format : dir/StringTableLanguage_name.xml");
+					System.err.println(filePath + " was bad named. It doesn't respect format : dir/StringTableLanguageName.xml");
 					continue;
 				}
 				if (!parsedTroncatedFiles.contains(name))
@@ -765,26 +765,18 @@ public class Parse {
 	
 	/**
 	 * Remove the language form file name
-	 * Ex : StringTableEnglish_Tutorial.xml => Tutorial
+	 * Ex : StringTableEnTutorial.xml => Tutorial
 	 * 
 	 * Return "" in case of bad format
 	 * 
-	 * @param filePath
+	 * @param fileName
 	 * @return
 	 */
-	private static String getFileNameWithoutLanguageXML(String filePath) {
-		String[] split = filePath.split("_");
-		// Concatenate all except the first one
-		String res = "";
-		for (int i = 1; i < split.length; i++)
-		{
-			if(i > 1)
-			{
-				res = res.concat("_");
-			}
-			res = res.concat(split[i]);
+	private static String getFileNameWithoutLanguageXML(String fileName) {
+		if ((!fileName.startsWith("StringTable")) || (fileName.length() < "StringTableEnA".length())) {
+			return "";
 		}
-		return res.split("[.]")[0];
+		return fileName.substring("StringTableEn".length()).split("[.]")[0];
 	}
 	
 	/**

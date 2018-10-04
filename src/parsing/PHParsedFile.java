@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import translator.ITranslator;
 import translator.TranslatedEntry;
 import translator.TranslatorParsedFile;
@@ -61,7 +63,7 @@ public class PHParsedFile extends TranslatorParsedFile  {
 	
 	public String getFilePath(Language language)
 	{
-		return this.directory + "\\StringTable" + language.getName() + "_" + this.name + ".xml";
+		return this.directory + "\\StringTable" + StringUtils.capitalize(language.getLocale().toString()) + this.name + ".xml";
 	}
 	
 	public PHParsedEntry addLine(String id, String sourceText, String destinationText,
