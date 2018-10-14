@@ -102,10 +102,10 @@ public class TestSavingPH {
 		
 		// Create source file corresponding to these data
 		String[] sourceData = {PHParsedFile.getHeader("en", fileName, "English") + "\n" +
-				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
-				PHParsedFile.getLine("ID_2", oldSource) + "\n" +
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				file.getLine("ID_1", sourceText1) + "\n" +
+				file.getLine("ID_2", oldSource) + "\n" +
+				file.getLine("ID_3", sourceText3) + "\n" +
+				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
@@ -136,10 +136,10 @@ public class TestSavingPH {
 		
 		// Check that is what we expect
 		String[] expected = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" + 
-				PHParsedFile.getLine("ID_1", "") + "\n" + 
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
-				PHParsedFile.getLine("ID_3", "") + "\n" + 
-				PHParsedFile.getLine("ID_4", "") + "\n" + 
+				file.getLine("ID_1", "") + "\n" + 
+				file.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
+				file.getLine("ID_3", "") + "\n" + 
+				file.getLine("ID_4", "") + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -157,10 +157,10 @@ public class TestSavingPH {
 		}
 		// Check also the source
 		String[] expectedSource = (PHParsedFile.getHeader("en", fileName, "English") + "\n" + 
-				PHParsedFile.getLine("ID_1", sourceText1) + "\n" + 
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				file.getLine("ID_1", sourceText1) + "\n" + 
+				file.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
+				file.getLine("ID_3", sourceText3) + "\n" + 
+				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -198,10 +198,10 @@ public class TestSavingPH {
 		// Create source file corresponding to these data
 		String[] sourceData = { PHParsedFile.getHeader("en", fileName, "English") + "\n" +
 				"\t<!--COMMENT--> \n" +
-				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
-				PHParsedFile.getLine("ID_2", oldSource) + "\n" +
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				file.getLine("ID_1", sourceText1) + "\n" +
+				file.getLine("ID_2", oldSource) + "\n" +
+				file.getLine("ID_3", sourceText3) + "\n" +
+				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
@@ -235,10 +235,10 @@ public class TestSavingPH {
 		
 		// Check that is what we expect
 		String[] expected = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" +
-				PHParsedFile.getLine("ID_1", entryToSave.getDestination() + "2") + "\n" +
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination() + "3") + "\n" +
-				PHParsedFile.getLine("ID_3", "") + "\n" + 
-				PHParsedFile.getLine("ID_4", "") + "\n" + 
+				file.getLine("ID_1", entryToSave.getDestination() + "2") + "\n" +
+				file.getLine(entryToSave.getId(), entryToSave.getDestination() + "3") + "\n" +
+				file.getLine("ID_3", "") + "\n" + 
+				file.getLine("ID_4", "") + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -256,10 +256,10 @@ public class TestSavingPH {
 		}
 		// Check also the source
 		String[] expectedSource = (PHParsedFile.getHeader("en", fileName, "English") + "\n" + 
-				PHParsedFile.getLine("ID_1", entryToSave.getSource() + "2") + "\n" +
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource() + "3") + "\n" + 
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				file.getLine("ID_1", entryToSave.getSource() + "2") + "\n" +
+				file.getLine(entryToSave.getId(), entryToSave.getSource() + "3") + "\n" + 
+				file.getLine("ID_3", sourceText3) + "\n" + 
+				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -299,38 +299,38 @@ public class TestSavingPH {
 			oldDest = destText2;
 			file.addLastLineToTranslate(HoI4ParsedEntry.MISSING_ENTRY, 3, "ID_2", "", oldSource, oldDest, 0, 0);
 			oldSourceLine = "";
-			oldDestLine = PHParsedFile.getLine("ID_2", destText2) + "\n";
+			oldDestLine = file.getLine("ID_2", destText2) + "\n";
 		} else if (missingDest) { // missingSource == true == missingDest has no meaning
 			oldSource = "Toto";
 			oldDest = "";
 			file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", oldSource, oldDest, 0, 0);
-			oldSourceLine = PHParsedFile.getLine("ID_2", oldSource) + "\n";
+			oldSourceLine = file.getLine("ID_2", oldSource) + "\n";
 			oldDestLine = "";
 		} else {
 			oldSource = "Toto";
 			oldDest = destText2;
 			file.addLastLineToTranslate(3, 3, "ID_2", "", oldSource, oldDest, 0, 0);
-			oldSourceLine = PHParsedFile.getLine("ID_2", oldSource) + "\n";
-			oldDestLine = PHParsedFile.getLine("ID_2", destText2) + "\n";
+			oldSourceLine = file.getLine("ID_2", oldSource) + "\n";
+			oldDestLine = file.getLine("ID_2", destText2) + "\n";
 		}
 		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3, 0, 0);
 		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4, 0, 0);
 		
 		// Create files corresponding to these data
 		String[] sourceData = { PHParsedFile.getHeader("en", fileName, "English") + "\n" +
-				PHParsedFile.getLine("ID_1", sourceText1) + "\n" +
+				file.getLine("ID_1", sourceText1) + "\n" +
 				oldSourceLine +
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" +
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" +
+				file.getLine("ID_3", sourceText3) + "\n" +
+				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		String[] destData = { PHParsedFile.getHeader("en", fileName, "English") + "\n" +
-				PHParsedFile.getLine("ID_1", destText1) + "\n" +
+				file.getLine("ID_1", destText1) + "\n" +
 				oldDestLine +
-				PHParsedFile.getLine("ID_3", destText3) + "\n" +
-				PHParsedFile.getLine("ID_4", destText4) + "\n" +
+				file.getLine("ID_3", destText3) + "\n" +
+				file.getLine("ID_4", destText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> destLines = Arrays.asList(destData);
 		Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
@@ -359,10 +359,10 @@ public class TestSavingPH {
 		
 		// Check that is what we expect
 		String[] expected = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" + 
-				PHParsedFile.getLine("ID_1", destText1) + "\n" + 
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
-				PHParsedFile.getLine("ID_3", destText3) + "\n" + 
-				PHParsedFile.getLine("ID_4", destText4) + "\n" + 
+				file.getLine("ID_1", destText1) + "\n" + 
+				file.getLine(entryToSave.getId(), entryToSave.getDestination()) + "\n" + 
+				file.getLine("ID_3", destText3) + "\n" + 
+				file.getLine("ID_4", destText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -380,10 +380,10 @@ public class TestSavingPH {
 		}
 		// Check also the source
 		String[] expectedSource = ( PHParsedFile.getHeader("en", fileName, "English") + "\n" +
-				PHParsedFile.getLine("ID_1", sourceText1) + "\n" + 
-				PHParsedFile.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
-				PHParsedFile.getLine("ID_3", sourceText3) + "\n" + 
-				PHParsedFile.getLine("ID_4", sourceText4) + "\n" + 
+				file.getLine("ID_1", sourceText1) + "\n" + 
+				file.getLine(entryToSave.getId(), entryToSave.getSource()) + "\n" + 
+				file.getLine("ID_3", sourceText3) + "\n" + 
+				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -416,14 +416,14 @@ public class TestSavingPH {
 		
 		// Create files corresponding to these data
 		String[] sourceData = { PHParsedFile.getHeader("en", fileName, "English") + "\n" +
-				PHParsedFile.getLine("ID_1", entryToSave.getSource()) + "\n" +
+				file.getLine("ID_1", entryToSave.getSource()) + "\n" +
 				PHParsedFile.getFooter(), };
 		List<String> sourceLines = Arrays.asList(sourceData);
 		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		if (!missingDest) {
 			String[] destData = {PHParsedFile.getHeader("fr", fileName, "French") + "\n" +
-					PHParsedFile.getLine("ID_1", oldDestText) + "\n" +
+					file.getLine("ID_1", oldDestText) + "\n" +
 					PHParsedFile.getFooter(), };
 			List<String> destLines = Arrays.asList(destData);
 			Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
@@ -438,7 +438,7 @@ public class TestSavingPH {
 		file.getNextEntryToTranslateAndSave(entryToSave2, sourceLanguage, destinationLanguage);
 		
 		// Check that is what we expect
-		String expected[] = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" +  PHParsedFile.getLine("ID_1", destinationText) +
+		String expected[] = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" +  file.getLine("ID_1", destinationText) +
 				"\n" +  PHParsedFile.getFooter()).split("\n");
 		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
@@ -455,7 +455,7 @@ public class TestSavingPH {
 			br.close();
 		}
 		// Check also source
-		String sourceExpected[] = (PHParsedFile.getHeader("en", fileName, "English") + "\n" + PHParsedFile.getLine("ID_1", entryToSave.getSource()) + 
+		String sourceExpected[] = (PHParsedFile.getHeader("en", fileName, "English") + "\n" + file.getLine("ID_1", entryToSave.getSource()) + 
 				"\n" + PHParsedFile.getFooter()).split("\n");
 		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));

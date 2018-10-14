@@ -24,11 +24,28 @@ import translator.TranslatorParsedFile;
  * @author NicolasGrosjean alias Mouchi
  *
  */
-public class PHParsedFile extends TranslatorParsedFile  {	
+public class PHParsedFile extends TranslatorParsedFile  {
+	/**
+	 * Character lenght of a tab
+	 */
+	private static int tabLength = 4;
+	
+	/**
+	 * Characters used with to determine tabs number
+	 */
+	private static int additionnalLenght = "<GameDBLocalizedString> <LocID></LocID>".length();
+	
 	/**
 	 * Directory of the file
 	 */
 	private String directory;
+	
+	/**
+	 * Upper bound of the maximum character length of all the keys of the file according tabs.
+	 * 
+	 * Ex: If max_key_length + additionnalLenght = 30 then max_key_length_upper_bound = 32 because 28 < 30 <= 32
+	 */
+	private int maxKeyLengthUpperBound;
 	
 	/**
 	 * List of all the lines
@@ -54,11 +71,20 @@ public class PHParsedFile extends TranslatorParsedFile  {
 	{
 		this.directory = directory;
 		this.name = name;
+		this.maxKeyLengthUpperBound = 0;
 		this.usefulLineNumber = -1;
 		this.linesToTranslate = new LinkedList<>();
 		this.missingSourceLines = new LinkedList<>();
 		this.allLines = new LinkedList<>();
 		this.allLinesById = new HashMap<>();
+	}
+	
+	private void updateMaxKeyLengthUpperBound(int keyLength) {
+		int keyLengthUpperBound = additionnalLenght + keyLength;
+		if (keyLengthUpperBound % tabLength > 0) {
+			keyLengthUpperBound += tabLength - (keyLengthUpperBound % tabLength);
+		}
+		maxKeyLengthUpperBound = Math.max(maxKeyLengthUpperBound, keyLengthUpperBound);
 	}
 	
 	public String getFilePath(Language language)
@@ -71,6 +97,7 @@ public class PHParsedFile extends TranslatorParsedFile  {
 	{
 		PHParsedEntry entry = new PHParsedEntry(sourceLineNumber, destinationLineNumber, 
 				id, sourceText, destinationText);
+		updateMaxKeyLengthUpperBound(id.length());
 		allLines.add(entry);
 		allLinesById.put(id, entry);
 		return entry;
@@ -231,8 +258,20 @@ public class PHParsedFile extends TranslatorParsedFile  {
 		return "\t\t</LocalizedStrings>\n\t</GameDBStringTable>\n</Database>";
 	}
 	
-	public static String getLine(String id, String text) {
-		return "\t\t\t<GameDBLocalizedString>\t<LocID>" + id + "</LocID>\t<Text>" + text + "</Text>\t</GameDBLocalizedString>"; 
+	public String getLine(String id, String text) {
+		return "\t\t\t<GameDBLocalizedString>\t<LocID>" + id + "</LocID>" + getTabsBetweenLocAndText(id) +
+				"<Text>" + text + "</Text>\t</GameDBLocalizedString>"; 
+	}
+	
+	private String getTabsBetweenLocAndText(String id) {
+		StringBuilder tabsBuilder = new StringBuilder();		
+		for (int i = 0; i < (maxKeyLengthUpperBound - additionnalLenght - id.length()) / tabLength; i++) {
+			tabsBuilder.append("\t");
+		}
+		if ((maxKeyLengthUpperBound - additionnalLenght - id.length()) % 4 != 0) {
+			tabsBuilder.append("\t");
+		}
+		return tabsBuilder.toString();
 	}
 	
 	private class SourceSorter implements Comparator<PHParsedEntry>{
