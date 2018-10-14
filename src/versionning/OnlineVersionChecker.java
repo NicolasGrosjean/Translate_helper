@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class OnlineVersionChecker {
 	private static String URL_APP_INFO_TXT = "https://raw.githubusercontent.com/NicolasGrosjean/Translate_helper/master/AppInfo.txt";
-	private static String VERSION = "2.7";
+	private static String VERSION = "2.8";
 	
 	private int lastestOnlineMajorVersionNumber;
 	private int lastestOnlineMinorVersionNumber;
