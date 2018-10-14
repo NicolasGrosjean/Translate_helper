@@ -108,7 +108,7 @@ public class TestSavingPH {
 				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
-		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		
 		// Skip first line to translate
@@ -141,7 +141,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", "") + "\n" + 
 				file.getLine("ID_4", "") + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFr" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -162,7 +162,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", sourceText3) + "\n" + 
 				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		fis = new FileInputStream(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -204,7 +204,7 @@ public class TestSavingPH {
 				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
-		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		
 		// Modify and save first line to translate
@@ -240,7 +240,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", "") + "\n" + 
 				file.getLine("ID_4", "") + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFr" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -261,7 +261,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", sourceText3) + "\n" + 
 				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		fis = new FileInputStream(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -324,7 +324,7 @@ public class TestSavingPH {
 				file.getLine("ID_4", sourceText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> sourceLines = Arrays.asList(sourceData);
-		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		String[] destData = { PHParsedFile.getHeader("en", fileName, "English") + "\n" +
 				file.getLine("ID_1", destText1) + "\n" +
@@ -333,7 +333,7 @@ public class TestSavingPH {
 				file.getLine("ID_4", destText4) + "\n" +
 				PHParsedFile.getFooter(),};
 		List<String> destLines = Arrays.asList(destData);
-		Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+		Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFr" + fileName + ".xml");
 		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
 		
 		// Skip first line to translate
@@ -364,7 +364,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", destText3) + "\n" + 
 				file.getLine("ID_4", destText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFr" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -385,7 +385,7 @@ public class TestSavingPH {
 				file.getLine("ID_3", sourceText3) + "\n" + 
 				file.getLine("ID_4", sourceText4) + "\n" + 
 				PHParsedFile.getFooter()).split("\n");
-		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		fis = new FileInputStream(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -419,14 +419,14 @@ public class TestSavingPH {
 				file.getLine("ID_1", entryToSave.getSource()) + "\n" +
 				PHParsedFile.getFooter(), };
 		List<String> sourceLines = Arrays.asList(sourceData);
-		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		Path sourceFiletoWtrite = Paths.get(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
 		if (!missingDest) {
 			String[] destData = {PHParsedFile.getHeader("fr", fileName, "French") + "\n" +
 					file.getLine("ID_1", oldDestText) + "\n" +
 					PHParsedFile.getFooter(), };
 			List<String> destLines = Arrays.asList(destData);
-			Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+			Path destFiletoWtrite = Paths.get(DIRECTORY + "StringTableFr" + fileName + ".xml");
 			Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
 		}
 		
@@ -440,7 +440,7 @@ public class TestSavingPH {
 		// Check that is what we expect
 		String expected[] = (PHParsedFile.getHeader("fr", fileName, "French") + "\n" +  file.getLine("ID_1", destinationText) +
 				"\n" +  PHParsedFile.getFooter()).split("\n");
-		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFrench_" + fileName + ".xml");
+		FileInputStream fis = new FileInputStream(DIRECTORY + "StringTableFr" + fileName + ".xml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -457,7 +457,7 @@ public class TestSavingPH {
 		// Check also source
 		String sourceExpected[] = (PHParsedFile.getHeader("en", fileName, "English") + "\n" + file.getLine("ID_1", entryToSave.getSource()) + 
 				"\n" + PHParsedFile.getFooter()).split("\n");
-		fis = new FileInputStream(DIRECTORY + "StringTableEnglish_" + fileName + ".xml");
+		fis = new FileInputStream(DIRECTORY + "StringTableEn" + fileName + ".xml");
 		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
 		try {
 			String line = null;
@@ -489,24 +489,24 @@ public class TestSavingPH {
 	@AfterClass
 	public static void AfterCLass()
 	{
-		new File("./test_localisation_files/ph/StringTableEnglish_save.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save2.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save2.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save3.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save3.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save4.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save4.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save5.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save5.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save6.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save6.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save7.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save7.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save8.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save8.xml").delete();
-		new File("./test_localisation_files/ph/StringTableEnglish_save9.xml").delete();
-		new File("./test_localisation_files/ph/StringTableFrench_save9.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave2.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave2.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave3.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave3.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave4.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave4.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave5.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave5.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave6.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave6.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave7.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave7.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave8.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave8.xml").delete();
+		new File("./test_localisation_files/ph/StringTableEnsave9.xml").delete();
+		new File("./test_localisation_files/ph/StringTableFrsave9.xml").delete();
 	}
 
 }
