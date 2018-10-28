@@ -299,11 +299,11 @@ public class TranslatorDialog extends JDialog {
 		
 		JPanel southPan = new JPanel(new GridLayout(1, 3, 0, 5));
 		JPanel btnPan1 = new JPanel(new GridLayout(1, 2, 0, 5));
-		btnPan1.add(loanWordBtn);
 		btnPan1.add(prevBtn);
+		btnPan1.add(goToBtn);
 		JPanel btnPan2 = new JPanel(new GridLayout(1, 2, 0, 5));
-		btnPan2.add(goToBtn);
 		btnPan2.add(nextBtn);
+		btnPan2.add(loanWordBtn);
 		southPan.add(btnPan1);
 		southPan.add(btnPan2);
 		southPan.add(nextSaveBtn);
