@@ -1,3 +1,7 @@
+AppVersion=2.9
+- Fix crash when saving a bad formatted CK2 localisation file
+- Move set loan words button to right in order to use more
+
 AppVersion=2.8
 - Adapt to new Project Hospital file name format
 - Adapt to new Project Hospital header format
