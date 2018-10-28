@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -146,8 +147,18 @@ public class CK2ParsedFile extends TranslatorParsedFile {
 		    	i++;
 		    	if (i == entryToSave.getDestLineNumber()) {
 		    		String[] localisations = line.split(";");
-		    		localisations[sourceLanguage.getDefaultColumn()] = entryToSave.getSource();
-		    		localisations[destinationLanguage.getDefaultColumn()] = entryToSave.getDestination();
+		    		if (localisations.length < 14) {
+		    			// Invalid number of semicolon. Create a new array and copy the previous into.
+		    			String[] new_localisations = new String[14];
+		    			Arrays.fill(new_localisations, "");
+		    			for (int j = 0; j < localisations.length; j++) {
+		    				new_localisations[j] = localisations[j].replaceAll("\\r", "");
+		    			}
+		    			new_localisations[13] = "x";
+		    			localisations = new_localisations;
+		    		}
+		    		localisations[sourceLanguage.getDefaultColumn()] = entryToSave.getSource().replaceAll("\\r", "");
+		    		localisations[destinationLanguage.getDefaultColumn()] = entryToSave.getDestination().replaceAll("\\r", "");
 		    		line = "";
 		    		for (String s: localisations)
 		    		{
