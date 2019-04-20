@@ -665,7 +665,7 @@ public class Window extends JFrame {
 			if (file instanceof CK2ParsedFile) {
 				filePath = directory + f.getName();
 			} else if (table.getValueAt(row, FILE_COLUMN) instanceof HoI4ParsedFile) {
-				filePath = ((HoI4ParsedFile) table.getValueAt(row, FILE_COLUMN)).getFilePath(language);
+				filePath = ((HoI4ParsedFile) table.getValueAt(row, FILE_COLUMN)).getFilePath(language, true);
 			}
 			try {
 				Desktop.getDesktop().open(new File(filePath));

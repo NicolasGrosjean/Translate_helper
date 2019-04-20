@@ -24,9 +24,10 @@ import translator.TranslatorParsedFile;
  */
 public class HoI4ParsedFile extends TranslatorParsedFile {
 	/**
-	 * Path of the file
+	 * Paths of the file
 	 */
-	private String troncatedFilePath;
+	private String sourceTroncatedFilePath;
+	private String destTroncatedFilePath;
 
 	/**
 	 * List of the lines to translate
@@ -38,17 +39,16 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 	 */
 	private LinkedList<HoI4ParsedEntry> missingSourceLines;
 	
-	public HoI4ParsedFile(String troncatedFilePath)
+	public HoI4ParsedFile(String troncatedFilePath, String name)
 	{
-		this.troncatedFilePath = troncatedFilePath;
-		int start = troncatedFilePath.lastIndexOf("\\") + 1;
-		int end = troncatedFilePath.length() - 2;
-		if (start > end)
-		{
-			this.name = "";
-		} else {
-			this.name = troncatedFilePath.substring(start, end);
-		}
+		this(troncatedFilePath, troncatedFilePath, name);
+	}
+	
+	public HoI4ParsedFile(String sourceTroncatedFilePath, String destTroncatedFilePath, String name)
+	{
+		this.sourceTroncatedFilePath = sourceTroncatedFilePath;
+		this.destTroncatedFilePath = destTroncatedFilePath;
+		this.name = name;
 		this.usefulLineNumber = -1;
 		this.linesToTranslate = new LinkedList<>();
 		this.missingSourceLines = new LinkedList<>();
@@ -77,12 +77,12 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 
 		// Save in files
 		boolean sourceMissingEntry = (entryToSave.getSourceLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
-		int sourceSaveLineNumber = saveEntryInfile(getFilePath(sourceLanguage), sourceLanguage.getCode(),
+		int sourceSaveLineNumber = saveEntryInfile(getFilePath(sourceLanguage, true), sourceLanguage.getCode(),
 				sourceMissingEntry ? entryToSave.getDestLineNumber() : entryToSave.getSourceLineNumber(),
 				sourceMissingEntry, entryToSave.getId(), entryToSave.getSource(),
 				entryInMemory.getSourceVersionNumber(), true);
 		boolean destMissingEntry = (entryToSave.getDestLineNumber() == HoI4ParsedEntry.MISSING_ENTRY);
-		int destSaveLineNumber = saveEntryInfile(getFilePath(destinationLanguage),
+		int destSaveLineNumber = saveEntryInfile(getFilePath(destinationLanguage, false),
 				destinationLanguage.getCode(),
 				destMissingEntry ? entryToSave.getSourceLineNumber() : entryToSave.getDestLineNumber(),
 				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(),
@@ -250,14 +250,18 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 						sourceVersionNumber, destinationVersionNumber));
 	}
 	
-	public String getFilePath(Language language)
+	public String getFilePath(Language language, boolean source)
 	{
-		return troncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
+		if (source) {
+			return sourceTroncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
+		} else {
+			return destTroncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
+		}
 	}
 
 	@Override
 	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage, boolean acceptAllCopies) {
 		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null, acceptAllCopies);
-		return parseObj.parseAymlFile(troncatedFilePath, true);
+		return parseObj.parseAymlFile(sourceTroncatedFilePath, destTroncatedFilePath, name, true);
 	}
 }

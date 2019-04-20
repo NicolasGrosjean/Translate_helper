@@ -33,7 +33,7 @@ public class TestNavigation {
 	@Test
 	public void testGoToWithHoI4File() throws IOException {
 		String filePath = "./test_localisation_files/ck2/save_file.csv";
-		HoI4ParsedFile file = new HoI4ParsedFile(filePath);
+		HoI4ParsedFile file = new HoI4ParsedFile(filePath, "save_file");
 		//file.setLineNumber(5);
 		file.addLastLineToTranslate(2, 2, "TRADE.0005A", "", "OK", "J'en prends note", 0, 0);
 		file.addLastLineToTranslate(4, 3, "TRADE.0005B", "", "Toto", "Titi et grosminet", 0, 0);

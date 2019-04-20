@@ -39,6 +39,8 @@ public class TestParsingHoi4 {
 				"fake_translation_l_french",
 				"non_updated_destination_l_english",
 				"non_updated_destination_l_french",
+				"replace/accepted_copy2_l_english",
+				"replace/accepted_copy2_l_french",
 				"text_comment_l_english",
 				"text_comment_l_french",
 				"text_disordered_not_translated_l_english",
@@ -54,7 +56,7 @@ public class TestParsingHoi4 {
 				"text_without_french_l_english",
 				"text_without_french_l_french",
 				"text_with_2_points_l_english",
-				"text_with_2_points_l_french"
+				"text_with_2_points_l_french",
 		};
 		Assert.assertEquals("Incorrect number of file", expected.length, filePaths.size());
 		for (int i = 0; i < expected.length; i++) {
@@ -66,6 +68,17 @@ public class TestParsingHoi4 {
 	@Test
 	public void acceptedCopy() {
 		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("accepted_copy");
+		if (f != null) {
+			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
+		} else {
+			Assert.fail("File not parsed");
+		}
+	}
+
+	@Test
+	public void acceptedCopy2() {
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("accepted_copy2");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());

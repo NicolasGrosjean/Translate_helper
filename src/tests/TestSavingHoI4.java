@@ -40,21 +40,21 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, false, false,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), entryToSave.getSourceLineNumber(),
-						entryToSave.getDestLineNumber(), entryToSave.getId()));
+						entryToSave.getDestLineNumber(), entryToSave.getId()), "save_file");
 	}
 
 	@Test
 	public void testSaveWithSpecialChar() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file2_l";
 		String destinationText = "§YReligious head suitability: $SCORE$§!";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 0, 0);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 0, 0, "save_file_2");
 	}
 
 	@Test
 	public void testSaveWithAccent() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file3_l";
 		String destinationText = "Gagné ou perdu ?";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 1, 0);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), false, 1, 0, "save_file_3");
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, true, false,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), entryToSave.getDestLineNumber(),
-						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()));		
+						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()), "save_file_4");		
 	}
 
 	@Test
@@ -72,27 +72,27 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, false, true,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), HoI4ParsedEntry.MISSING_ENTRY,
-						entryToSave.getSourceLineNumber(), entryToSave.getId()));		
+						entryToSave.getSourceLineNumber(), entryToSave.getId()), "save_file_5");		
 	}
 
 	@Test
 	public void testSaveSource() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file6_l";
-		testSaveOneLine(troncatedFilePath, "", "Changed source text", false, 0, 1);
+		testSaveOneLine(troncatedFilePath, "", "Changed source text", false, 0, 1, "save_file_6");
 	}
 
 	@Test
 	public void testWithoutDestFile() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file7_l";
 		String destinationText = "Fichier créé avec succès";
-		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true, 3, 0);
+		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true, 3, 0, "save_file_7");
 	}
 	
 	@Test
 	public void testSeveralLinesWithoutDestFile() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file8_l";
 		// Create data
-		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, "save_file8");
 		String sourceText1 = "OK";
 		String sourceText3 = "What?";
 		String sourceText4 = "Okay";
@@ -184,7 +184,7 @@ public class TestSavingHoI4 {
 	public void testSeveralLinesWithoutDestFileWithComment() throws IOException {
 		String troncatedFilePath = "./test_localisation_files/hoi4/save_file9_l";
 		// Create data
-		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, "save_file9");
 		String sourceText1 = "OK";
 		String sourceText3 = "What?";
 		String sourceText4 = "Okay";
@@ -278,10 +278,10 @@ public class TestSavingHoI4 {
 	}
 	
 	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
-			boolean missingDest, TranslatedEntry entryToSave)
+			boolean missingDest, TranslatedEntry entryToSave, String name)
 			throws IOException {
 		// Create data
-		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, name);
 		String sourceText1 = "OK";
 		String sourceText3 = "What?";
 		String sourceText4 = "Okay";
@@ -399,9 +399,9 @@ public class TestSavingHoI4 {
 	
 	private void testSaveOneLine(String troncatedFilePath, String destinationText,
 			String sourceText, boolean missingDest, int sourceVersionNumber,
-			int destinationVersionNumber) throws IOException {
+			int destinationVersionNumber, String name) throws IOException {
 		// Create data
-		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath);
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, name);
 		String oldDestText = "TOTO";
 		String id = "ID_1";
 		if (missingDest) {

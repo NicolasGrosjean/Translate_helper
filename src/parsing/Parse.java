@@ -67,23 +67,38 @@ public class Parse {
 		acceptedLoanword = readList(acceptedLoanwordFile);
 		this.acceptAllCopies = acceptAllCopies;
 		Set<String> parsedTroncatedFiles = new HashSet<>();
+		Map<String, String> sourceFiles = new HashMap<>();
+		Map<String, String> destFiles = new HashMap<>();
 		for (String filePath : filePaths) {
 			if (filePath.endsWith(".csv")) {
 				files.addLast(parseAcsvFile(filePath));
 			} else if (filePath.endsWith(".yml")){
-				String troncated = getFilePathWithoutLanguageYML(filePath);
+				String[] troncatedAndLanguage = getFilePathWithoutLanguageYML(filePath);
+				String troncated = troncatedAndLanguage[0];
+				String language = troncatedAndLanguage[1];
 				if (troncated.equals(""))
 				{
 					System.err.println(filePath + " was bad named. It doesn't respect format : dir/name_l_language.yml");
 					continue;
 				}
-				if (!parsedTroncatedFiles.contains(troncated))
+				int start = troncated.lastIndexOf("\\") + 1;
+				int end = troncated.length() - 2;
+				String name = troncated.substring(start, end);
+				if (this.sourceLanguage.getName().toLowerCase().equals(language)) {
+					sourceFiles.put(name, troncated);
+				} else {
+					destFiles.put(name, troncated);
+				}
+				if (!parsedTroncatedFiles.contains(name) && sourceFiles.containsKey(name)
+						&& destFiles.containsKey(name))
 				{
-					HoI4ParsedFile parsedFile = parseAymlFile(troncated);
+					HoI4ParsedFile parsedFile = parseAymlFile(sourceFiles.get(name), destFiles.get(name), name);
 					if (parsedFile != null) {
 						files.addLast(parsedFile);
 					}
-					parsedTroncatedFiles.add(troncated);
+					parsedTroncatedFiles.add(name);
+					sourceFiles.remove(name);
+					destFiles.remove(name);
 				}
 			} else if (filePath.endsWith(".xml")) {
 				String fileName = new File(filePath).getName();
@@ -101,6 +116,18 @@ public class Parse {
 					}
 					parsedTroncatedFiles.add(name);
 				}
+			}
+		}
+		for (String name : sourceFiles.keySet()) {
+			HoI4ParsedFile parsedFile = parseAymlFile(sourceFiles.get(name), "", name);
+			if (parsedFile != null) {
+				files.addLast(parsedFile);
+			}
+		}
+		for (String name : destFiles.keySet()) {
+			HoI4ParsedFile parsedFile = parseAymlFile("", destFiles.get(name), name);
+			if (parsedFile != null) {
+				files.addLast(parsedFile);
 			}
 		}
 	}
@@ -208,12 +235,18 @@ public class Parse {
 		if (!fileDirectory.isDirectory()) {
 			throw new IllegalArgumentException(directoryPath + " is not a directory");
 		}
+		addRecursiveFile(fileDirectory, filePaths);
+		return filePaths;
+	}
+	
+	private static void addRecursiveFile(File fileDirectory, LinkedList<String> filePaths) {
 		for (File f : fileDirectory.listFiles()) {
 			if (f.isFile()) {
-				filePaths.addLast(f.getPath());;
+				filePaths.addLast(f.getPath());
+			} else {
+				addRecursiveFile(f, filePaths);
 			}
 		}
-		return filePaths;
 	}
 
 	private CK2ParsedFile parseAcsvFile(String filePath) {
@@ -333,18 +366,18 @@ public class Parse {
 		return null;
 	}
 
-	private HoI4ParsedFile parseAymlFile(String troncatedFilePath) {
-		return parseAymlFile(troncatedFilePath, false);
+	private HoI4ParsedFile parseAymlFile(String sourceTroncatedFilePath, String destTroncatedFilePath, String name) {
+		return parseAymlFile(sourceTroncatedFilePath, destTroncatedFilePath, name, false);
 	}
 
-	public HoI4ParsedFile parseAymlFile(String troncatedFilePath, boolean returnAllLines) {
-		HoI4ParsedFile parsedFile = new HoI4ParsedFile(troncatedFilePath);
-		File sourceFile = new File(parsedFile.getFilePath(sourceLanguage));
-		File destinationFile = new File(parsedFile.getFilePath(destinationLanguage));
+	public HoI4ParsedFile parseAymlFile(String sourceTroncatedFilePath, String destTroncatedFilePath, String name, boolean returnAllLines) {
+		HoI4ParsedFile parsedFile = new HoI4ParsedFile(sourceTroncatedFilePath, destTroncatedFilePath, name);
+		File sourceFile = new File(parsedFile.getFilePath(sourceLanguage, true));
+		File destinationFile = new File(parsedFile.getFilePath(destinationLanguage, false));
 		if (!sourceFile.exists() && !destinationFile.exists()) {
 			// TODO Manage better this error
-			System.err.println(parsedFile.getFilePath(sourceLanguage) +
-					" and " + parsedFile.getFilePath(destinationLanguage)
+			System.err.println(parsedFile.getFilePath(sourceLanguage, true) +
+					" and " + parsedFile.getFilePath(destinationLanguage, false)
 					+ " don't exist");
 			return null;
 		} else if (sourceFile.exists() && !destinationFile.exists()) {
@@ -371,7 +404,7 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage), lineNumber);
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage, true), lineNumber);
 					if (text == null) {
 						continue;
 					}
@@ -422,7 +455,7 @@ public class Parse {
 					usefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage, false),
 							lineNumber);
 					if (text == null) {
 						continue;
@@ -476,7 +509,7 @@ public class Parse {
 					destUsefulLineNumber++;
 					String[] splitted = unCommented.split(":");
 					String id = splitted[0].trim();
-					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage),
+					String text = getTextFromSplitted(splitted, parsedFile.getFilePath(destinationLanguage, false),
 							lineNumber);
 					int versionNumber = 0;
 					Scanner scanner = new Scanner(splitted[1]);
@@ -529,7 +562,7 @@ public class Parse {
 						continue;
 					}
 					String id = splitted[0].trim();
-					String sourceText = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage),
+					String sourceText = getTextFromSplitted(splitted, parsedFile.getFilePath(sourceLanguage, true),
 							sourceLineNumber);
 					int sourceVersionNumber = 0;
 					Scanner scanner = new Scanner(splitted[1]);
@@ -744,25 +777,25 @@ public class Parse {
 	 * @param filePath
 	 * @return
 	 */
-	private static String getFilePathWithoutLanguageYML(String filePath) {
+	private static String[] getFilePathWithoutLanguageYML(String filePath) {
 		String[] split = filePath.split("_");
 		// Concatenate all except the last one
-		String res = "";
+		String troncatedFilePath = "";
 		for (int i = 0; i < split.length - 1; i++)
 		{
 			if( i > 0)
 			{
-				res = res.concat("_");
+				troncatedFilePath = troncatedFilePath.concat("_");
 			}
-			res = res.concat(split[i]);
+			troncatedFilePath = troncatedFilePath.concat(split[i]);
 			if (split[i].equals("l"))
 			{
 				// The beginning of language is found
-				return res;
+				return new String[] {troncatedFilePath, split[i+1].split("\\.")[0]};
 			}
 		}
 		// Language prefix l_ not found
-		return "";
+		return new String[] {"", ""};
 	}
 	
 	/**
