@@ -1,0 +1,116 @@
+<Database>
+	<GameDBStringTable ID="LOC_EN_Achievements">
+
+		<LanguageCode>en</LanguageCode>
+		<LanguageNameLocalized>English</LanguageNameLocalized>
+
+		<Contributors>
+			<Name>Oxymoron Games</Name>
+		</Contributors>
+
+		<LocalizedStrings>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PLACE_OBJECT</LocID>	<Text>That's the spot</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PLACE_OBJECT_DESCRIPTION</LocID>	<Text>Place your first object (single objects only).</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MORE_SPOTS</LocID>	<Text>That's more spots</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MORE_SPOTS_DESCRIPTION</LocID>	<Text>Place 100 objects (single objects only).</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_All_SPOTS</LocID>	<Text>That's all the spots</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_All_SPOTS_DESCRIPTION</LocID>	<Text>Place 1000 objects (single objects only).</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_VERY_NICE</LocID>	<Text>Very, nice, beautiful</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_VERY_NICE_DESCRIPTION</LocID>	<Text>Place 100 decorations.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GARDENER</LocID>	<Text>Gardener</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GARDENER_DESCRIPTION</LocID>	<Text>Place 30 trees.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_I_SEE_YOU</LocID>	<Text>I see you</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_I_SEE_YOU_DESCRIPTION</LocID>	<Text>Place 30 eye test posters.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOING_UP</LocID>	<Text>Going up</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOING_UP_DESCRIPTION</LocID>	<Text>Build first floor.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOP_FLOOR</LocID>	<Text>Top floor please!</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOP_FLOOR_DESCRIPTION</LocID>	<Text>Build maximum amount of floors.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BUILDER</LocID>	<Text>Builder</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BUILDER_DESCRIPTION</LocID>	<Text>Build and equip your first room.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CRUSHER</LocID>	<Text>Crusher</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CRUSHER_DESCRIPTION</LocID>	<Text>Delete your first room.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MOVER</LocID>	<Text>Mover</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MOVER_DESCRIPTION</LocID>	<Text>Move 50 objects.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GREAT_WALL</LocID>	<Text>Great wall of hospital</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GREAT_WALL_DESCRIPTION</LocID>	<Text>Build over 1000 tiles of walls.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOILETS</LocID>	<Text>It's me, Marius!</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOILETS_DESCRIPTION</LocID>	<Text>Place 30 toilets.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LITTER_FREE</LocID>	<Text>Litter free</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LITTER_FREE_DESCRIPTION</LocID>	<Text>Place 30 trashcans.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BIOHAZARD</LocID>	<Text>Resident hospital</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BIOHAZARD_DESCRIPTION</LocID>	<Text>Place 30 bio-hazard trashcans.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_INSTANT_HOSPITAL</LocID>	<Text>Instant hospital</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_INSTANT_HOSPITAL_DESCRIPTION</LocID>	<Text>Place 15 prefabs.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SHALL_NOT_PASS</LocID>	<Text>You shall not pass!!</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SHALL_NOT_PASS_DESCRIPTION</LocID>	<Text>Build functioning room without doors.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HOSPITAL_51</LocID>	<Text>Hospital 51</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HOSPITAL_51_DESCRIPTION</LocID>	<Text>Build 10 satellites.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_COMPLETE_HOSPITAL</LocID>	<Text>Complete</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_COMPLETE_HOSPITAL_DESCRIPTION</LocID>	<Text>Build hospital with every department.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_FIRST_EMPLOYEE</LocID>	<Text>You are hired</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_FIRST_EMPLOYEE_DESCRIPTION</LocID>	<Text>Hire your first employee.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_STAFF</LocID>	<Text>Manager</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_STAFF_DESCRIPTION</LocID>	<Text>Hire 20 employees.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_FIRE_STAFF</LocID>	<Text>On fire(d)</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_FIRE_STAFF_DESCRIPTION</LocID>	<Text>Fire 20 employees.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SIGN_INSURANCE</LocID>	<Text>I insure you</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SIGN_INSURANCE_DESCRIPTION</LocID>	<Text>Sing up insurance company.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_BOSS</LocID>	<Text>Right boss</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_BOSS_DESCRIPTION</LocID>	<Text>Assign chief doctor with good boss perk.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_FIRST_PATIENT</LocID>	<Text>Doctor</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_FIRST_PATIENT_DESCRIPTION</LocID>	<Text>Treat your first patient.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_PATIENTS</LocID>	<Text>House like doctor</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_PATIENTS_DESCRIPTION</LocID>	<Text>Treat 1000 patients</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BLOOD_TEST_SAMPLES</LocID>	<Text>Dr. Acula</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BLOOD_TEST_SAMPLES_DESCRIPTION</LocID>	<Text>Take blood from 50 patients under your care.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_X_RAY_TESTS</LocID>	<Text>Supermaybeman</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_X_RAY_TESTS_DESCRIPTION</LocID>	<Text>Have 30 patients under your care undergo Xray examination.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEFT_DOCTOR</LocID>	<Text>Doctor Left</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEFT_DOCTOR_DESCRIPTION</LocID>	<Text>Select wrong diagnose 20 times.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_DOCTOR</LocID>	<Text>Doctor Right</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_DOCTOR_DESCRIPTION</LocID>	<Text>Select correct diagnose 20 times.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MY_TURN</LocID>	<Text>My turn</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MY_TURN_DESCRIPTION</LocID>	<Text>Take over 30 patients.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HELLO_ANYBODY</LocID>	<Text>Hello? Anybody?</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HELLO_ANYBODY_DESCRIPTION</LocID>	<Text>Take over a patient from clinic and have him waiting for some action more then two game hours.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SENT_PATIENTS_HOME</LocID>	<Text>Homer</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SENT_PATIENTS_HOME_DESCRIPTION</LocID>	<Text>Send 20 patients home.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BANKER</LocID>	<Text>Banker</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BANKER_DESCRIPTION</LocID>	<Text>Have 700 000$ in your budget.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SPENDER</LocID>	<Text>Spender</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SPENDER_DESCRIPTION</LocID>	<Text>Spend over 1 000 000$.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_JANITOR</LocID>	<Text>Dr. Jan Itor</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_JANITOR_DESCRIPTION</LocID>	<Text>Have your janitors clean 10000 tiles.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_DONT_COLLAPSE</LocID>	<Text>Please do not die in the corridors!</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_DONT_COLLAPSE_DESCRIPTION</LocID>	<Text>Let 10 clinic patients collapse.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_ALCOHOLIC</LocID>	<Text>Wait, is this a bar?</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_ALCOHOLIC_DESCRIPTION</LocID>	<Text>Hire 5 staff members with alcoholic perk.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PRODUCTIVE_DAY</LocID>	<Text>Productive day</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PRODUCTIVE_DAY_DESCRIPTION</LocID>	<Text>Play for 8 hours.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CMS</LocID>	<Text>CMS approval</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CMS_DESCRIPTION</LocID>	<Text>Get 5 prestige stars.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_POLYGOT</LocID>	<Text>Polygot</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_POLYGOT_DESCRIPTION</LocID>	<Text>Change the language of the game at least 3 times.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TWINKLE</LocID>	<Text>Twinkle twinkle little star</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TWINKLE_DESCRIPTION</LocID>	<Text>Have only one prestige star.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_EAGLE</LocID>	<Text>EAAAAGLEEEE</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_EAGLE_DESCRIPTION</LocID>	<Text>Rotate an object 4 times before placing it.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_1</LocID>	<Text>Intern</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_1_DESCRIPTION</LocID>	<Text>Complete level 1.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_2</LocID>	<Text>Resident</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_2_DESCRIPTION</LocID>	<Text>Complete level 2.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_3</LocID>	<Text>Attending</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_3_DESCRIPTION</LocID>	<Text>Complete level 3.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_4</LocID>	<Text>Fellow</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_4_DESCRIPTION</LocID>	<Text>Complete level 4.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_5</LocID>	<Text>Specialist</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_5_DESCRIPTION</LocID>	<Text>Complete level 5.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_6</LocID>	<Text>Chief of Hospital</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_6_DESCRIPTION</LocID>	<Text>Complete level 6.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOOD_CREDIT</LocID>	<Text>Good credit</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOOD_CREDIT_DESCRIPTION</LocID>	<Text>Return money to the bank in 20 days in Level 5.</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CHIEF_OF_CHIEFS</LocID>	<Text>Chief of chiefs</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CHIEF_OF_CHIEFS_DESCRIPTION</LocID>	<Text>Complete both objectives in level 6.</Text>	</GameDBLocalizedString>
+		</LocalizedStrings>
+	</GameDBStringTable>
+</Database>

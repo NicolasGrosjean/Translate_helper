@@ -1,0 +1,116 @@
+<Database>
+	<GameDBStringTable ID="LOC_FR_Achievements">
+
+		<LanguageCode>fr</LanguageCode>
+		<LanguageNameLocalized>French</LanguageNameLocalized>
+
+		<Contributors>
+			<Name>Scribio/Name>
+		</Contributors>
+
+		<LocalizedStrings>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PLACE_OBJECT</LocID>	<Text>Coucou</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PLACE_OBJECT_DESCRIPTION</LocID>	<Text>Coucou</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MORE_SPOTS</LocID>	<Text>O</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MORE_SPOTS_DESCRIPTION</LocID>	<Text>poa</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_All_SPOTS</LocID>	<Text>afaf</Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_All_SPOTS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_VERY_NICE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_VERY_NICE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GARDENER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GARDENER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_I_SEE_YOU</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_I_SEE_YOU_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOING_UP</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOING_UP_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOP_FLOOR</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOP_FLOOR_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BUILDER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BUILDER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CRUSHER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CRUSHER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MOVER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MOVER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GREAT_WALL</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GREAT_WALL_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOILETS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TOILETS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LITTER_FREE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LITTER_FREE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BIOHAZARD</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BIOHAZARD_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_INSTANT_HOSPITAL</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_INSTANT_HOSPITAL_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SHALL_NOT_PASS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SHALL_NOT_PASS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HOSPITAL_51</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HOSPITAL_51_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_COMPLETE_HOSPITAL</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_COMPLETE_HOSPITAL_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_FIRST_EMPLOYEE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_FIRST_EMPLOYEE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_STAFF</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HIRE_STAFF_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_FIRE_STAFF</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_FIRE_STAFF_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SIGN_INSURANCE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SIGN_INSURANCE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_BOSS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_BOSS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_FIRST_PATIENT</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_FIRST_PATIENT_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_PATIENTS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CURE_PATIENTS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BLOOD_TEST_SAMPLES</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BLOOD_TEST_SAMPLES_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_X_RAY_TESTS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_X_RAY_TESTS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEFT_DOCTOR</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEFT_DOCTOR_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_DOCTOR</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_RIGHT_DOCTOR_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MY_TURN</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_MY_TURN_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HELLO_ANYBODY</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_HELLO_ANYBODY_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SENT_PATIENTS_HOME</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SENT_PATIENTS_HOME_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BANKER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_BANKER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SPENDER</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_SPENDER_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_JANITOR</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_JANITOR_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_DONT_COLLAPSE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_DONT_COLLAPSE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_ALCOHOLIC</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_ALCOHOLIC_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PRODUCTIVE_DAY</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_PRODUCTIVE_DAY_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CMS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CMS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_POLYGOT</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_POLYGOT_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TWINKLE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_TWINKLE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_EAGLE</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_EAGLE_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_1</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_1_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_2</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_2_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_3</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_3_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_4</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_4_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_5</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_5_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_6</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_LEVEL_6_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOOD_CREDIT</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_GOOD_CREDIT_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CHIEF_OF_CHIEFS</LocID>	<Text></Text>	</GameDBLocalizedString>
+			<GameDBLocalizedString>	<LocID>ACHIEVEMENT_CHIEF_OF_CHIEFS_DESCRIPTION</LocID>	<Text></Text>	</GameDBLocalizedString>
+		</LocalizedStrings>
+	</GameDBStringTable>
+</Database>
