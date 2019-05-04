@@ -42,6 +42,7 @@ public class TestParsingIR {
 				"text_without_english_l_english",
 				"text_without_french_l_english",
 				"text_with_2_points_l_english",
+				"text_with_hashtag_l_english",
 		};
 		Assert.assertEquals("Incorrect number of file", expected.length, filePaths.size());
 		for (int i = 0; i < expected.length; i++) {
@@ -68,6 +69,7 @@ public class TestParsingIR {
 				"text_without_english_l_french",
 				"text_without_french_l_french",
 				"text_with_2_points_l_french",
+				"text_with_hashtag_l_french",
 		};
 		Assert.assertEquals("Incorrect number of file", expected.length, filePaths.size());
 		for (int i = 0; i < expected.length; i++) {
@@ -290,5 +292,35 @@ public class TestParsingIR {
 		} else {
 			Assert.fail("File not parsed");
 		}
-	}	
+	}
+	
+	@Test
+	public void textWithHashtag() {
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("text_with_hashtag");
+		if (f != null) {
+			Assert.assertEquals("It should have 3 lines to translate", 2, f.getNumberLineToTranslate());
+			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 3, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 3, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid source text", "@trigger_no! All #Y Saxon#! nations are our subjects, or we are the only #Y Saxon nation.", e.getSourceText());
+			Assert.assertEquals("Invalid dest text", "@trigger_no! All #Y Saxon#! nations are our subjects, or we are the only #Y Saxon nation.", e.getDestinationText());
+			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
+			
+			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
+			e = (HoI4ParsedEntry) lineToTranslateIterator.next();
+			Assert.assertEquals("Invalid source line number", 5, e.getSourceLineNumber());
+			Assert.assertEquals("Invalid destination line number", 5, e.getDestinationLineNumber());
+			Assert.assertEquals("Invalid source text", "#Y Francia#! must NOT exist.", e.getSourceText());
+			Assert.assertEquals("Invalid dest text", "#Y Francia#! must NOT exist.", e.getDestinationText());
+			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
+		} else {
+			Assert.fail("File not parsed");
+		}
+	}
 }

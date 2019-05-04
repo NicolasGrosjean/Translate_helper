@@ -1,0 +1,5 @@
+﻿l_french:
+ #Saxonia
+ any_saxonian_country_tt:0 "@trigger_no! All #Y Saxon#! nations are our subjects, or we are the only #Y Saxon nation."
+ # Francia
+ formable_not_francia_exists:0 "#Y Francia#! must NOT exist."
