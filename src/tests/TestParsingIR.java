@@ -308,7 +308,7 @@ public class TestParsingIR {
 			Assert.assertEquals("Invalid destination line number", 3, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid source text", "@trigger_no! All #Y Saxon#! nations are our subjects, or we are the only #Y Saxon nation.", e.getSourceText());
 			Assert.assertEquals("Invalid dest text", "@trigger_no! All #Y Saxon#! nations are our subjects, or we are the only #Y Saxon nation.", e.getDestinationText());
-			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			Assert.assertEquals("Invalid ID", "any_saxonian_country_tt", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 			
 			Assert.assertEquals("Nothing in the iterator", true, lineToTranslateIterator.hasNext());
@@ -317,7 +317,7 @@ public class TestParsingIR {
 			Assert.assertEquals("Invalid destination line number", 5, e.getDestinationLineNumber());
 			Assert.assertEquals("Invalid source text", "#Y Francia#! must NOT exist.", e.getSourceText());
 			Assert.assertEquals("Invalid dest text", "#Y Francia#! must NOT exist.", e.getDestinationText());
-			Assert.assertEquals("Invalid ID", "TEXT", e.getID());
+			Assert.assertEquals("Invalid ID", "formable_not_francia_exists", e.getID());
 			Assert.assertEquals("Invalid reason", ParsedEntry.copyText, e.getReason());
 		} else {
 			Assert.fail("File not parsed");

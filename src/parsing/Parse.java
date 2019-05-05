@@ -391,11 +391,14 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					String[] splittedComments = sLine.split("#");
-					if (splittedComments.length == 0) {
-						continue;
+					String unCommented = sLine;
+					if (sLine.contains("#") && ( !sLine.contains("\"") || (sLine.indexOf("#") < sLine.indexOf("\"")))) {
+						String[] splittedComments = sLine.split("#");
+						if (splittedComments.length == 0) {
+							continue;
+						}
+						unCommented = splittedComments[0];
 					}
-					String unCommented = splittedComments[0];
 					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
 						// The first line which define the language doesn't interest us, like comments
 						// or empty line
@@ -442,11 +445,14 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					String[] splittedComments = sLine.split("#");
-					if (splittedComments.length == 0) {
-						continue;
+					String unCommented = sLine;
+					if (sLine.contains("#") && ( !sLine.contains("\"") || (sLine.indexOf("#") < sLine.indexOf("\"")))) {
+						String[] splittedComments = sLine.split("#");
+						if (splittedComments.length == 0) {
+							continue;
+						}
+						unCommented = splittedComments[0];
 					}
-					String unCommented = splittedComments[0];
 					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
 						// The first line which define the language doesn't interest us, like comments
 						// or empty line
@@ -496,11 +502,14 @@ public class Parse {
 				while (line.hasNext()) {
 					lineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					String[] splittedComments = sLine.split("#");
-					if (splittedComments.length == 0) {
-						continue;
+					String unCommented = sLine;
+					if (sLine.contains("#") && ( !sLine.contains("\"") || (sLine.indexOf("#") < sLine.indexOf("\"")))) {
+						String[] splittedComments = sLine.split("#");
+						if (splittedComments.length == 0) {
+							continue;
+						}
+						unCommented = splittedComments[0];
 					}
-					String unCommented = splittedComments[0];
 					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
 						// The first line which define the language doesn't interest us, like comments
 						// or empty line
@@ -546,11 +555,14 @@ public class Parse {
 				while (line.hasNext()) {
 					sourceLineNumber++;
 					String sLine = line.next().replace("\uFEFF", "");
-					String[] splittedComments = sLine.split("#");
-					if (splittedComments.length == 0) {
-						continue;
+					String unCommented = sLine;
+					if (sLine.contains("#") && ( !sLine.contains("\"") || (sLine.indexOf("#") < sLine.indexOf("\"")))) {
+						String[] splittedComments = sLine.split("#");
+						if (splittedComments.length == 0) {
+							continue;
+						}
+						unCommented = splittedComments[0];
 					}
-					String unCommented = splittedComments[0];
 					if (unCommented.startsWith("l_") || !unCommented.contains(":")) {
 						// The first line which define the language doesn't interest us, like comments
 						// or empty line
@@ -761,7 +773,7 @@ public class Parse {
 		String expr = expression.replace("\r", "").replace("\n", "");
 		if (expr.equals("")) {
 			return ParsedEntry.missingText;
-		} else if (fakeTranslation.contains(expr) || expr.contains("#")) {
+		} else if (fakeTranslation.contains(expr)) {
 			return ParsedEntry.fakeText;
 		} else {
 			return "";
