@@ -1,3 +1,7 @@
+AppVersion=3.0
+- Add Imperator Rome compatibility
+- Support multi directory localisation
+
 AppVersion=2.9
 - Fix crash when saving a bad formatted CK2 localisation file
 - Move set loan words button to right in order to use more
