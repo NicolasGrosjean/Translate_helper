@@ -385,8 +385,10 @@ public class TranslatorDialog extends JDialog {
 		changeColor(textPane, Color.BLACK, 0, textPane.getText().length(), false);
 		
 		// Coloration
-		// §Y...§!
-		colorCodes(textPane);
+		// §Y...§! (CK2, EU4, HoI4, Stellaris)
+		colorCodes(textPane, "§");
+		// #Y...#! (Imperator Rome)
+		colorCodes(textPane, "#");
 		
 		// \n
 		int lineBreak = textPane.getText().indexOf("\\n");
@@ -432,23 +434,24 @@ public class TranslatorDialog extends JDialog {
 	}
 	
 	/**
-	 * Color the color code of a textPane. EX : §Y...§!
+	 * Color the color code of a textPane. EX : §Y...§! when codeChar == "§"
 	 * 
 	 * @param textPane
+	 * @param codeChar
 	 */
-	private static void colorCodes(JTextPane textPane)
+	private static void colorCodes(JTextPane textPane, String codeChar)
 	{
-		int colorBegin = textPane.getText().indexOf('§');
+		int colorBegin = textPane.getText().indexOf(codeChar);
 		int colorEnd = STRING_NOT_FOUND;
 		while (colorBegin != STRING_NOT_FOUND)
 		{
 			if (!Chars.contains(PARADOX_COLOR_CODES, textPane.getText().charAt(colorBegin + 1))) {
-				colorBegin = textPane.getText().indexOf('§', colorBegin + 1);
+				colorBegin = textPane.getText().indexOf(codeChar, colorBegin + 1);
 			}
 			if (colorEnd == STRING_NOT_FOUND) {
-				colorEnd = colorBegin + textPane.getText().substring(colorBegin).lastIndexOf("§!");
+				colorEnd = colorBegin + textPane.getText().substring(colorBegin).lastIndexOf(codeChar + "!");
 			} else {
-				colorEnd = textPane.getText().lastIndexOf("§!", colorEnd - 1);
+				colorEnd = textPane.getText().lastIndexOf(codeChar + "!", colorEnd - 1);
 			}
 			if (colorEnd == STRING_NOT_FOUND)
 			{
@@ -456,7 +459,7 @@ public class TranslatorDialog extends JDialog {
 			}
 			changeColor(textPane, Color.RED, colorBegin, 2, true);
 			changeColor(textPane, Color.RED, colorEnd, 2, true);
-			colorBegin = textPane.getText().indexOf('§', colorBegin + 1);
+			colorBegin = textPane.getText().indexOf(codeChar, colorBegin + 1);
 		}
 	}
 	
