@@ -40,7 +40,16 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, false, false,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), entryToSave.getSourceLineNumber(),
-						entryToSave.getDestLineNumber(), entryToSave.getId()), "save_file");
+						entryToSave.getDestLineNumber(), entryToSave.getId()), "save_file", false);
+	}
+	
+	@Test
+	public void testSaveWithSameLineNumber2() throws IOException {
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file_l";
+		testSaveSeveralLines(troncatedFilePath, false, false,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), entryToSave.getSourceLineNumber(),
+						entryToSave.getDestLineNumber(), entryToSave.getId()), "save_file", true);
 	}
 
 	@Test
@@ -63,7 +72,16 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, true, false,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), entryToSave.getDestLineNumber(),
-						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()), "save_file_4");		
+						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()), "save_file_4", false);		
+	}
+
+	@Test
+	public void testSaveUnknownSourceLineNumber2() throws IOException {
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file4_l";
+		testSaveSeveralLines(troncatedFilePath, true, false,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), entryToSave.getDestLineNumber(),
+						HoI4ParsedEntry.MISSING_ENTRY, entryToSave.getId()), "save_file_4", true);		
 	}
 
 	@Test
@@ -72,7 +90,16 @@ public class TestSavingHoI4 {
 		testSaveSeveralLines(troncatedFilePath, false, true,
 				new TranslatedEntry(entryToSave.getSource(), 
 						entryToSave.getDestination(), HoI4ParsedEntry.MISSING_ENTRY,
-						entryToSave.getSourceLineNumber(), entryToSave.getId()), "save_file_5");		
+						entryToSave.getSourceLineNumber(), entryToSave.getId()), "save_file_5", false);		
+	}
+
+	@Test
+	public void testSaveUnknownDestLineNumber2() throws IOException {
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file5_l";
+		testSaveSeveralLines(troncatedFilePath, false, true,
+				new TranslatedEntry(entryToSave.getSource(), 
+						entryToSave.getDestination(), HoI4ParsedEntry.MISSING_ENTRY,
+						entryToSave.getSourceLineNumber(), entryToSave.getId()), "save_file_5", true);		
 	}
 
 	@Test
@@ -278,7 +305,7 @@ public class TestSavingHoI4 {
 	}
 	
 	private void testSaveSeveralLines(String troncatedFilePath, boolean missingSource,
-			boolean missingDest, TranslatedEntry entryToSave, String name)
+			boolean missingDest, TranslatedEntry entryToSave, String name, boolean goBack)
 			throws IOException {
 		// Create data
 		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, name);
@@ -344,16 +371,18 @@ public class TestSavingHoI4 {
 		nextEntry = file.getNextEntryToTranslateAndSave(entryToSave, sourceLanguage, destinationLanguage);
 		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
 		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
-		
-		// Go back to the previous entry
-		TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
-		Assert.assertEquals("Incorrect next entry!", entryToSave.getSource(), prevEntry.getSource());
-		Assert.assertEquals("Incorrect next entry!", entryToSave.getDestination(), prevEntry.getDestination());
-		
-		// Save it again
-		nextEntry = file.getNextEntryToTranslateAndSave(prevEntry, sourceLanguage, destinationLanguage);
-		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
-		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
+
+		if (goBack) {
+			// Go back to the previous entry
+			TranslatedEntry prevEntry = file.getPreviousEntryToTranslate();
+			Assert.assertEquals("Incorrect next entry!", entryToSave.getSource(), prevEntry.getSource());
+			Assert.assertEquals("Incorrect next entry!", entryToSave.getDestination(), prevEntry.getDestination());
+			
+			// Save it again
+			nextEntry = file.getNextEntryToTranslateAndSave(prevEntry, sourceLanguage, destinationLanguage);
+			Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
+			Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
+		}
 		
 		// Modify and save the file
 		nextEntry.setDestination(nextEntry.getDestination() + "!");

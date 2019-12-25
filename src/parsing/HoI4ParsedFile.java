@@ -88,11 +88,17 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 				destMissingEntry, entryToSave.getId(), entryToSave.getDestination(),
 				entryInMemory.getDestinationVersionNumber(), false);
 
-		// Update line number in memory
+		// Update line number in memory and the nextEntry
 		if (sourceMissingEntry) {
 			entryInMemory.setSourceLineNumber(sourceSaveLineNumber);
+			if (nextEntry != null) {
+				nextEntry.increaseSourceLineNumber();
+			}
 		} else if (destMissingEntry) {
 			entryInMemory.setDestinationLineNumber(destSaveLineNumber);
+			if (nextEntry != null) {
+				nextEntry.increaseDestLineNumber();
+			}
 		}
 		return nextEntry;
 	}

@@ -52,8 +52,16 @@ public class TranslatedEntry {
 		return destLineNumber;
 	}
 
+	public void increaseDestLineNumber() {
+		destLineNumber++;
+	}
+	
 	public int getSourceLineNumber() {
 		return sourceLineNumber;
+	}
+
+	public void increaseSourceLineNumber() {
+		sourceLineNumber++;
 	}
 
 	public String getId() {
