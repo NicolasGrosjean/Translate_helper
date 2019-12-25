@@ -313,8 +313,8 @@ public class TestSavingHoI4 {
 			oldSourceLine = " ID_2:0 \"" + oldSource + "\"\n";
 			oldDestLine = " ID_2:0 \"" + destText2 + "\"\n";
 		}
-		file.addLastLineToTranslate(4, 4, "ID_3", "", sourceText3, destText3, 0, 0);
-		file.addLastLineToTranslate(5, 5, "ID_4", "", sourceText4, destText4, 0, 0);
+		file.addLastLineToTranslate(missingSource ? 3 : 4, missingDest ? 3 : 4, "ID_3", "", sourceText3, destText3, 0, 0);
+		file.addLastLineToTranslate(missingSource ? 3 : 4, missingDest ? 4 : 5, "ID_4", "", sourceText4, destText4, 0, 0);
 		
 		// Create files corresponding to these data
 		String[] sourceData = { "\uFEFFl_english:\n" +
@@ -355,11 +355,17 @@ public class TestSavingHoI4 {
 		Assert.assertEquals("Incorrect next entry!", "What?", nextEntry.getSource());
 		Assert.assertEquals("Incorrect next entry!", "Quoi?", nextEntry.getDestination());
 		
+		// Modify and save the file
+		nextEntry.setDestination(nextEntry.getDestination() + "!");
+		nextEntry = file.getNextEntryToTranslateAndSave(nextEntry, sourceLanguage, destinationLanguage);
+		Assert.assertEquals("Incorrect next entry!", sourceText4, nextEntry.getSource());
+		Assert.assertEquals("Incorrect next entry!", destText4, nextEntry.getDestination());
+		
 		// Check that is what we expect
 		String[] expected = { "\uFEFFl_french:",
 				" ID_1:0 \"" + destText1 + "\"",
 				" " + entryToSave.getId() + ":0 \"" + entryToSave.getDestination() + "\"",
-				" ID_3:0 \"" + destText3 + "\"",
+				" ID_3:0 \"" + destText3 + "!\"",
 				" ID_4:0 \"" + destText4 + "\""};
 		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
