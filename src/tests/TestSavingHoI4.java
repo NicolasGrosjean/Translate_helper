@@ -114,6 +114,64 @@ public class TestSavingHoI4 {
 		String destinationText = "Fichier créé avec succès";
 		testSaveOneLine(troncatedFilePath, destinationText, entryToSave.getSource(), true, 3, 0, "save_file_7");
 	}
+
+	@Test
+	public void testSeveralMissingDest() throws IOException {
+		// Create data
+		String troncatedFilePath = "./test_localisation_files/hoi4/save_file10_l";
+		HoI4ParsedFile file = new HoI4ParsedFile(troncatedFilePath, "save_file10");
+		file.addLastLineToTranslate(3, HoI4ParsedEntry.MISSING_ENTRY, "ID_2", "", "B", "", 0, 0);
+		file.addLastLineToTranslate(4, HoI4ParsedEntry.MISSING_ENTRY, "ID_3", "", "C", "", 0, 0);
+		
+		// Create files corresponding to these data
+		String[] sourceData = { "\uFEFFl_english:\n" + " ID_1:0 \"A\"\n" + " ID_2:0 \"B\"\n" + " ID_3:0 \"C\"\n" + " ID_4:0 \"D\"\n" };
+		List<String> sourceLines = Arrays.asList(sourceData);
+		Path sourceFiletoWtrite = Paths.get(troncatedFilePath + "_english.yml");
+		Files.write(sourceFiletoWtrite, sourceLines, StandardCharsets.UTF_8);
+		String[] destData = { "\uFEFFl_french:\n" + " ID_1:0 \"A\"\n" + " ID_4:0 \"D\"\n" };
+		List<String> destLines = Arrays.asList(destData);
+		Path destFiletoWtrite = Paths.get(troncatedFilePath + "_french.yml");
+		Files.write(destFiletoWtrite, destLines, StandardCharsets.UTF_8);
+		
+		TranslatedEntry entry = file.getFirstEntryToTranslate();
+		entry.setDestination("B_FR");
+		entry = file.getNextEntryToTranslateAndSave(entry, sourceLanguage, destinationLanguage);
+		entry.setDestination("C_FR");
+		file.getNextEntryToTranslateAndSave(entry, sourceLanguage, destinationLanguage);
+		
+		// Check that is what we expect
+		String expected[] = { "\uFEFFl_french:", " ID_1:0 \"A\"", " ID_2:0 \"B_FR\"", " ID_3:0 \"C_FR\"", " ID_4:0 \"D\"", ""};
+		FileInputStream fis = new FileInputStream(troncatedFilePath + "_french.yml");
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", expected.length > i);
+				Assert.assertEquals("Incorrect line!", expected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", expected.length, i);
+		} finally {
+			br.close();
+		}
+		// Check also source
+		String sourceExpected[] = { "\uFEFFl_english:", " ID_1:0 \"A\"", " ID_2:0 \"B\"", " ID_3:0 \"C\"", " ID_4:0 \"D\"", ""};
+		fis = new FileInputStream(troncatedFilePath + "_english.yml");
+		br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
+		try {
+			String line = null;
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				Assert.assertTrue("Incorrect line number!", sourceExpected.length > i);
+				Assert.assertEquals("Incorrect line!", sourceExpected[i], line);
+				i++;
+			}
+			Assert.assertEquals("Incorrect line number!", sourceExpected.length, i);
+		} finally {
+			br.close();
+		}
+	}
 	
 	@Test
 	public void testSeveralLinesWithoutDestFile() throws IOException {
@@ -522,5 +580,7 @@ public class TestSavingHoI4 {
 		new File("./test_localisation_files/hoi4/save_file8_l_french.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file9_l_english.yml").delete();
 		new File("./test_localisation_files/hoi4/save_file9_l_french.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file10_l_english.yml").delete();
+		new File("./test_localisation_files/hoi4/save_file10_l_french.yml").delete();
 	}
 }

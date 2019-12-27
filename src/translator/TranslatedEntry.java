@@ -1,5 +1,6 @@
 package translator;
 
+import parsing.HoI4ParsedEntry;
 import parsing.ParsedEntry;
 
 public class TranslatedEntry {
@@ -52,16 +53,20 @@ public class TranslatedEntry {
 		return destLineNumber;
 	}
 
-	public void increaseDestLineNumber() {
-		destLineNumber++;
+	public void increaseDestLineNumberIfExists() {
+		if (destLineNumber != HoI4ParsedEntry.MISSING_ENTRY) {
+			destLineNumber++;
+		}
 	}
 	
 	public int getSourceLineNumber() {
 		return sourceLineNumber;
 	}
 
-	public void increaseSourceLineNumber() {
-		sourceLineNumber++;
+	public void increaseSourceLineNumberIfExists() {
+		if (sourceLineNumber != HoI4ParsedEntry.MISSING_ENTRY) {
+			sourceLineNumber++;
+		}
 	}
 
 	public String getId() {
