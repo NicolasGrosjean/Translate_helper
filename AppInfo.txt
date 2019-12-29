@@ -1,3 +1,6 @@
+AppVersion=3.1
+- Fix text lost when dealing missing and existing texts
+
 AppVersion=3.0
 - Add Imperator Rome compatibility
 - Support multi directory localisation
