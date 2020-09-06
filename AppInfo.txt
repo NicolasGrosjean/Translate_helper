@@ -1,3 +1,8 @@
+AppVersion=3.2
+- Add Crusader Kings III compatibility (#41)
+- Fix saving when destination file doesn't exist (#37)
+- Fix opening source file instead of destination file (#43)
+
 AppVersion=3.1
 - Fix text lost when dealing missing and existing texts
 
