@@ -464,11 +464,11 @@ public class Window extends JFrame {
         contextMenu.add(checkLineItem);
         
 		JMenuItem openSourceFileItem = new JMenuItem("Open source file in the default software");
-		openSourceFileItem.addActionListener(new OpenFile(ws.getSourceLanguage()));
+		openSourceFileItem.addActionListener(new OpenFile(ws.getSourceLanguage(), true));
         contextMenu.add(openSourceFileItem);
         
 		JMenuItem openDestFileItem = new JMenuItem("Open destination file in the default software");
-		openDestFileItem.addActionListener(new OpenFile(ws.getSourceLanguage()));
+		openDestFileItem.addActionListener(new OpenFile(ws.getDestinationLanguage(), false));
         contextMenu.add(openDestFileItem);
         
         // Select a line by right clicking
@@ -647,9 +647,11 @@ public class Window extends JFrame {
 	
 	class OpenFile implements ActionListener {
 		private Language language;
+		private boolean source;
 		
-		OpenFile(Language language) {
+		OpenFile(Language language, boolean source) {
 			this.language = language;
+			this.source = source;
 		}
 		
 		@Override
@@ -665,7 +667,7 @@ public class Window extends JFrame {
 			if (file instanceof CK2ParsedFile) {
 				filePath = directory + f.getName();
 			} else if (table.getValueAt(row, FILE_COLUMN) instanceof HoI4ParsedFile) {
-				filePath = ((HoI4ParsedFile) table.getValueAt(row, FILE_COLUMN)).getFilePath(language, true);
+				filePath = ((HoI4ParsedFile) table.getValueAt(row, FILE_COLUMN)).getFilePath(language, source);
 			}
 			try {
 				Desktop.getDesktop().open(new File(filePath));
