@@ -160,7 +160,11 @@ public class Parse {
 		if (new File(directory, language).exists()) {
 			return language;
 		}
-		return directory.substring(directory.lastIndexOf("\\") + 1);
+		String directorySeparator = "\\";
+		if (directory.contains("/")) {
+			directorySeparator = "/";
+		}
+		return directory.substring(directory.lastIndexOf(directorySeparator) + 1);
 	}
 
 	/**
@@ -810,11 +814,15 @@ public class Parse {
 	 * @return
 	 */
 	private static String getFileName(String filePath, String directoryName) {
+		String directorySeparator = "\\";
+		if (filePath.contains("/")) {
+			directorySeparator = "/";
+		}
 		String directoryName2 = "";
 		int end = filePath.length();
-		while (!directoryName2.replace("/", "").replace("\\", "").toLowerCase().equals(directoryName.toLowerCase())) {
-			end = filePath.substring(0, end).lastIndexOf("\\") + 1;
-			int start = filePath.substring(0, end - 1).lastIndexOf("\\") + 1;
+		while (!directoryName2.replace(directorySeparator, "").toLowerCase().equals(directoryName.toLowerCase())) {
+			end = filePath.substring(0, end).lastIndexOf(directorySeparator) + 1;
+			int start = filePath.substring(0, end - 1).lastIndexOf(directorySeparator) + 1;
 			directoryName2 = filePath.substring(start, end);
 			end = start;
 			if (end == 0) {
