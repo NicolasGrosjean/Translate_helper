@@ -218,7 +218,7 @@ public class PHParsedFile extends TranslatorParsedFile  {
 
 	@Override
 	public ITranslator createAllLines(Language sourceLanguage, Language destinationLanguage, boolean acceptAllCopies) {
-		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null, acceptAllCopies);
+		Parse parseObj = new Parse(new LinkedList<String>(), sourceLanguage, destinationLanguage, null, null, acceptAllCopies, "", "");
 		return parseObj.parseAxmlFile(directory, name, true);
 	}
 

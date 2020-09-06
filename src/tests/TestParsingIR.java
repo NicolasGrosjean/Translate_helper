@@ -21,7 +21,8 @@ public class TestParsingIR {
 		// Translate English to French
 		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/ir"),
 				new Language("ENGLISH", 1, "en"), new Language("FRENCH", 2, "fr"),
-				"config/fake_translations.txt", "config/accepted_loanwords.txt", false);
+				"config/fake_translations.txt", "config/accepted_loanwords.txt", false,
+				"english", "french");
 	}
 
 	@Test

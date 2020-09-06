@@ -21,7 +21,8 @@ public class TestParsingHoi4 {
 		// Translate English to French
 		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/hoi4"),
 				new Language("ENGLISH", 1, "en"), new Language("FRENCH", 2, "fr"),
-				"config/fake_translations.txt", "config/accepted_loanwords.txt", false);
+				"config/fake_translations.txt", "config/accepted_loanwords.txt", false,
+				"hoi4", "hoi4");
 	}
 
 	@Test
@@ -37,6 +38,8 @@ public class TestParsingHoi4 {
 				"bad_copy_l_french",
 				"fake_translation_l_english",
 				"fake_translation_l_french",
+				"fallout_countries_l_english",
+				"fallout_countries_l_french",
 				"non_updated_destination_l_english",
 				"non_updated_destination_l_french",
 				"replace/accepted_copy2_l_english",
@@ -78,7 +81,7 @@ public class TestParsingHoi4 {
 
 	@Test
 	public void acceptedCopy2() {
-		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("accepted_copy2");
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("replace\\accepted_copy2");
 		if (f != null) {
 			Assert.assertEquals("It should have nothing to translate", 0, f.getNumberLineToTranslate());
 			Assert.assertEquals("It should have no missing source text", 0, f.getNumberMissingSourceLines());
@@ -290,5 +293,22 @@ public class TestParsingHoi4 {
 		} else {
 			Assert.fail("File not parsed");
 		}
-	}	
+	}
+	
+	@Test
+	public void falloutCountries() {
+		HoI4ParsedFile f = (HoI4ParsedFile) parsedFiles.getFile("fallout_countries");
+		if (f != null) {
+			Iterator<ParsedEntry> lineToTranslateIterator = f.getDescendingIteratorLineToTranslate();
+			boolean lineFound = false;
+			while (!lineFound && lineToTranslateIterator.hasNext()) {
+				HoI4ParsedEntry e = (HoI4ParsedEntry) lineToTranslateIterator.next();
+				lineFound = (e.getID().equals("COL_people_DEF"));
+			}
+			Assert.assertTrue(lineFound);
+		} else {
+			Assert.fail("File not parsed");
+		}		
+	}
+	
 }

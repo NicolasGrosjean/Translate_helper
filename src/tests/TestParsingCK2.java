@@ -28,7 +28,7 @@ public class TestParsingCK2 {
 	public static void SetUp() {
 		parsedFiles = new Parse(Parse.listDirectoryFiles("./test_localisation_files/ck2"),
 				new Language("FRENCH", 2, "fr"), new Language("ENGLISH", 1, "en"),
-				"config/fake_translations.txt", "config/accepted_loanwords.txt", false);
+				"config/fake_translations.txt", "config/accepted_loanwords.txt", false, "", "");
 	}
 
 	@Test

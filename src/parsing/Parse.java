@@ -56,10 +56,18 @@ public class Parse {
 	 * Parse the files in order to store the entries which are not translated
 	 * or without source language text
 	 * @param filePaths The list of the names of the files to parse
+	 * @param sourceLanguage The source language
+	 * @param destinationLanguage The destination language
+	 * @param fakeTranslationFile File which contains the list of the fake translations
+	 * @param acceptedLoanwordFile File which contain the list of the accepted loan words
+	 * @param acceptAllCopies If true the copies between source and destination are not considered as non translated
+	 * @param sourceDirectoryName Name of the subdirectory to remove it in file names for Yml files (ignored for others)
+	 * @param destDirectoryName Name of the subdirectory to remove it in file names for Yml files (ignored for others)
 	 */
 	public Parse(LinkedList<String> filePaths, Language sourceLanguage,
 			Language destinationLanguage, String fakeTranslationFile,
-			String acceptedLoanwordFile, boolean acceptAllCopies) {
+			String acceptedLoanwordFile, boolean acceptAllCopies,
+			String sourceDirectoryName, String destDirectoryName) {
 		this.sourceLanguage = sourceLanguage;
 		this.destinationLanguage = destinationLanguage;
 		files = new LinkedList<IParsedFile>();
@@ -81,12 +89,12 @@ public class Parse {
 					System.err.println(filePath + " was bad named. It doesn't respect format : dir/name_l_language.yml");
 					continue;
 				}
-				int start = troncated.lastIndexOf("\\") + 1;
-				int end = troncated.length() - 2;
-				String name = troncated.substring(start, end);
+				String name = "";
 				if (this.sourceLanguage.getName().toLowerCase().equals(language)) {
+ 					name = getFileName(troncated.substring(0, troncated.length() - 2), sourceDirectoryName);
 					sourceFiles.put(name, troncated);
 				} else {
+					name = getFileName(troncated.substring(0, troncated.length() - 2), destDirectoryName);
 					destFiles.put(name, troncated);
 				}
 				if (!parsedTroncatedFiles.contains(name) && sourceFiles.containsKey(name)
@@ -137,7 +145,22 @@ public class Parse {
 		this(Parse.listDirectoryFiles(ws.getDirectory()),
 				ws.getSourceLanguage(), ws.getDestinationLanguage(),
 				fakeTranslationFile, acceptedLoanwordFile,
-				ws.isAcceptAllCopies());
+				ws.isAcceptAllCopies(),
+				getDirectoryName(ws.getDirectory(), ws.getSourceLanguage().getName()),
+				getDirectoryName(ws.getDirectory(), ws.getDestinationLanguage().getName()));
+	}
+	
+	/**
+	 * Compute the directory name to remove in file paths to get the file name
+	 * @param directory The working session direction
+	 * @param language The string of the language to return it if directory/language exists
+	 * @return
+	 */
+	private static String getDirectoryName(String directory, String language) {
+		if (new File(directory, language).exists()) {
+			return language;
+		}
+		return directory.substring(directory.lastIndexOf("\\") + 1);
 	}
 
 	/**
@@ -778,6 +801,27 @@ public class Parse {
 		} else {
 			return "";
 		}
+	}
+	
+	/**
+	 * Compute the file name by removing char before and including directoryName from filePath
+	 * @param filePath The path in which the name is extracted
+	 * @param directoryName The directory name to remove
+	 * @return
+	 */
+	private static String getFileName(String filePath, String directoryName) {
+		String directoryName2 = "";
+		int end = filePath.length();
+		while (!directoryName2.replace("/", "").replace("\\", "").toLowerCase().equals(directoryName.toLowerCase())) {
+			end = filePath.substring(0, end).lastIndexOf("\\") + 1;
+			int start = filePath.substring(0, end - 1).lastIndexOf("\\") + 1;
+			directoryName2 = filePath.substring(start, end);
+			end = start;
+			if (end == 0) {
+				throw new RuntimeException("Directory name (" + directoryName + ") not found in file path (" + filePath + ")");
+			}
+		}
+		return filePath.substring(end + directoryName.length() + 1);
 	}
 	
 	/**
