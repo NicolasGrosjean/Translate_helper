@@ -261,7 +261,8 @@ public class HoI4ParsedFile extends TranslatorParsedFile {
 		if (source) {
 			return sourceTroncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
 		} else {
-			return destTroncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
+			String troncatedFilePath = (!"".equals(destTroncatedFilePath)) ? destTroncatedFilePath : sourceTroncatedFilePath;
+			return troncatedFilePath + "_" + language.getCode().toLowerCase() + ".yml";
 		}
 	}
 
