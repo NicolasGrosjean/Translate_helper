@@ -1,3 +1,6 @@
+AppVersion=3.3
+- Fix crash when translating CK3 with more than 2 languages (#45)
+
 AppVersion=3.2
 - Add Crusader Kings III compatibility (#41)
 - Fix saving when destination file doesn't exist (#37)
