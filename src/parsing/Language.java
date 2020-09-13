@@ -57,6 +57,15 @@ public class Language {
 		return (code.equals(defaultLanguageCode)
 				&& defaultColumn == defaultLanguageColumn);
 	}
+	
+	/**
+	 * Return if language is the same language (without taking account of the case)
+	 * @param language
+	 * @return
+	 */
+	public boolean isLanguage(String language) {
+		return language.toUpperCase().equals(this.toString());
+	}
 
 	@Override
 	public String toString() {

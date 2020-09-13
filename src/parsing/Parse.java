@@ -84,6 +84,9 @@ public class Parse {
 				String[] troncatedAndLanguage = getFilePathWithoutLanguageYML(filePath);
 				String troncated = troncatedAndLanguage[0];
 				String language = troncatedAndLanguage[1];
+				if (!sourceLanguage.isLanguage(language) && !destinationLanguage.isLanguage(language)) {
+					continue;
+				}
 				if (troncated.equals(""))
 				{
 					System.err.println(filePath + " was bad named. It doesn't respect format : dir/name_l_language.yml");
