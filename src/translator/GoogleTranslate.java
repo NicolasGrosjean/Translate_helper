@@ -15,7 +15,7 @@ import org.json.JSONException;
  * Adaptation of the Archana Katiyar script
  * (http://archana-testing.blogspot.fr/2016/02/calling-google-translation-api-in-java.html)
  */
-public class GoogleTranslate {
+public class GoogleTranslate implements TranslateAPI {
 	private String sourceLanguageCode;
 	private String destinationLanguageCode;
 
@@ -24,6 +24,7 @@ public class GoogleTranslate {
 		this.destinationLanguageCode = destinationLanguageCode;
 	}
 
+	@Override
 	public String translate(String text) throws IOException
 	{
 		String url = "https://translate.googleapis.com/translate_a/single?" + "client=gtx&" + "sl=" + sourceLanguageCode + "&tl="
@@ -55,5 +56,10 @@ public class GoogleTranslate {
 			res += ((JSONArray) it.next()).get(0).toString();
 		}
 		return res;
+	}
+
+	@Override
+	public String getAPIName() {
+		return "Google";
 	}
 }

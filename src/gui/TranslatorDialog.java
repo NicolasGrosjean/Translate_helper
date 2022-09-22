@@ -47,14 +47,17 @@ import com.google.common.primitives.Chars;
 import jlanguagetool.LanguageToolSupport;
 import jlanguagetool.UndoRedoSupport;
 import parsing.Language;
+import translator.DeeplTranslate;
 import translator.GoogleTranslate;
 import translator.ITranslator;
+import translator.TranslateAPI;
 import translator.TranslatedEntry;
 
 public class TranslatorDialog extends JDialog {
 	private String fileName;
 	private TranslatedEntry entry;
 	private GoogleTranslate google;
+	private DeeplTranslate deepL;
 	private String destinationLanguageCode;
 	private boolean automaticGoogleCall;
 	private String oldSourceText;
@@ -80,6 +83,8 @@ public class TranslatorDialog extends JDialog {
 		this.fileName = fileName;
 		this.automaticGoogleCall = automaticGoogleCall;
 		google = new GoogleTranslate(sourceLanguage.getLocale().toString(),
+				destinationLanguage.getLocale().toString());
+		deepL = new DeeplTranslate(sourceLanguage.getLocale().toString(),
 				destinationLanguage.getLocale().toString());
 		
 		Font textFont = new Font(Font.SERIF, Font.PLAIN, 20);
@@ -161,6 +166,17 @@ public class TranslatorDialog extends JDialog {
 		
 		// Right
 		JPanel right = new JPanel(new GridLayout(13, 1, 5, 0));
+		JButton deepLTranslateButton = new JButton();
+		deepLTranslateButton.setToolTipText("Replace the translation text by the DeepL translation");
+		try {
+			ImageIcon img = new ImageIcon("config/DeepL.jpg");
+			deepLTranslateButton.setIcon(img);
+		} catch (Exception e) { }
+		deepLTranslateButton.addActionListener(e -> {
+			callTranslateAPI(deepL);
+		});
+		right.add(deepLTranslateButton);
+		
 		JButton googleTranslateButton = new JButton();
 		googleTranslateButton.setToolTipText("Replace the translation text by the google translation");
 		try {
@@ -168,7 +184,7 @@ public class TranslatorDialog extends JDialog {
 			googleTranslateButton.setIcon(img);
 		} catch (Exception e) { }
 		googleTranslateButton.addActionListener(e -> {
-			callGoogleTranslate();
+			callTranslateAPI(google);
 		});
 		right.add(googleTranslateButton);
 		
@@ -342,8 +358,9 @@ public class TranslatorDialog extends JDialog {
 			setTitle(fileName + " - " + entry.getId() + " (line " + entry.getDestLineNumber() + ")");
 			oldSourceText = entry.getSource();
 			oldDestinationText = entry.getDestination();
+			// TODO Call DeepL before
 			if (automaticGoogleCall && destTextPane.getText().equals("")) {
-				callGoogleTranslate();
+				callTranslateAPI(google);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "The translation of this file is finished",
@@ -358,16 +375,16 @@ public class TranslatorDialog extends JDialog {
 		entry.setDestination(destTextPane.getText());
 	}
 	
-	private void callGoogleTranslate()
+	private void callTranslateAPI(TranslateAPI api)
 	{
 		if ("".equals(sourceTextPane.getText())) {
 			return;
 		}
 		try {
-			destTextPane.setText(google.translate(sourceTextPane.getText()));
-			destLangLabel.setText(destinationLanguageCode + " (GOOGLE TRANSLATION)");
+			destTextPane.setText(api.translate(sourceTextPane.getText()));
+			destLangLabel.setText(destinationLanguageCode + " (" + api.getAPIName().toUpperCase() + " TRANSLATION)");
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Impossible to get the translation from google",
+			JOptionPane.showMessageDialog(null, "Impossible to get the translation from " + api.getAPIName(),
 					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
