@@ -37,6 +37,11 @@ public class WorkingSession {
 	private boolean automaticGoogleCall;
 	
 	/**
+	 * Call automatically DeepL translate when the destination text is empty
+	 */
+	private boolean automaticDeepLCall;
+	
+	/**
 	 * Do not consider copy text as a missing translation
 	 */
 	private boolean acceptAllCopies;
@@ -58,7 +63,7 @@ public class WorkingSession {
 	 * @param destinationLanguage
 	 */
 	public WorkingSession(String name, String directory, Language sourceLanguage,
-			Language destinationLanguage, boolean automaticGoogleCall,
+			Language destinationLanguage, boolean automaticDeepLCall, boolean automaticGoogleCall,
 			boolean acceptAllCopies) {
 		if (!isAvailableLanguagesInitialized()) {
 			throw new IllegalArgumentException("The list of available languages was not initialized!");
@@ -83,6 +88,7 @@ public class WorkingSession {
 		RuntimeException e) {
 			errorMessage.append(e.getMessage() + System.lineSeparator());
 		}
+		setAutomaticDeepLCall(automaticDeepLCall);
 		setAutomaticGoogleCall(automaticGoogleCall);
 		setAcceptAllCopies(acceptAllCopies);
 		
@@ -90,8 +96,8 @@ public class WorkingSession {
 	}
 
 	public WorkingSession(String name, String directory, Language sourceLanguage,
-			boolean automaticGoogleCall, boolean acceptAllCopies) {
-		this(name, directory, sourceLanguage, new Language(), automaticGoogleCall, acceptAllCopies);
+			boolean automaticDeepLCall, boolean automaticGoogleCall, boolean acceptAllCopies) {
+		this(name, directory, sourceLanguage, new Language(), automaticDeepLCall, automaticGoogleCall, acceptAllCopies);
 	}
 
 	public String getName() {
@@ -139,6 +145,14 @@ public class WorkingSession {
 			throw new IllegalArgumentException("The destination language " +
 					destinationLanguage + " is not available!");
 		}
+	}
+
+	public boolean isAutomaticDeepLCall() {
+		return automaticDeepLCall;
+	}
+
+	public void setAutomaticDeepLCall(boolean automaticDeepLCall) {
+		this.automaticDeepLCall = automaticDeepLCall;
 	}
 
 	public boolean isAutomaticGoogleCall() {

@@ -59,6 +59,7 @@ public class TranslatorDialog extends JDialog {
 	private GoogleTranslate google;
 	private DeeplTranslate deepL;
 	private String destinationLanguageCode;
+	private boolean automaticDeepLCall;
 	private boolean automaticGoogleCall;
 	private String oldSourceText;
 	private String oldDestinationText;
@@ -74,13 +75,15 @@ public class TranslatorDialog extends JDialog {
 	
 	public TranslatorDialog(JFrame parent, String fileName, boolean modal,
 			ITranslator file, Language sourceLanguage,
-			Language destinationLanguage, boolean automaticGoogleCall) {		
+			Language destinationLanguage,
+			boolean automaticDeepLCall, boolean automaticGoogleCall) {		
 		// Create the JDialog
 		super(parent, "", modal);
 		setSize(1150, 620);
 		setLocationRelativeTo(null);
 		
 		this.fileName = fileName;
+		this.automaticDeepLCall = automaticDeepLCall;
 		this.automaticGoogleCall = automaticGoogleCall;
 		google = new GoogleTranslate(sourceLanguage.getLocale().toString(),
 				destinationLanguage.getLocale().toString());
@@ -358,8 +361,9 @@ public class TranslatorDialog extends JDialog {
 			setTitle(fileName + " - " + entry.getId() + " (line " + entry.getDestLineNumber() + ")");
 			oldSourceText = entry.getSource();
 			oldDestinationText = entry.getDestination();
-			// TODO Call DeepL before
-			if (automaticGoogleCall && destTextPane.getText().equals("")) {
+			if (automaticDeepLCall && destTextPane.getText().equals("")) {
+				callTranslateAPI(deepL);
+			} else if (automaticGoogleCall && destTextPane.getText().equals("")) {
 				callTranslateAPI(google);
 			}
 		} else {

@@ -1,3 +1,6 @@
+AppVersion=3.4
+- Add option and button to call free DeepL API (#47)
+
 AppVersion=3.3
 - Fix crash when translating CK3 with more than 2 languages (#45)
 

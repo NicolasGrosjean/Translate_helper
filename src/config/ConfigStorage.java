@@ -25,6 +25,7 @@ public class ConfigStorage {
 	private static final String wsDirectoryAttribute = "directory";
 	private static final String wsSourceLanguageAttribute = "source";
 	private static final String wsDestinationLanguageAttribute = "destination";
+	private static final String wsAutomaticDeepLAttribute = "automaticDeepL";
 	private static final String wsAutomaticGoogleAttribute = "automaticGoogle";
 	private static final String wsAcceptAllCopies = "acceptAllCopies";
 
@@ -59,12 +60,14 @@ public class ConfigStorage {
 		boolean modified = false;
 		while (it.hasNext()) {
 			Element wsElem = it.next();
+			String automaticDeepLTranslate = wsElem.getAttributeValue(wsAutomaticDeepLAttribute);
 			String automaticGoogleTranslate = wsElem.getAttributeValue(wsAutomaticGoogleAttribute);
 			String acceptAllCopies = wsElem.getAttributeValue(wsAcceptAllCopies);
 			WorkingSession ws = new WorkingSession(wsElem.getAttributeValue(wsNameAttribute),
 						wsElem.getAttributeValue(wsDirectoryAttribute),
 						WorkingSession.getLanguage(wsElem.getAttributeValue(wsSourceLanguageAttribute)),
 						WorkingSession.getLanguage(wsElem.getAttributeValue(wsDestinationLanguageAttribute)),
+						(automaticDeepLTranslate != null) ? Boolean.valueOf(automaticDeepLTranslate) : false,
 						(automaticGoogleTranslate != null) ? Boolean.valueOf(automaticGoogleTranslate) : false,
 						(acceptAllCopies != null) ? Boolean.valueOf(acceptAllCopies) : false);
 			if (!ws.getErrorMessage().equals("")) {
@@ -104,6 +107,8 @@ public class ConfigStorage {
 		workingSessionElem.setAttribute(new Attribute(wsSourceLanguageAttribute, ws.getSourceLanguage().getCode()));
 		workingSessionElem
 				.setAttribute(new Attribute(wsDestinationLanguageAttribute, ws.getDestinationLanguage().getCode()));
+		workingSessionElem
+				.setAttribute(new Attribute(wsAutomaticDeepLAttribute, Boolean.toString(ws.isAutomaticDeepLCall())));
 		workingSessionElem
 				.setAttribute(new Attribute(wsAutomaticGoogleAttribute, Boolean.toString(ws.isAutomaticGoogleCall())));
 		workingSessionElem

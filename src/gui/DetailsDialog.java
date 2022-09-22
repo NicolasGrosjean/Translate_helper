@@ -20,6 +20,7 @@ public class DetailsDialog extends JDialog {
 			Language sourceLanguage,
 			boolean hasDestinationLanguage,
 			Language destinationLanguage,
+			boolean automaticDeepLCall,
 			boolean automaticGoogleCall,
 			Window window) {
 		// Create the JDialog
@@ -53,7 +54,7 @@ public class DetailsDialog extends JDialog {
 		if (hasDestinationLanguage) {
 			JButton translateBtn = new JButton("Translate...");
 			translateBtn.addActionListener(new TranslateListener(title, file, sourceLanguage,
-					destinationLanguage, automaticGoogleCall, window));
+					destinationLanguage, automaticDeepLCall, automaticGoogleCall, window));
 			getContentPane().add(translateBtn, BorderLayout.SOUTH);
 		}
 		setVisible(true);
@@ -76,6 +77,7 @@ public class DetailsDialog extends JDialog {
 		private ITranslator file;
 		private Language sourceLanguage;
 		private Language destinationLanguage;
+		private boolean automaticDeepLCall;
 		private boolean automaticGoogleCall;
 		private Window window;
 		
@@ -83,12 +85,14 @@ public class DetailsDialog extends JDialog {
 		public TranslateListener(String fileName, ITranslator file,
 				Language sourceLanguage,
 				Language destinationLanguage,
+				boolean automaticDeepLCall,
 				boolean automaticGoogleCall,
 				Window window) {
 			this.fileName = fileName;
 			this.file = file;
 			this.sourceLanguage = sourceLanguage;
 			this.destinationLanguage = destinationLanguage;
+			this.automaticDeepLCall = automaticDeepLCall;
 			this.automaticGoogleCall = automaticGoogleCall;
 			this.window = window;
 		}
@@ -100,7 +104,7 @@ public class DetailsDialog extends JDialog {
 			// Open a new one
 			new TranslatorDialog(null, fileName, true, file,
 					sourceLanguage, destinationLanguage,
-					automaticGoogleCall);
+					automaticDeepLCall, automaticGoogleCall);
 			
 			// Refresh working session
 			window.refreshWorkingSession();

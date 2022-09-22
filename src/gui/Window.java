@@ -234,6 +234,7 @@ public class Window extends JFrame {
 		table.getColumn(columnTitles[4]).setCellEditor(new DetailsButton(new JCheckBox(), ws.getSourceLanguage(),
 				!ws.getDestinationLanguage().isNone(),
 				ws.getDestinationLanguage(),
+				ws.isAutomaticDeepLCall(),
 				ws.isAutomaticGoogleCall(),
 				this));
 		table.getColumn(columnTitles[4]).setPreferredWidth(50);
@@ -455,6 +456,7 @@ public class Window extends JFrame {
             			ws.isAcceptAllCopies());
             	new TranslatorDialog(null, f.getName(), true, file,
             			ws.getSourceLanguage(), ws.getDestinationLanguage(),
+            			ws.isAutomaticDeepLCall(),
             			ws.isAutomaticGoogleCall());
 
 				// Refresh working session
